@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Portfolio // Hub</title>
+    <!-- Lucide Icons for clean, modern iconography -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f1115 0%, #161920 100%);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.07);
+            --card-hover-bg: rgba(255, 255, 255, 0.07);
+            --card-hover-border: rgba(255, 255, 255, 0.15);
+            
+            --text-primary: #f8fafc;
+            --text-muted: #94a3b8;
+            
+            /* Premium Accent Colors */
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --accent-line: #6366f1;
+            
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 1rem;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Subtle ambient background glow */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            top: -10%;
+            left: -10%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, transparent 70%);
+            bottom: -10%;
+            right: -10%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            z-index: 1;
+        }
+
+        /* Profile Header Design */
+        header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .profile-avatar {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #0ea5e9);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.25);
+            position: relative;
+        }
+
+        .profile-avatar::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        header h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            font-weight: 400;
+            max-width: 450px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Project Grid/List Layout */
+        .links-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        /* Sleek Button Card Design */
+        .project-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: var(--transition);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle interactive lighting border effect */
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-line);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .project-card:hover {
+            background: var(--card-hover-bg);
+            border-color: var(--card-hover-border);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2), 0 0 40px var(--accent-glow);
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .icon-wrapper {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+
+        .project-card:hover .icon-wrapper {
+            color: var(--accent-line);
+            background: rgba(99, 102, 241, 0.1);
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: scale(1.05);
+        }
+
+        .card-info h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.01em;
+            transition: var(--transition);
+        }
+
+        .card-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .arrow-icon {
+            color: var(--text-muted);
+            transform: translateX(-5px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .project-card:hover .arrow-icon {
+            opacity: 1;
+            transform: translateX(0);
+            color: var(--text-primary);
+        }
+
+        /* Minimal Footer */
+        footer {
+            margin-top: 4rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="profile-avatar">CW</div>
+        <h1>ChamorroWizard</h1>
+        <p>Digital Craftsman & Developer. Exploring the intersections of design, code, and functional aesthetics.</p>
+    </header>
+
+    <main class="links-grid">
+
+        <!-- Vehicle Inventory App -->
+<a href="https://cars-876ec.web.app/" target="_blank" class="project-card">
+    <div class="card-left">
+        <div class="icon-wrapper">
+            <i data-lucide="car-front"></i>
+        </div>
+        <div class="card-info">
+            <h3>Cars</h3>
+            <p>Cloud-hosted inventory and specifications hub for vehicle fleet operations.</p>
+        </div>
+    </div>
+    <i data-lucide="arrow-right" class="arrow-icon"></i>
+</a>
+
+<!-- Vehicle Password/Access Gateway -->
+<a href="https://cars-876ec.web.app/pass.html" target="_blank" class="project-card">
+    <div class="card-left">
+        <div class="icon-wrapper">
+            <i data-lucide="key-round"></i>
+        </div>
+        <div class="card-info">
+            <h3>Ceasars Passes</h3>
+            <p>Secure client authentication and passage portal for premium vehicle suites.</p>
+        </div>
+    </div>
+    <i data-lucide="arrow-right" class="arrow-icon"></i>
+</a>
+
+<!-- Todo App -->
+<a href="https://chamorrowizard.github.io/todo/" target="_blank" class="project-card">
+    <div class="card-left">
+        <div class="icon-wrapper">
+            <i data-lucide="check-square"></i>
+        </div>
+        <div class="card-info">
+            <h3>Task Matrix // To-Do</h3>
+            <p>High-efficiency workflow utility optimizing daily developer queues.</p>
+        </div>
+    </div>
+    <i data-lucide="arrow-right" class="arrow-icon"></i>
+</a>
+
+<!-- Context Bible -->
+<a href="https://chamorrowizard.github.io/context-bible/" target="_blank" class="project-card">
+    <div class="card-left">
+        <div class="icon-wrapper">
+            <i data-lucide="library"></i>
+        </div>
+        <div class="card-info">
+            <h3>Context Bible Engine</h3>
+            <p>An interactive, cross-referenced analytical reader for literary structural analysis.</p>
+        </div>
+    </div>
+    <i data-lucide="arrow-right" class="arrow-icon"></i>
+</a>
+        <!-- Readme Project -->
+        <a href="https://chamorrowizard.github.io/readme/" target="_blank" class="project-card">
+            <div class="card-left">
+                <div class="icon-wrapper">
+                    <i data-lucide="book-open"></i>
+                </div>
+                <div class="card-info">
+                    <h3>Documentation & Readme Hub</h3>
+                    <p>Clean, interactive blueprints and guides for modular builds.</p>
+                </div>
+            </div>
+            <i data-lucide="arrow-right" class="arrow-icon"></i>
+        </a>
+
+        <!-- Project Compass -->
+        <a href="https://chamorrowizard.github.io/project-compass/" target="_blank" class="project-card">
+            <div class="card-left">
+                <div class="icon-wrapper">
+                    <i data-lucide="compass"></i>
+                </div>
+                <div class="card-info">
+                    <h3>Project Compass</h3>
+                    <p>Strategic directional utility mapping development milestones.</p>
+                </div>
+            </div>
+            <i data-lucide="arrow-right" class="arrow-icon"></i>
+        </a>
+
+        <!-- Color Pairing Lab -->
+        <a href="https://chamorrowizard.github.io/color-pairing-lab/" target="_blank" class="project-card">
+            <div class="card-left">
+                <div class="icon-wrapper">
+                    <i data-lucide="palette"></i>
+                </div>
+                <div class="card-info">
+                    <h3>Color Pairing Lab</h3>
+                    <p>Interactive color palette exploration tool for dynamic interfaces.</p>
+                </div>
+            </div>
+            <i data-lucide="arrow-right" class="arrow-icon"></i>
+        </a>
+
+        <!-- Cater Project -->
+        <a href="https://chamorrowizard.github.io/cater/" target="_blank" class="project-card">
+            <div class="card-left">
+                <div class="icon-wrapper">
+                    <i data-lucide="chef-hat"></i>
+                </div>
+                <div class="card-info">
+                    <h3>Catering App</h3>
+                    <p>Streamlined layout optimization for culinary service tracking.</p>
+                </div>
+            </div>
+            <i data-lucide="arrow-right" class="arrow-icon"></i>
+        </a>
+
+        <!-- Car Fleet Timeline (Firebase App) -->
+        <a href="https://cars-876ec.web.app/timeline.html" target="_blank" class="project-card">
+            <div class="card-left">
+                <div class="icon-wrapper">
+                    <i data-lucide="car"></i>
+                </div>
+                <div class="card-info">
+                    <h3>The Cabrera Montage</h3>
+                    <p>Dynamic chronology tracker optimizing operational automotive logs.</p>
+                </div>
+            </div>
+            <i data-lucide="arrow-right" class="arrow-icon"></i>
+        </a>
+
+        <!-- Travel Project -->
+        <a href="https://chamorrowizard.github.io/travel/" target="_blank" class="project-card">
+            <div class="card-left">
+                <div class="icon-wrapper">
+                    <i data-lucide="plane-takeoff"></i>
+                </div>
+                <div class="card-info">
+                    <h3>Travel & Logistics Hub</h3>
+                    <p>Sleek utilities tailored to mapping, navigation, and budgeting journeys.</p>
+                </div>
+            </div>
+            <i data-lucide="arrow-right" class="arrow-icon"></i>
+        </a>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 // Justin's Homepage</p>
+    </footer>
+</div>
+
+<script>
+    // Dynamically inject the crisp Lucide SVG icons
+    lucide.createIcons();
+</script>
+
+</body>
+</html>
