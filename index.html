@@ -7,18 +7,8 @@
     <!-- Lucide Icons for clean, modern iconography -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- App icons for home screen and favicon -->
-    <link rel="apple-touch-icon" href="app-icon-animated.svg">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-180x180.png">
-    <link rel="apple-touch-icon" sizes="167x167" href="apple-touch-icon-167x167.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="apple-touch-icon-76x76.png">
     <meta name="msapplication-TileColor" content="#0ea5e9">
     <meta name="msapplication-config" content="/browserconfig.xml">
-    <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="icon-16.png">
-    <link rel="shortcut icon" href="favicon.ico">
-    <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Justin's Hub">
     <meta name="theme-color" content="#0ea5e9">
@@ -128,45 +118,7 @@
             border-radius: 50%;
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
-        /* Holy glow + subtle float animation */
-        .profile-avatar::before {
-            content: '';
-            position: absolute;
-            inset: -18px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(99,102,241,0.32), rgba(14,165,233,0.06) 60%, transparent 70%);
-            filter: blur(12px);
-            opacity: 0;
-            transform: scale(0.95);
-            animation: pulse-glow 3.6s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes pulse-glow {
-            0% { opacity: 0.28; transform: scale(0.9); filter: blur(8px); }
-            50% { opacity: 0.95; transform: scale(1.06); filter: blur(20px); }
-            100% { opacity: 0.28; transform: scale(0.9); filter: blur(8px); }
-        }
-
-        @keyframes float-y {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-            100% { transform: translateY(0); }
-        }
-
-        .profile-avatar { animation: float-y 6s ease-in-out infinite; }
-
-        .profile-avatar:hover::before { opacity: 0; transform: none; }
-        .profile-avatar:hover img { transform: scale(1.03) rotate(0deg); filter: drop-shadow(0 12px 34px rgba(99,102,241,0.28)); }
-
-
-        @keyframes tilt {
-            0% { transform: rotate(-1.5deg); }
-            50% { transform: rotate(1.5deg); }
-            100% { transform: rotate(-1.5deg); }
-        }
-
-
+        
         header h1 {
             font-size: 2.25rem;
             font-weight: 800;
@@ -302,7 +254,7 @@
 
 <div class="container">
     <header>
-        <div class="profile-avatar"><img src="app-icon-animated.svg" alt="App logo" class="profile-img"></div>
+        <div class="profile-avatar"><img src="App logo home.jpg" alt="App logo" class="profile-img"></div>
         <h1>Tools</h1>
         <p>Digital Craftsman & Developer. Exploring the intersections of design, code, and functional aesthetics.</p>
     </header>
