@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creative Portfolio // Hub</title>
+    <title>Justin's Hub</title>
     <!-- Lucide Icons for clean, modern iconography -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- App icons for home screen and favicon -->
@@ -12,6 +12,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icon-16.png">
     <link rel="shortcut icon" href="favicon.ico">
+    <link rel="manifest" href="manifest.json">
     <meta name="msapplication-TileColor" content="#0ea5e9">
     <meta name="msapplication-config" content="/browserconfig.xml">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -260,7 +261,7 @@
 <div class="container">
     <header>
         <div class="profile-avatar"><img src="App logo home.jpg" alt="App logo" class="profile-img"></div>
-        <h1>Tools</h1>
+        <h1>Justin's Hub</h1>
         <p>Digital Craftsman & Developer. Exploring the intersections of design, code, and functional aesthetics.</p>
     </header>
 
@@ -429,6 +430,18 @@
 <script>
     // Dynamically inject the crisp Lucide SVG icons
     lucide.createIcons();
+</script>
+
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('sw.js').then(function(reg) {
+                console.log('ServiceWorker registered:', reg.scope);
+            }).catch(function(err) {
+                console.log('ServiceWorker registration failed:', err);
+            });
+        });
+    }
 </script>
 
 </body>
