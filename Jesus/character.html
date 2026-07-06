@@ -15,6 +15,7 @@
             --border-color: rgba(212, 175, 55, 0.15);
             --card-glow: rgba(212, 175, 55, 0.03);
             --sidebar-width: 280px;
+            --mobile-header-height: 64px;
         }
 
         * {
@@ -43,16 +44,17 @@
             min-height: 100vh;
         }
 
-        /* Mobile Header / Top Bar (Hidden on Desktop) */
+        /* Mobile Header / Top Bar */
         .mobile-header {
             display: none;
             background-color: var(--bg-secondary);
             border-bottom: 1px solid var(--border-color);
-            padding: 1rem 1.5rem;
+            padding: 0 1.5rem;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
+            height: var(--mobile-header-height);
             z-index: 100;
             justify-content: space-between;
             align-items: center;
@@ -86,7 +88,21 @@
             top: 0;
             bottom: 0;
             z-index: 90;
+            overflow-y: auto;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Backdrop Overlay for Mobile Drawer */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 85;
         }
 
         .brand {
@@ -130,7 +146,7 @@
             color: var(--text-muted);
             text-align: left;
             width: 100%;
-            padding: 0.85rem 1rem; /* Enhanced touch target size */
+            padding: 0.85rem 1rem;
             border-radius: 6px;
             cursor: pointer;
             font-size: 0.95rem;
@@ -301,20 +317,24 @@
 
             aside {
                 transform: translateX(-100%);
-                top: 61px; /* Positions drawer exactly underneath the mobile header */
-                width: 100%;
-                border-right: none;
-                border-bottom: 1px solid var(--border-color);
+                top: var(--mobile-header-height);
+                width: 300px;
+                max-width: 85vw;
+                border-right: 1px solid var(--border-color);
+                box-shadow: 10px 0 30px rgba(0,0,0,0.5);
             }
 
-            /* Expose side panel drawer when active classes toggle */
             aside.menu-open {
                 transform: translateX(0);
             }
 
+            aside.menu-open + .sidebar-overlay {
+                display: block;
+            }
+
             main {
                 margin-left: 0;
-                padding: 5rem 1.5rem 3rem 1.5rem; /* Extends structural clearance below sticky top bar */
+                padding: calc(var(--mobile-header-height) + 2rem) 1.5rem 3rem 1.5rem;
             }
 
             .grid-layout {
@@ -339,7 +359,6 @@
 </head>
 <body>
 
-    <!-- Sticky Mobile Header Viewport Integration -->
     <div class="mobile-header">
         <div class="brand">
             <h1>ScripturePersona</h1>
@@ -348,7 +367,6 @@
     </div>
 
     <div class="app-container">
-        <!-- Sidebar Navigation Drawer -->
         <aside id="sidebar">
             <div class="brand">
                 <h1>ScripturePersona</h1>
@@ -358,38 +376,28 @@
             <nav>
                 <div class="nav-section-title">The Book of Genesis</div>
                 <ul class="character-menu">
-                    <li class="menu-item active" onclick="switchCharacter('adam', this)">
-                        <button>01. Adam</button>
-                    </li>
-                    <li class="menu-item" onclick="switchCharacter('eve', this)">
-                        <button>02. Eve</button>
-                    </li>
-                    <li class="menu-item" onclick="switchCharacter('noah', this)">
-                        <button>03. Noah</button>
-                    </li>
-                    <li class="menu-item" onclick="switchCharacter('abraham', this)">
-                        <button>04. Abraham</button>
-                    </li>
-                    <li class="menu-item" onclick="switchCharacter('sarah', this)">
-                        <button>05. Sarah</button>
-                    </li>
-                    <li class="menu-item" onclick="switchCharacter('isaac', this)">
-                        <button>06. Isaac</button>
-                    </li>
-                    <li class="menu-item" onclick="switchCharacter('jacob', this)">
-                        <button>07. Jacob</button>
-                    </li>
-                    <li class="menu-item" onclick="switchCharacter('joseph', this)">
-                        <button>08. Joseph</button>
-                    </li>
-                    <li class="menu-item" onclick="switchCharacter('judah', this)">
-                        <button>09. Judah</button>
-                    </li>
+                    <li class="menu-item active" data-id="adam"><button>01. Adam</button></li>
+                    <li class="menu-item" data-id="eve"><button>02. Eve</button></li>
+                    <li class="menu-item" data-id="noah"><button>03. Noah</button></li>
+                    <li class="menu-item" data-id="abraham"><button>04. Abraham</button></li>
+                    <li class="menu-item" data-id="sarah"><button>05. Sarah</button></li>
+                    <li class="menu-item" data-id="isaac"><button>06. Isaac</button></li>
+                    <li class="menu-item" data-id="jacob"><button>07. Jacob</button></li>
+                    <li class="menu-item" data-id="joseph"><button>08. Joseph</button></li>
+                    <li class="menu-item" data-id="judah"><button>09. Judah</button></li>
+                    <li class="menu-item" data-id="asenath"><button>10. Asenath</button></li>
+                    <li class="menu-item" data-id="moses"><button>11. Moses</button></li>
+                    <li class="menu-item" data-id="miriam"><button>12. Miriam</button></li>
+                    <li class="menu-item" data-id="aaron"><button>13. Aaron</button></li>
+                    <li class="menu-item" data-id="rahab"><button>14. Rahab</button></li>
+                    <li class="menu-item" data-id="joshua"><button>15. Joshua</button></li>
                 </ul>
             </nav>
         </aside>
+        
+        <!-- Structural background dim overlay component -->
+        <div class="sidebar-overlay" onclick="toggleMobileMenu()"></div>
 
-        <!-- Main Workspace -->
         <main id="main-content">
             <!-- 01. ADAM PROFILE -->
             <div id="adam" class="character-stage active">
@@ -517,7 +525,8 @@
                     </div>
                 </div>
             </div>
-    <!-- 04. ABRAHAM PROFILE -->
+
+            <!-- 04. ABRAHAM PROFILE -->
             <div id="abraham" class="character-stage">
                 <div class="meta-header">
                     <span>Genesis 12-25</span>
@@ -651,6 +660,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- 07. JACOB PROFILE -->
             <div id="jacob" class="character-stage">
                 <div class="meta-header">
@@ -774,11 +784,270 @@
                 </div>
             </div>
 
+            <!-- 10. ASENATH PROFILE -->
+            <div id="asenath" class="character-stage">
+                <div class="meta-header">
+                    <span>Genesis 41-48</span>
+                    <span class="divider">/</span>
+                    <span>The Egyptian Sojourn</span>
+                </div>
+                <h2 class="hero-title">Asenath</h2>
+                <p class="hero-subtitle">The Foreign Bride & The Silent Grafting</p>
 
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>Pagan Aristocracy</h4>
+                                    <p>As the daughter of Potiphera, the high priest of On (Heliopolis), she was born into the absolute epicenter of Egypt’s polytheistic, sun-worshipping elite, entirely disconnected from the God of Abraham.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>Political Alignment</h4>
+                                    <p>Given to Joseph as a trophy bride by Pharaoh to solidify Joseph's assimilation into Egyptian nobility, symbolizing Israel's impending centuries-long entanglement with empire.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
 
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Her</h3>
+                        <p><strong>Grafting the Gentiles Early:</strong> God used this pagan aristocratic union to birth the tribes of Ephraim and Manasseh. Through her, God demonstrated that He seamlessly integrates outsiders into the direct lineage of promise, foreshadowing a global family that transcends ethnic boundaries.</p>
+                        
+                        <p><strong>The Legacy of Transformed Identity:</strong> Her sons were fully adopted by Jacob on his deathbed as equals to his own sons. By turning the offspring of an Egyptian priestess into foundational patriarchs of Israel, God highlighted that structural heritage is entirely subordinated to divine adoption.</p>
+
+                        <div class="quote-callout">
+                            <p>"And to Joseph were born two sons before the years of famine came, whom Asenath, the daughter of Potiphera priest of On, bore to him."</p>
+                            <span>— Genesis 41:50</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11. MOSES PROFILE -->
+            <div id="moses" class="character-stage">
+                <div class="meta-header">
+                    <span>Exodus 2 - Deuteronomy 34</span>
+                    <span class="divider">/</span>
+                    <span>The Exodus & The Law</span>
+                </div>
+                <h2 class="hero-title">Moses</h2>
+                <p class="hero-subtitle">The Reluctant Deliverer & The Broken Intercessor</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>The Impulsive Avenger</h4>
+                                    <p>Began his career by taking justice into his own hands, murdering an Egyptian taskmaster and burying him in the sand, which resulted in a 40-year exile of isolation as a shepherd.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>Insecure Insubordination</h4>
+                                    <p>Argued extensively with God at the burning bush, throwing up five successive excuses regarding his lack of eloquence and authority until God's anger was kindled against him.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Rage at Meribah</h4>
+                                    <p>Frustrated by decades of complaints, he broke character at Meribah. Instead of speaking to the rock as commanded, he struck it twice in anger, taking personal credit for the miracle ("Must *we* bring water...?") and barring himself from entering the Promised Land.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Him</h3>
+                        <p><strong>The Mediator of the Old Covenant:</strong> God used a stuttering, exiled murderer to bring the most powerful empire on earth to its knees. Through Moses, God delivered the law, established the tabernacle blueprint, and forged a loose band of slaves into a unified, holy nation.</p>
+                        
+                        <p><strong>The Paradigm of Intercession:</strong> Moses stood in the breach when divine judgment was ready to wipe Israel out. His life served as the definitive archetypal shadow of the Prophet-King, directly pointing forward to Jesus, the ultimate Mediator who would fulfill the Law perfectly.</p>
+
+                        <div class="quote-callout">
+                            <p>"The Lord your God will raise up for you a prophet like me from among you, from your brothers—it is to him you shall listen..."</p>
+                            <span>— Deuteronomy 18:15</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 12. MIRIAM PROFILE -->
+            <div id="miriam" class="character-stage">
+                <div class="meta-header">
+                    <span>Exodus 2, 15; Numbers 12</span>
+                    <span class="divider">/</span>
+                    <span>The Exodus & The Law</span>
+                </div>
+                <h2 class="hero-title">Miriam</h2>
+                <p class="hero-subtitle">The Watchful Prophetess & The Leprous Revolt</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>Strategic Protection</h4>
+                                    <p>Displayed brilliant, cool-headed courage as a young girl, tracking Moses’ basket down the Nile and deftly negotiating with Pharaoh's daughter to have his own mother paid to nurse him.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>Liturgical Leadership</h4>
+                                    <p>Recognized explicitly as a prophetess; she led the women of Israel in a massive, ecstatic victory dance and song of praise celebrating the destruction of Pharaoh’s army at the Red Sea.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Coup of Jealousy</h4>
+                                    <p>Grew resentful of Moses’ exclusive authority. Masking her ambition behind a critique of his Cushite wife, she and Aaron mounted a structural mutiny, asking, "Has the Lord indeed spoken only through Moses?"</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Her</h3>
+                        <p><strong>Co-Architect of Liberation:</strong> God did not view Miriam as an afterthought; the prophets later list her alongside Moses and Aaron as leaders sent explicitly to guide the nation during the Exodus. She anchored the communal worship and spiritual morale of the camp.</p>
+                        
+                        <p><strong>A Monument of Structural Order:</strong> When she revolted, God struck her with snow-white leprosy, isolating her outside the camp for seven days. God used her swift judgment and restoration to teach Israel that his spiritual economy operates strictly on divine appointment, not human jealousy or familial hierarchy.</p>
+
+                        <div class="quote-callout">
+                            <p>"For I brought you up from the land of Egypt and redeemed you from the house of slavery, and I sent before you Moses, Aaron, and Miriam."</p>
+                            <span>— Micah 6:4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 13. AARON PROFILE -->
+            <div id="aaron" class="character-stage">
+                <div class="meta-header">
+                    <span>Exodus 4 - Numbers 20</span>
+                    <span class="divider">/</span>
+                    <span>The Priesthood</span>
+                </div>
+                <h2 class="hero-title">Aaron</h2>
+                <p class="hero-subtitle">The Eloquent Mouthpiece & The Golden Calf</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>The Gift of Eloquence</h4>
+                                    <p>Appointed by God to be the articulate voice for the insecure Moses, confidently standing before Pharaoh and wielding the staff that unleashed the devastating plagues of Egypt.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Cowardice of Compromise</h4>
+                                    <p>Left to lead the camp while Moses was on Mount Sinai, Aaron folded under intense peer pressure. He collected the people's gold, cast a pagan calf, and then offered a famously absurd defense: "I threw it into the fire, and out came this calf!"</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>Subversive Ambition</h4>
+                                    <p>Joined his sister Miriam in challenging Moses’ exclusive prophetic authority, allowing familial jealousy to compromise his sacred responsibility as the spiritual leader.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Him</h3>
+                        <p><strong>The First High Priest of Israel:</strong> Despite his spectacular failure with the golden calf, God didn't disqualify Aaron. Instead, He uniquely anointed him as Israel's very first High Priest, dressing him in holy garments and using his line exclusively to manage the Tabernacle sacrifices.</p>
+                        
+                        <p><strong>A Picture of Intercession and Vulnerability:</strong> Aaron stood literally between the living and the dead with his censer to halt a divine plague. His flawed nature proved that human priests are weak and need to offer sacrifices for their own sins first, pointing directly to the need for Jesus—the ultimate, sinless High Priest.</p>
+
+                        <div class="quote-callout">
+                            <p>"And no one takes this honor for himself, but only when called by God, just as Aaron was."</p>
+                            <span>— Hebrews 5:4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 14. RAHAB PROFILE -->
+            <div id="rahab" class="character-stage">
+                <div class="meta-header">
+                    <span>Joshua 2, 6</span>
+                    <span class="divider">/</span>
+                    <span>Conquest of Canaan</span>
+                </div>
+                <h2 class="hero-title">Rahab</h2>
+                <p class="hero-subtitle">The Canaanite Outcast & The Scarlet Cord</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>The Cultural Sub-Basement</h4>
+                                    <p>Lived on the literal fringes of Jericho as a professional prostitute, belonging to an idolatrous Canaanite culture marked for complete corporate judgment.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>Calculated Treason</h4>
+                                    <p>Recognized the supreme reality of Israel's God based on rumors alone. She hid the Hebrew spies on her roof, deliberately lied to her own city's intelligence officers, and orchestrated a high-stakes escape.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Her</h3>
+                        <p><strong>The Mechanics of Radical Faith:</strong> God used a marginalized foreign woman to expose the psychological terror gripping Canaan. Her explicit confession of faith—that Yahweh is God in heaven above and on earth beneath—became an foundational anthem of absolute belief overriding structural baggage.</p>
+                        
+                        <p><strong>Grafting Into the Royal Lineage:</strong> When Jericho's walls imploded, Rahab’s household on the wall remained completely secure under the sign of a scarlet cord. God didn't just spare her; He integrated her into Israel. She married Salmon, became the great-great-grandmother of King David, and is one of only four women explicitly written into the lineage of Jesus Christ.</p>
+
+                        <div class="quote-callout">
+                            <p>"By faith Rahab the prostitute did not perish with those who were disobedient, because she had given a friendly welcome to the spies."</p>
+                            <span>— Hebrews 11:31</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 15. JOSHUA PROFILE -->
+            <div id="joshua" class="character-stage">
+                <div class="meta-header">
+                    <span>Joshua 1-24</span>
+                    <span class="divider">/</span>
+                    <span>Conquest of Canaan</span>
+                </div>
+                <h2 class="hero-title">Joshua</h2>
+                <p class="hero-subtitle">The Disciplined General & The Unfinished Rest</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>The Loyal Apprentice</h4>
+                                    <p>Spent forty years in Moses' shadow as his trusted military commander and personal assistant, silently absorbing the weight of leadership outside the tent of meeting.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Defeat at Ai</h4>
+                                    <p>Following the supernatural victory at Jericho, Joshua slipped into strategic overconfidence. He failed to audit the spiritual cleanliness of his camp, leading to a humiliating military rout at Ai due to Achan's hidden sin.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Gibeonite Deception</h4>
+                                    <p>Failed to consult the counsel of the Lord when approached by Gibeonite ambassadors wearing worn-out rags, falling for an basic diplomatic ruse and locking Israel into an unauthorized covenant.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Him</h3>
+                        <p><strong>The Executor of the Inheritance:</strong> God used Joshua to physically transition Israel from a nomadic group of wilderness wanderers into a landed, occupying nation. He successfully led the military campaigns, parsed out the tribal borders, and anchored the nation's loyalty to the Torah.</p>
+                        
+                        <p><strong>The Name of Deliverance:</strong> His name (Yehoshua, meaning "Yahweh is Salvation") is the precise Hebrew name translated as *Jesus* in Greek. His role as the commander who leads God’s people across the Jordan River into their true inheritance serves as an explicit, beautiful type of Christ leading his followers into spiritual rest.</p>
+
+                        <div class="quote-callout">
+                            <p>"Be strong and courageous, for you shall cause this people to inherit the land that I swore to their fathers to give them."</p>
+                            <span>— Joshua 1:6</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
-    <!-- UI Interaction Controller Core Script -->
+
     <script>
         const sidebar = document.getElementById('sidebar');
 
@@ -786,32 +1055,34 @@
             sidebar.classList.toggle('menu-open');
         }
 
-        function switchCharacter(characterId, element) {
-            // Unset active navigation items
-            document.querySelectorAll('.menu-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            // Highlight selected selection 
-            element.classList.add('active');
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuContainer = document.querySelector('.character-menu');
 
-            // Hide inactive data stages
-            document.querySelectorAll('.character-stage').forEach(stage => {
-                stage.classList.remove('active');
-            });
+            menuContainer.addEventListener('click', (event) => {
+                const menuItem = event.target.closest('.menu-item');
+                if (!menuItem) return;
 
-            // Isolate and inject content data panel
-            const activeStage = document.getElementById(characterId);
-            if(activeStage) {
-                activeStage.classList.add('active');
+                const characterId = menuItem.getAttribute('data-id');
+                if (!characterId) return;
+
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    item.classList.remove('active');
+                });
                 
-                // UX: Auto-retract drawer navigation on touch screen inputs
-                sidebar.classList.remove('menu-open');
-                
-                // Reset scroll view position safely 
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
+                menuItem.classList.add('active');
+
+                document.querySelectorAll('.character-stage').forEach(stage => {
+                    stage.classList.remove('active');
+                });
+
+                const activeStage = document.getElementById(characterId);
+                if (activeStage) {
+                    activeStage.classList.add('active');
+                    sidebar.classList.remove('menu-open');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        });
     </script>
 </body>
 </html>
