@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScripturePersona — Biblical Character UX Archive</title>
+    <style>
+        :root {
+            --bg-primary: #0a0b0d;
+            --bg-secondary: #12141c;
+            --accent-gold: #d4af37;
+            --accent-gold-dim: #aa8c2c;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: rgba(212, 175, 55, 0.15);
+            --card-glow: rgba(212, 175, 55, 0.03);
+            --sidebar-width: 280px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, .serif-font {
+            font-family: 'Times New Roman', Times, serif;
+            letter-spacing: 0.02em;
+        }
+
+        /* Responsive Layout Grid */
+        .app-container {
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr;
+            min-height: 100vh;
+        }
+
+        /* Mobile Header / Top Bar (Hidden on Desktop) */
+        .mobile-header {
+            display: none;
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.5rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mobile-header .brand h1 {
+            font-size: 1.25rem;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--accent-gold);
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Sidebar Panel */
+        aside {
+            background-color: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            width: var(--sidebar-width);
+            top: 0;
+            bottom: 0;
+            z-index: 90;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .brand {
+            margin-bottom: 3rem;
+        }
+
+        .brand h1 {
+            font-size: 1.5rem;
+            color: var(--text-main);
+            font-weight: 400;
+        }
+
+        .brand span {
+            color: var(--accent-gold);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            display: block;
+            margin-top: 0.25rem;
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .character-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .menu-item button {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            text-align: left;
+            width: 100%;
+            padding: 0.85rem 1rem; /* Enhanced touch target size */
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .menu-item button:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .menu-item.active button {
+            color: var(--accent-gold);
+            background: rgba(212, 175, 55, 0.08);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        /* Main Viewport Container */
+        main {
+            margin-left: var(--sidebar-width);
+            padding: 3rem 4rem;
+            max-width: 1100px;
+            transition: opacity 0.2s ease;
+        }
+
+        .meta-header {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+        }
+
+        .meta-header .divider {
+            opacity: 0.4;
+        }
+
+        .character-stage {
+            display: none;
+        }
+
+        .character-stage.active {
+            display: block;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            font-style: italic;
+        }
+
+        /* Layout Grid Architecture */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 3.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .section-heading {
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .section-heading::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-gold);
+            transform: rotate(45deg);
+        }
+
+        .profile-card {
+            background: linear-gradient(145deg, var(--bg-secondary), var(--bg-primary));
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: inset 0 0 20px var(--card-glow);
+        }
+
+        .archetype-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .archetype-item h4 {
+            color: var(--accent-gold);
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        .archetype-item p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .theology-pane p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .theology-pane strong {
+            color: var(--text-main);
+        }
+
+        .quote-callout {
+            background: rgba(212, 175, 55, 0.03);
+            border-left: 2px solid var(--accent-gold);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin-top: 2rem;
+        }
+
+        .quote-callout p {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.15rem;
+            color: var(--text-main);
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .quote-callout span {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-gold);
+        }
+
+        /* Adaptive Mobile Breakdown Media Query */
+        @media(max-width: 900px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+
+            .mobile-header {
+                display: flex;
+            }
+
+            aside {
+                transform: translateX(-100%);
+                top: 61px; /* Positions drawer exactly underneath the mobile header */
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            /* Expose side panel drawer when active classes toggle */
+            aside.menu-open {
+                transform: translateX(0);
+            }
+
+            main {
+                margin-left: 0;
+                padding: 5rem 1.5rem 3rem 1.5rem; /* Extends structural clearance below sticky top bar */
+            }
+
+            .grid-layout {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                margin-bottom: 2rem;
+            }
+
+            .profile-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sticky Mobile Header Viewport Integration -->
+    <div class="mobile-header">
+        <div class="brand">
+            <h1>ScripturePersona</h1>
+        </div>
+        <button class="menu-toggle" onclick="toggleMobileMenu()">Index Menu</button>
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation Drawer -->
+        <aside id="sidebar">
+            <div class="brand">
+                <h1>ScripturePersona</h1>
+                <span>The Narrative Legacy</span>
+            </div>
+
+            <nav>
+                <div class="nav-section-title">The Book of Genesis</div>
+                <ul class="character-menu">
+                    <li class="menu-item active" onclick="switchCharacter('adam', this)">
+                        <button>01. Adam</button>
+                    </li>
+                    <li class="menu-item" onclick="switchCharacter('eve', this)">
+                        <button>02. Eve</button>
+                    </li>
+                    <li class="menu-item" onclick="switchCharacter('noah', this)">
+                        <button>03. Noah</button>
+                    </li>
+                    <li class="menu-item" onclick="switchCharacter('abraham', this)">
+                        <button>04. Abraham</button>
+                    </li>
+                    <li class="menu-item" onclick="switchCharacter('sarah', this)">
+                        <button>05. Sarah</button>
+                    </li>
+                    <li class="menu-item" onclick="switchCharacter('isaac', this)">
+                        <button>06. Isaac</button>
+                    </li>
+                    <li class="menu-item" onclick="switchCharacter('jacob', this)">
+                        <button>07. Jacob</button>
+                    </li>
+                    <li class="menu-item" onclick="switchCharacter('joseph', this)">
+                        <button>08. Joseph</button>
+                    </li>
+                    <li class="menu-item" onclick="switchCharacter('judah', this)">
+                        <button>09. Judah</button>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main id="main-content">
+            <!-- 01. ADAM PROFILE -->
+            <div id="adam" class="character-stage active">
+                <div class="meta-header">
+                    <span>Genesis 1-5</span>
+                    <span class="divider">/</span>
+                    <span>The Beginning</span>
+                </div>
+                <h2 class="hero-title">Adam</h2>
+                <p class="hero-subtitle">The First Man & The Broken Mirror</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>The Divine Blueprint</h4>
+                                    <p>Created directly from the dust by God, formed in His image to rule, cultivate, and guard creation with absolute perfection and unhindered communion.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Shift to Passivity</h4>
+                                    <p>Faced with the snake's deception of his wife, Adam abdicated his protective leadership role, standing silently by before choosing to deliberately share in her compromise.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>Deflection of Blame</h4>
+                                    <p>When confronted by God, Adam immediately hid in fear and attempted to shift accountability to both his wife and his Creator ("The woman whom *you* gave to be with me...").</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Him</h3>
+                        <p><strong>A Blueprint of Humanity's True Need:</strong> Adam's ultimate failure serves as the baseline diagnostic test for the entire human race. By showing how quickly perfection can unravel under temptation, his story proves that environment isn't the root of human brokenness—the heart is.</p>
+                        
+                        <p><strong>The Law of Immediate Grace:</strong> Even in judgment, God used Adam to demonstrate His redemptive heart. Instead of destroying him instantly, God pursued Adam in the garden, questioned him to prompt confession, and clothed him in animal skins—establishing the very first physical picture of an innocent life sacrificed to cover human shame.</p>
+
+                        <div class="quote-callout">
+                            <p>"For as in Adam all die, so also in Christ shall all be made alive."</p>
+                            <span>— 1 Corinthians 15:22</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 02. EVE PROFILE -->
+            <div id="eve" class="character-stage">
+                <div class="meta-header">
+                    <span>Genesis 2-4</span>
+                    <span class="divider">/</span>
+                    <span>The Beginning</span>
+                </div>
+                <h2 class="hero-title">Eve</h2>
+                <p class="hero-subtitle">The Mother of All Living & The First Promise</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>The Vital Counterpart</h4>
+                                    <p>Designated as the *Ezer Kenegdo* (a strong, rescuing helper corresponding to man), she completed the image of God in humanity; without her, creation was deemed "not good."</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Direct Target</h4>
+                                    <p>Targeted by the serpent due to her strategic value, she allowed her perception of God's goodness to be twisted, hungering for autonomy over submission.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Her</h3>
+                        <p><strong>The Vessel of the First Prophecy:</strong> Though Eve succumbed to deception first, God chose her line to be the executioner of the enemy. In Genesis 3:15, God delivers the *Protoevangelium* (the first gospel proclamation), stating that her descendant would eventually crush the snake's head.</p>
+                        
+                        <p><strong>The Anchor of Hope:</strong> Despite structural exile, God preserved her life and capability to bear children. Her name itself ("Mother of All Living") given by Adam post-fall is a striking testament to God using her as the exclusive conduit for human history and future redemption.</p>
+
+                        <div class="quote-callout">
+                            <p>"I will put enmity between you and the woman, and between your offspring and her offspring; he shall bruise your head..."</p>
+                            <span>— Genesis 3:15</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 03. NOAH PROFILE -->
+            <div id="noah" class="character-stage">
+                <div class="meta-header">
+                    <span>Genesis 6-9</span>
+                    <span class="divider">/</span>
+                    <span>The Line of Faith</span>
+                </div>
+                <h2 class="hero-title">Noah</h2>
+                <p class="hero-subtitle">The Ark-Builder & The New Beginning</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>Unflinching Righteousness</h4>
+                                    <p>Noted as a blameless man who "walked with God" in an era where human thoughts were only evil continually. He spent decades building an ark in absolute obedience despite total cultural isolation.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>Post-Deliverance Collapse</h4>
+                                    <p>After surviving the global judgment and witnessing a fresh creation canvas, Noah grew a vineyard, became heavily intoxicated, and lay exposed in his tent, leading to a deep family fracture.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Him</h3>
+                        <p><strong>The Preserver of the Covenant:</strong> God used Noah as a physical bridge over global judgment to keep His promises alive. Through Noah's absolute obedience, God saved humanity and the animal kingdom from total erasure.</p>
+                        
+                        <p><strong>A Monument of Radical Grace:</strong> Through Noah, God instituted the Noahic Covenant, marking the skies with a rainbow to promise that water would never again destroy the Earth. Noah's subsequent post-flood failure serves as a harsh warning: external cleansings (like a global flood) cannot wash away internal sin.</p>
+
+                        <div class="quote-callout">
+                            <p>"By faith Noah, being warned by God concerning events as yet unseen, in reverent fear constructed an ark..."</p>
+                            <span>— Hebrews 11:7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <!-- 04. ABRAHAM PROFILE -->
+            <div id="abraham" class="character-stage">
+                <div class="meta-header">
+                    <span>Genesis 12-25</span>
+                    <span class="divider">/</span>
+                    <span>The Covenant Promise</span>
+                </div>
+                <h2 class="hero-title">Abraham</h2>
+                <p class="hero-subtitle">The Father of Faith & The Heavy Silences</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>Radical Departure</h4>
+                                    <p>Called out of pagan Ur to journey to an unknown land based on a bare promise. Walked away from structural and ancestral security relying entirely on God's voice.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Self-Preservation Flaw</h4>
+                                    <p>Driven by fear during severe famines, he repeatedly passed off his wife Sarah as his sister to foreign rulers (Egypt and Gerar) to save his own life, endangering the promised bloodline.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>Compromising the Timing</h4>
+                                    <p>Grew weary of waiting for the promised heir, acquiescing to human solutions by fathering Ishmael through Hagar, creating immediate domestic and multi-generational friction.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Him</h3>
+                        <p><strong>The Foundation of Faith-Based Righteousness:</strong> God used Abraham to establish the architectural core of salvation mechanics: justification by faith alone. Long before the law was written or ordinances established, Abraham simply believed God, and it was credited to him as righteousness.</p>
+                        
+                        <p><strong>The Ultimate Shadow Pattern:</strong> On Mount Moriah, God asked Abraham to offer up his promised son, Isaac. Abraham's compliance provided human history with its most stark, profound shadow pattern of God the Father actually following through on sacrificing His only begotten Son centuries later.</p>
+
+                        <div class="quote-callout">
+                            <p>"And he believed the Lord, and he counted it to him as righteousness."</p>
+                            <span>— Genesis 15:6</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 05. SARAH PROFILE -->
+            <div id="sarah" class="character-stage">
+                <div class="meta-header">
+                    <span>Genesis 11-23</span>
+                    <span class="divider">/</span>
+                    <span>The Covenant Promise</span>
+                </div>
+                <h2 class="hero-title">Sarah</h2>
+                <p class="hero-subtitle">The Matriarch of Nations & The Cynical Laugh</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>Enduring the Void</h4>
+                                    <p>Bore the cultural weight and psychological devastation of barrenness in an era where a woman's value was strictly tied to lineage, carrying the promise's delay for decades.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>Bitterness and Deflection</h4>
+                                    <p>After pushing Hagar onto Abraham to force an heir, Sarah reacted with harshness and resentment when the arrangement collapsed into jealousy, eventually demanding Hagar and Ishmael's exile.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>The Hidden Scorn</h4>
+                                    <p>When divine messengers explicitly promised she would bear a son within a year at her advanced age, she laughed in inward, cynical disbelief and later denied doing so out of fear.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Her</h3>
+                        <p><strong>Overturning Biological Deadlines:</strong> God used Sarah’s completely dead womb to demonstrate that His promises are entirely detached from natural limitations. By transforming her cynical laugh into genuine joy through Isaac’s birth, God proved that He births life from absolute nothingness.</p>
+                        
+                        <p><strong>The Legacy of Supernatural Origin:</strong> As the singular matriarch of Israel, Sarah’s miraculous conception ensured that the entire nation of Israel would trace its lineage back to a supernatural act of God, forever defining them as a people built by direct divine grace rather than human capability.</p>
+
+                        <div class="quote-callout">
+                            <p>"By faith Sarah herself received power to conceive, even when she was past the age, since she considered him faithful who had promised."</p>
+                            <span>— Hebrews 11:11</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 06. ISAAC PROFILE -->
+            <div id="isaac" class="character-stage">
+                <div class="meta-header">
+                    <span>Genesis 21-35</span>
+                    <span class="divider">/</span>
+                    <span>The Promised Line</span>
+                </div>
+                <h2 class="hero-title">Isaac</h2>
+                <p class="hero-subtitle">The Silent Son & The Generational Echo</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>Passive Submission</h4>
+                                    <p>Characterized largely by a quiet compliance. He carried the wood for his own sacrifice up Mount Moriah and willingly submitted to being bound by his aging father without recording a single complaint.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>Repeating Ancestral Sins</h4>
+                                    <p>Despite witnessing God's faithfulness to his father, Isaac duplicated Abraham's exact failure by lying to Abimelech about his wife Rebekah being his sister out of fear for his own safety.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>Sensory Blindness</h4>
+                                    <p>In his later years, physical blindness paired with a sensory preference for wild game led him to try to bless Esau, completely ignoring God’s earlier oracle that the older son would serve the younger.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Him</h3>
+                        <p><strong>The Living Sacrifice:</strong> Isaac’s main narrative function was to play the passive role of the substitute. His release from the altar when God provided a ram caught in the thicket became the blueprint paradigm for substitutionary atonement.</p>
+                        
+                        <p><strong>The Bridge of Continuity:</strong> God used Isaac as the literal, unyielding link that kept the Abrahamic covenant intact through a second generation. By re-establishing the identical promise to Isaac during a famine, God demonstrated that His covenantal loyalty is generational and independent of individual dynamism.</p>
+
+                        <div class="quote-callout">
+                            <p>"And I will multiply your offspring as the stars of heaven... because Abraham obeyed my voice..."</p>
+                            <span>— Genesis 26:4-5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 07. JACOB PROFILE -->
+            <div id="jacob" class="character-stage">
+                <div class="meta-header">
+                    <span>Genesis 25-50</span>
+                    <span class="divider">/</span>
+                    <span>The Wrestling Wrestler</span>
+                </div>
+                <h2 class="hero-title">Jacob</h2>
+                <p class="hero-subtitle">The Deceiver & The Limping Prince</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>The Scheming Heel-Catcher</h4>
+                                    <p>True to his name ("Supplanter"), Jacob relied completely on wit, manipulation, and human planning—exploiting his brother's hunger for a birthright and staging an elaborate identity fraud to steal his blind father's blessing.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>Harvesting the Deception</h4>
+                                    <p>Fled his family in fear, only to spend twenty years getting a taste of his own medicine under his uncle Laban, trapped in an escalating domestic warfare of favoritism and competing wives.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Him</h3>
+                        <p><strong>Transformative Grace Through Exhaustion:</strong> God let Jacob scheme until he ran entirely out of options. At the Jabbok River, facing certain death by Esau, God physically wrestled Jacob into absolute submission, breaking his thigh and forcing him to finally demand a spiritual blessing rather than a material advantage.</p>
+                        
+                        <p><strong>Birthing a Nation From a Conman:</strong> God permanently renamed him *Israel* ("He struggles with God"), transforming a deceitful runaway into the foundational patriarch whose twelve sons would become the twelve architectural tribes of God's chosen people.</p>
+
+                        <div class="quote-callout">
+                            <p>"Your name shall no longer be called Jacob, but Israel, for you have striven with God and with men, and have prevailed."</p>
+                            <span>— Genesis 32:28</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 08. JOSEPH PROFILE -->
+            <div id="joseph" class="character-stage">
+                <div class="meta-header">
+                    <span>Genesis 37-50</span>
+                    <span class="divider">/</span>
+                    <span>The Providential Journey</span>
+                </div>
+                <h2 class="hero-title">Joseph</h2>
+                <p class="hero-subtitle">The Dreamer & The Architecture of Sovereignty</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>Immature Favoritism</h4>
+                                    <p>While noted as uniquely upright, young Joseph initially fueled his brothers' deep resentment by flaunting his status as the favorite son and proudly reciting his dreams of ruling over them.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>Enduring the Unjust Crucible</h4>
+                                    <p>Betrayed by his brothers, sold into slavery, and falsely imprisoned in Egypt. He spent years in absolute isolation, holding onto God's early promises when the visible reality screamed total abandonment.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Him</h3>
+                        <p><strong>The Ultimate Macro-Preserver:</strong> God didn't just save Joseph; He weaponized his suffering. By elevating Joseph to the prime ministry of Egypt, God used a global famine to position Joseph as the sole distributor of bread, keeping both Egypt and the fragile, budding family of Israel alive.</p>
+                        
+                        <p><strong>The Blueprint of Redemptive Sovereignty:</strong> Joseph's life is the ultimate template for how God co-opts human malice to achieve divine objectives. His reconciliation with his brothers clarifies that God doesn't just fix bad situations—He weaves them seamlessly into His ultimate rescue plan.</p>
+
+                        <div class="quote-callout">
+                            <p>"As for you, you meant evil against me, but God meant it for good, to bring it about that many people should be kept alive..."</p>
+                            <span>— Genesis 50:20</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 09. JUDAH PROFILE -->
+            <div id="judah" class="character-stage">
+                <div class="meta-header">
+                    <span>Genesis 37-49</span>
+                    <span class="divider">/</span>
+                    <span>The Line of the King</span>
+                </div>
+                <h2 class="hero-title">Judah</h2>
+                <p class="hero-subtitle">The Traitor & The Lion of Grace</p>
+
+                <div class="grid-layout">
+                    <div>
+                        <h3 class="section-heading">Character & Fallibility</h3>
+                        <div class="profile-card">
+                            <ul class="archetype-list">
+                                <li class="archetype-item">
+                                    <h4>The Architect of Sale</h4>
+                                    <p>Originally suggested monetizing Joseph's betrayal rather than killing him outright, leading the charge to sell his own brother into foreign slavery for twenty pieces of silver.</p>
+                                </li>
+                                <li class="archetype-item">
+                                    <h4>Hypocrisy and Exploitation</h4>
+                                    <p>Walked away from his family, broke his structural promises to his daughter-in-law Tamar to protect his own surviving line, and later demanded her execution for a sin he unknowingly shared in committing.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="theology-pane">
+                        <h3 class="section-heading">How God Used Him</h3>
+                        <p><strong>A Masterclass in Broken Repentance:</strong> Judah's trajectory shows a shocking, radical arc of transformation. When faced with losing Benjamin in Egypt, the man who once sold his brother for pocket change stepped forward and offered his own life as a permanent slave substitute—breaking the generational curse of sibling betrayal.</p>
+                        
+                        <p><strong>The Lineage of the Messiah:</strong> In an incredible display of unmerited favor, God skipped over the pristine Joseph and chose the deeply flawed, broken, and redeemed Judah to bear the ultimate scepter. His line became the royal house of David, leading directly to Jesus.</p>
+
+                        <div class="quote-callout">
+                            <p>"The scepter shall not depart from Judah, nor the ruler's staff from between his feet, until tribute comes to him..."</p>
+                            <span>— Genesis 49:10</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </main>
+    </div>
+    <!-- UI Interaction Controller Core Script -->
+    <script>
+        const sidebar = document.getElementById('sidebar');
+
+        function toggleMobileMenu() {
+            sidebar.classList.toggle('menu-open');
+        }
+
+        function switchCharacter(characterId, element) {
+            // Unset active navigation items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Highlight selected selection 
+            element.classList.add('active');
+
+            // Hide inactive data stages
+            document.querySelectorAll('.character-stage').forEach(stage => {
+                stage.classList.remove('active');
+            });
+
+            // Isolate and inject content data panel
+            const activeStage = document.getElementById(characterId);
+            if(activeStage) {
+                activeStage.classList.add('active');
+                
+                // UX: Auto-retract drawer navigation on touch screen inputs
+                sidebar.classList.remove('menu-open');
+                
+                // Reset scroll view position safely 
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
