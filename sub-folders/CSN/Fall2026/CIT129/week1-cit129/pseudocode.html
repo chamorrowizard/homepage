@@ -9,7 +9,6 @@
     <!-- Lucide Icons for clean UI visual cues -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Custom scrollbar for clean internal container scrolling */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -37,12 +36,11 @@
                 <i data-lucide="code-2" class="w-6 h-6"></i>
             </div>
             <div>
-                <h1 class="font-bold text-lg leading-tight tracking-wide text-white">CIT 129 <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-normal">Week 1</span></h1>
+                <h1 class="font-bold text-lg leading-tight tracking-wide text-white">CIT 129 <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-normal">Week 1 Complete</span></h1>
                 <p class="text-xs text-slate-400">Pseudocode Foundations & Logic Design</p>
             </div>
         </div>
 
-        <!-- Desktop Quick Actions -->
         <div class="hidden md:flex items-center space-x-4">
             <div class="relative">
                 <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
@@ -56,14 +54,12 @@
     </header>
 
     <!-- ========================================================================= -->
-    <!-- MAIN WORKSPACE LAYOUT (Responsive Sidebar + Dynamic Main Content)        -->
+    <!-- MAIN WORKSPACE LAYOUT                                                     -->
     <!-- ========================================================================= -->
     <div class="flex-1 flex flex-col md:flex-row overflow-hidden">
 
-        <!-- NAVIGATION SIDEBAR (Collapsible / Scrollable) -->
+        <!-- NAVIGATION SIDEBAR -->
         <aside class="w-full md:w-64 lg:w-72 bg-slate-900/50 border-r border-slate-800/80 flex-shrink-0 p-4 space-y-6 overflow-y-auto">
-            
-            <!-- Section: Core Modules -->
             <div>
                 <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 px-2">Core Topics</h2>
                 <nav class="space-y-1">
@@ -77,16 +73,23 @@
                     </a>
                     <a href="#types" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 text-sm font-medium transition-colors">
                         <i data-lucide="database" class="w-4 h-4"></i>
-                        <span>3. Variable Rules & Types</span>
+                        <span>3. Variables & Soft Rules</span>
                     </a>
                     <a href="#math" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 text-sm font-medium transition-colors">
                         <i data-lucide="calculator" class="w-4 h-4"></i>
                         <span>4. PEMDAS & Modulus</span>
                     </a>
+                    <a href="#annotations" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 text-sm font-medium transition-colors">
+                        <i data-lucide="quote" class="w-4 h-4"></i>
+                        <span>5. Annotations & Prompts</span>
+                    </a>
+                    <a href="#workflow" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 text-sm font-medium transition-colors">
+                        <i data-lucide="workflow" class="w-4 h-4"></i>
+                        <span>6. Breakdown Methodology</span>
+                    </a>
                 </nav>
             </div>
 
-            <!-- Section: Interactive Tools & Exercises -->
             <div>
                 <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 px-2">Practice & Wisdom</h2>
                 <nav class="space-y-1">
@@ -99,18 +102,6 @@
                         <span>Interactive Playground</span>
                     </a>
                 </nav>
-            </div>
-
-            <!-- EASY EXPANSION CARD TEMPLATE (To add new modules in the future) -->
-            <!-- 
-                TO ADD A NEW MODULE: 
-                Copy the div block below and edit the section anchors and title!
-            -->
-            <div class="pt-4 border-t border-slate-800">
-                <div class="p-3 bg-slate-950/60 border border-slate-800 rounded-xl">
-                    <p class="text-xs text-slate-400 font-medium">Modular Architecture</p>
-                    <p class="text-xs text-slate-500 mt-1">Ready for Week 2 extensions (Control Flow, Selection, Loops).</p>
-                </div>
             </div>
         </aside>
 
@@ -137,7 +128,7 @@
                 </div>
             </section>
 
-            <!-- SECTION 2: ARCHITECTURE OVERVIEW (The 3 Pillar Process) -->
+            <!-- SECTION 2: ARCHITECTURE OVERVIEW -->
             <section id="overview" class="space-y-4">
                 <div>
                     <h2 class="text-xl font-bold text-white flex items-center space-x-2">
@@ -147,42 +138,37 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <!-- Pillar 1: Input -->
                     <div class="bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition-colors rounded-xl p-5 space-y-2">
                         <div class="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-3">
                             <i data-lucide="arrow-down-left" class="w-5 h-5"></i>
                         </div>
                         <h3 class="text-md font-semibold text-white">1. Input</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">Gathering data from the user or external systems using keywords like <code class="text-blue-300 bg-blue-950 px-1 py-0.5 rounded">INPUT</code>.</p>
+                        <p class="text-xs text-slate-400 leading-relaxed">Gathering data from the user using keywords like <code class="text-blue-300 bg-blue-950 px-1 py-0.5 rounded">INPUT</code>.</p>
                     </div>
 
-                    <!-- Pillar 2: Processing -->
                     <div class="bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition-colors rounded-xl p-5 space-y-2">
                         <div class="w-8 h-8 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-3">
                             <i data-lucide="cpu" class="w-5 h-5"></i>
                         </div>
                         <h3 class="text-md font-semibold text-white">2. Processing</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">Manipulating and storing variables through logic or math using <code class="text-purple-300 bg-purple-950 px-1 py-0.5 rounded">SET</code>.</p>
+                        <p class="text-xs text-slate-400 leading-relaxed">Manipulating, calculating, or storing data using <code class="text-purple-300 bg-purple-950 px-1 py-0.5 rounded">SET</code>.</p>
                     </div>
 
-                    <!-- Pillar 3: Output -->
                     <div class="bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition-colors rounded-xl p-5 space-y-2">
                         <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-3">
                             <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
                         </div>
                         <h3 class="text-md font-semibold text-white">3. Output</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">Displaying calculated or formatted information back to the user via <code class="text-emerald-300 bg-emerald-950 px-1 py-0.5 rounded">PRINT</code>.</p>
+                        <p class="text-xs text-slate-400 leading-relaxed">Displaying calculated or formatted information back using <code class="text-emerald-300 bg-emerald-950 px-1 py-0.5 rounded">PRINT</code>.</p>
                     </div>
                 </div>
             </section>
 
             <!-- SECTION 3: KEYWORDS & SYNTAX REFERENCE -->
             <section id="keywords" class="space-y-4">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h2 class="text-xl font-bold text-white">2. Keywords Syntax Quick Guide</h2>
-                        <p class="text-sm text-slate-400 mt-1">Standardized vocabulary for constructing algorithmic blueprints.</p>
-                    </div>
+                <div>
+                    <h2 class="text-xl font-bold text-white">2. Keywords Syntax Quick Guide</h2>
+                    <p class="text-sm text-slate-400 mt-1">Standardized vocabulary for constructing algorithmic blueprints.</p>
                 </div>
 
                 <div class="overflow-x-auto border border-slate-800 rounded-xl bg-slate-900/40">
@@ -198,17 +184,17 @@
                             <tr class="hover:bg-slate-800/30">
                                 <td class="p-4 text-emerald-400 font-bold">PRINT</td>
                                 <td class="p-4 text-slate-200">PRINT &lt;value&gt;</td>
-                                <td class="p-4 font-sans text-slate-400">Displays text, calculated numbers, or prompts to the output console.</td>
+                                <td class="p-4 font-sans text-slate-400">Displays text, calculated numbers, or prompts to the output console. Strips outer quotes from strings.</td>
                             </tr>
                             <tr class="hover:bg-slate-800/30">
                                 <td class="p-4 text-blue-400 font-bold">INPUT</td>
                                 <td class="p-4 text-slate-200">INPUT &lt;variable&gt;</td>
-                                <td class="p-4 font-sans text-slate-400">Pauses execution and reads user data into a specific memory container.</td>
+                                <td class="p-4 font-sans text-slate-400">Pauses execution and reads user input directly into a variable memory box.</td>
                             </tr>
                             <tr class="hover:bg-slate-800/30">
                                 <td class="p-4 text-purple-400 font-bold">SET</td>
                                 <td class="p-4 text-slate-200">SET &lt;variable&gt; = &lt;value&gt;</td>
-                                <td class="p-4 font-sans text-slate-400">Assigns or overwrites the contents stored inside a single variable.</td>
+                                <td class="p-4 font-sans text-slate-400">Assigns or overwrites the contents stored inside a single variable container.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -225,13 +211,13 @@
                     </h3>
                     <ul class="space-y-3 text-xs text-slate-300">
                         <li class="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
-                            <span class="text-amber-400 font-bold">String:</span> Contained in double quotes <code class="text-amber-300 font-mono bg-amber-950/40 px-1 py-0.5 rounded">"John"</code>. Literal character strings used for sentences or labels.
+                            <span class="text-amber-400 font-bold">String:</span> Contained between double quotes <code class="text-amber-300 font-mono bg-amber-950/40 px-1 py-0.5 rounded">"John"</code>. Literal character strings used for sentences or labels.
                         </li>
                         <li class="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
                             <span class="text-blue-400 font-bold">Number:</span> Written without quotes <code class="text-blue-300 font-mono bg-blue-950/40 px-1 py-0.5 rounded">13.45</code> or <code class="text-blue-300 font-mono bg-blue-950/40 px-1 py-0.5 rounded">55</code>. Can include integer or floating-point decimals.
                         </li>
                         <li class="bg-slate-950 p-3 rounded-lg border border-slate-800/80">
-                            <span class="text-purple-400 font-bold">Variable:</span> Named container holding one value at a time. Evaluating a variable retrieves its underlying data value.
+                            <span class="text-purple-400 font-bold">Variable:</span> No double quotes (e.g. <code class="text-purple-300 font-mono bg-purple-950/40 px-1 py-0.5 rounded">first_name</code>). Holds one value at a time; computer replaces it with held data during evaluation.
                         </li>
                     </ul>
                 </div>
@@ -242,19 +228,19 @@
                         <i data-lucide="shield-alert" class="w-4 h-4 text-rose-400"></i>
                         <span>Variable Naming Directives</span>
                     </h3>
-                    <div class="space-y-2 text-xs">
-                        <div class="p-3 bg-rose-950/20 border border-rose-800/30 rounded-lg text-rose-300">
-                            <p class="font-semibold mb-1">Hard Rules (Engine Enforced):</p>
+                    <div class="space-y-3 text-xs">
+                        <div class="p-3 bg-rose-950/20 border border-rose-800/30 rounded-lg text-rose-300 space-y-1">
+                            <p class="font-semibold">Hard Rules (Strict Computer Constraints):</p>
                             <ul class="list-disc list-inside space-y-1 text-slate-300">
-                                <li>Cannot begin with a number (e.g. <code class="line-through text-rose-400">4square</code>)</li>
-                                <li>Cannot contain spaces (e.g. <code class="line-through text-rose-400">first name</code>)</li>
+                                <li>Cannot start with a number (<code class="line-through text-rose-400">4square</code>)</li>
+                                <li>No spaces allowed (<code class="line-through text-rose-400">first name</code>)</li>
                             </ul>
                         </div>
-                        <div class="p-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg text-emerald-300">
-                            <p class="font-semibold mb-1">Best Practices (Soft Rules):</p>
+                        <div class="p-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg text-emerald-300 space-y-1">
+                            <p class="font-semibold">Soft Rules (Style & Clarity Best Practices):</p>
                             <ul class="list-disc list-inside space-y-1 text-slate-300">
-                                <li>Use snake_case for multi-word variables (<code class="text-emerald-400 font-mono">first_name</code>)</li>
-                                <li>Use meaningful, descriptive terms; avoid ambiguous single-letters</li>
+                                <li>Must mean something & be understandable (<code class="text-emerald-400">SET sum = 9</code> vs <code class="line-through text-rose-400">SET v = 1</code>)</li>
+                                <li>Avoid uncommon abbreviations (<code class="text-emerald-400">kg</code> is fine; avoid <code class="line-through text-rose-400">thnks4thmmrs</code> or <code class="line-through text-rose-400">osha</code>)</li>
                             </ul>
                         </div>
                     </div>
@@ -263,15 +249,15 @@
 
             <!-- SECTION 5: MATHEMATICAL OPERATIONS & MODULUS -->
             <section id="math" class="space-y-4">
-                <h2 class="text-xl font-bold text-white">4. Calculations, Order of Operations & Modulus</h2>
+                <h2 class="text-xl font-bold text-white">4. Calculations, PEMDAS & Modulus Breakdown</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- PEMDAS breakdown -->
                     <div class="bg-slate-900/50 border border-slate-800 rounded-xl p-5 space-y-3">
-                        <h3 class="text-sm font-semibold text-indigo-400 uppercase tracking-wider">PEMDAS Order</h3>
+                        <h3 class="text-sm font-semibold text-indigo-400 uppercase tracking-wider">PEMDAS Order of Operations</h3>
                         <div class="grid grid-cols-2 gap-2 text-xs font-mono">
-                            <div class="p-2 bg-slate-950 rounded border border-slate-800"><span class="text-indigo-400 font-bold">P</span> :: ( Parentheses )</div>
-                            <div class="p-2 bg-slate-950 rounded border border-slate-800"><span class="text-indigo-400 font-bold">E</span> :: ^ Exponents</div>
+                            <div class="p-2 bg-slate-950 rounded border border-slate-800"><span class="text-indigo-400 font-bold">P</span> :: () Parentheses</div>
+                            <div class="p-2 bg-slate-950 rounded border border-slate-800"><span class="text-indigo-400 font-bold">E</span> :: ^ Exponents (2^3 = 8)</div>
                             <div class="p-2 bg-slate-950 rounded border border-slate-800"><span class="text-indigo-400 font-bold">MD</span> :: * / % (Mult, Div, Mod)</div>
                             <div class="p-2 bg-slate-950 rounded border border-slate-800"><span class="text-indigo-400 font-bold">AS</span> :: + - (Add, Sub)</div>
                         </div>
@@ -279,20 +265,96 @@
 
                     <!-- Modulus explanations -->
                     <div class="bg-slate-900/50 border border-slate-800 rounded-xl p-5 space-y-3">
-                        <h3 class="text-sm font-semibold text-indigo-400 uppercase tracking-wider">Modulus Operator (%)</h3>
+                        <h3 class="text-sm font-semibold text-indigo-400 uppercase tracking-wider">Modulus Operator (%) Edge Cases</h3>
                         <p class="text-xs text-slate-300 leading-relaxed">
-                            The Modulus operator <code class="text-amber-400 font-mono bg-amber-950/40 px-1 py-0.5 rounded">%</code> divides two numbers and returns the <strong>remainder</strong>.
+                            <code class="text-amber-400 font-mono bg-amber-950/40 px-1 py-0.5 rounded">A % B</code> divides A by B and returns the <strong>remainder</strong>.
                         </p>
                         <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 font-mono text-xs space-y-1 text-slate-300">
-                            <p>5 % 2 = 1 <span class="text-slate-500">(5 / 2 = 2 Remainder 1)</span></p>
-                            <p>14 % 3 = 2 <span class="text-slate-500">(14 / 3 = 4 Remainder 2)</span></p>
-                            <p>3 % 14 = 3 <span class="text-slate-500">(If left is smaller, result is left)</span></p>
+                            <p>5 % 2 = 1 <span class="text-slate-500">(5 / 2 = 2, Remainder 1)</span></p>
+                            <p>14 % 3 = 2 <span class="text-slate-500">(14 / 3 = 4, Remainder 2)</span></p>
+                            <p>3 % 14 = 3 <span class="text-amber-400/90 font-semibold">(If left is smaller, result is left number!)</span></p>
+                            <p>15 % 3 = 0 <span class="text-slate-500">(Divides evenly, remainder is 0)</span></p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 6: INTERACTIVE PSEUDOCODE COMPILER & PLAYGROUND -->
+            <!-- SECTION 6: ANNOTATIONS & PROMPTS (NEWLY ADDED FROM NOTES) -->
+            <section id="annotations" class="space-y-4">
+                <div>
+                    <h2 class="text-xl font-bold text-white">5. Output Annotations & Prompts</h2>
+                    <p class="text-sm text-slate-400 mt-1">Enhancing program output so users aren't left confused by raw values.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-slate-900/50 border border-slate-800 rounded-xl p-5 space-y-3">
+                        <h3 class="text-sm font-semibold text-amber-400 flex items-center space-x-2">
+                            <i data-lucide="quote" class="w-4 h-4"></i>
+                            <span>Annotations & Trailing Spaces</span>
+                        </h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            Combining a String with a Number (<code class="text-amber-300">"Your total is: " + 55</code>) provides context. Always add a trailing space inside the quotes so numbers don't glue to the text!
+                        </p>
+                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 font-mono text-xs space-y-2">
+                            <div>
+                                <p class="text-rose-400"># Without Space:</p>
+                                <p class="text-slate-400">PRINT "Your total is:" + 55</p>
+                                <p class="text-slate-500">Output: Your total is:55</p>
+                            </div>
+                            <div class="border-t border-slate-800 pt-2">
+                                <p class="text-emerald-400"># With Trailing Space:</p>
+                                <p class="text-slate-400">PRINT "Your total is: " + 55</p>
+                                <p class="text-slate-500">Output: Your total is: 55</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/50 border border-slate-800 rounded-xl p-5 space-y-3">
+                        <h3 class="text-sm font-semibold text-blue-400 flex items-center space-x-2">
+                            <i data-lucide="help-circle" class="w-4 h-4"></i>
+                            <span>Prompting Before INPUT</span>
+                        </h3>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            <code class="text-blue-300">INPUT</code> pauses execution silently. Always place a <code class="text-emerald-300">PRINT</code> prompt directly above an <code class="text-blue-300">INPUT</code> so the user knows what to type!
+                        </p>
+                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 font-mono text-xs space-y-1 text-slate-300">
+                            <p class="text-emerald-400">PRINT "How tall are you in cm?"</p>
+                            <p class="text-blue-400">INPUT height</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 7: PROBLEM SOLVING WORKFLOW (NEWLY ADDED FROM NOTES) -->
+            <section id="workflow" class="bg-slate-900/50 border border-slate-800 rounded-xl p-6 space-y-4">
+                <h2 class="text-xl font-bold text-white flex items-center space-x-2">
+                    <i data-lucide="workflow" class="w-5 h-5 text-indigo-400"></i>
+                    <span>6. 2-Step Problem Solving Workflow</span>
+                </h2>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    How to convert human-language problem statements into structured pseudocode blueprints:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+                        <h3 class="font-bold text-indigo-300">Step 1: Translate Verbs to Keywords</h3>
+                        <ul class="space-y-1.5 text-slate-400">
+                            <li><strong class="text-blue-400">"ask/prompt user..."</strong> &rarr; <code class="text-blue-300">INPUT</code></li>
+                            <li><strong class="text-purple-400">"calculate..."</strong> &rarr; <code class="text-purple-300">SET</code></li>
+                            <li><strong class="text-emerald-400">"display/show/tell..."</strong> &rarr; <code class="text-emerald-300">PRINT</code></li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+                        <h3 class="font-bold text-indigo-300">Step 2: Assemble Skeleton & Syntax</h3>
+                        <p class="text-slate-400 leading-relaxed">
+                            Pair every <code class="text-blue-300">INPUT</code> with a preceding prompt <code class="text-emerald-300">PRINT</code>. Split compound verbs like <em>"Calculate and display"</em> into distinct <code class="text-purple-300">SET</code> and <code class="text-emerald-300">PRINT</code> steps!
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 8: INTERACTIVE PSEUDOCODE COMPILER & PLAYGROUND -->
             <section id="builder" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-2xl">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-4">
                     <div>
@@ -308,7 +370,7 @@
                     </button>
                 </div>
 
-                <!-- Code Editor View (Mock) -->
+                <!-- Code Editor View -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="space-y-2">
                         <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Pseudocode Blueprint</label>
@@ -316,13 +378,15 @@
                             <p class="text-slate-500"># Ask the user for price and quantity</p>
                             <p><span class="text-emerald-400 font-bold">PRINT</span> "What is the price of the item?"</p>
                             <p><span class="text-blue-400 font-bold">INPUT</span> price</p>
+                            <br>
+                            <p class="text-slate-500"># And also ask for how many of this item</p>
                             <p><span class="text-emerald-400 font-bold">PRINT</span> "What is the quantity you wish to buy?"</p>
                             <p><span class="text-blue-400 font-bold">INPUT</span> quantity</p>
                             <br>
-                            <p class="text-slate-500"># Calculate total</p>
+                            <p class="text-slate-500"># Calculate their total price</p>
                             <p><span class="text-purple-400 font-bold">SET</span> total_price = price * quantity</p>
                             <br>
-                            <p class="text-slate-500"># Display result</p>
+                            <p class="text-slate-500"># Display their total price (with annotation)</p>
                             <p><span class="text-emerald-400 font-bold">PRINT</span> "Your total price is: $" + total_price</p>
                         </div>
                     </div>
@@ -337,17 +401,6 @@
                 </div>
             </section>
 
-            <!-- EASY EXPANSION CONTAINER FOR FUTURE WEEKS -->
-            <!-- 
-                DEVELOPER NOTE:
-                To add Week 2 content, duplicate the section template below and update anchors.
-            -->
-            <!--
-            <section id="week2-placeholder" class="border border-dashed border-slate-800 rounded-xl p-6 text-center text-slate-600">
-                <p class="text-xs">Future Expansion Container (Week 2: IF/ELSE Statements & Selection Structures)</p>
-            </section>
-            -->
-
         </main>
     </div>
 
@@ -355,15 +408,12 @@
     <!-- INTERACTIVE JAVASCRIPT LOGIC                                              -->
     <!-- ========================================================================= -->
     <script>
-        // Initialize Lucide Icons
         lucide.createIcons();
 
-        // Interactive Pseudocode Execution Simulator
         function runSimulation() {
             const consoleBox = document.getElementById('consoleOutput');
-            consoleBox.innerHTML = ''; // Clear previous output
+            consoleBox.innerHTML = '';
 
-            // Step 1: Prompt for Price
             appendConsoleOutput("What is the price of the item?", "output");
             
             setTimeout(() => {
@@ -371,7 +421,6 @@
                 if (price === null || isNaN(price)) price = "15.50";
                 appendConsoleOutput(`> INPUT: ${price}`, "input");
 
-                // Step 2: Prompt for Quantity
                 setTimeout(() => {
                     appendConsoleOutput("What is the quantity you wish to buy?", "output");
                     
@@ -380,10 +429,8 @@
                         if (quantity === null || isNaN(quantity)) quantity = "3";
                         appendConsoleOutput(`> INPUT: ${quantity}`, "input");
 
-                        // Step 3: Calculation (SET)
                         let total = parseFloat(price) * parseInt(quantity);
 
-                        // Step 4: Display Output (PRINT)
                         setTimeout(() => {
                             appendConsoleOutput(`Your total price is: $${total.toFixed(2)}`, "success");
                         }, 400);
@@ -392,7 +439,6 @@
             }, 300);
         }
 
-        // Helper function to render terminal logs
         function appendConsoleOutput(text, type) {
             const consoleBox = document.getElementById('consoleOutput');
             const p = document.createElement('p');
