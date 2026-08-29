@@ -108,6 +108,18 @@
                     <svg class="w-4 h-4 mr-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                     Quick Citation Helper
                 </a>
+
+                <p class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider pt-4 mb-2">Advanced Topics</p>
+
+                <a href="#citations-advanced" class="nav-link flex items-center px-3 py-2 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-500 rounded-lg transition">
+                    <svg class="w-4 h-4 mr-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Multiple Authors & Edge Cases
+                </a>
+
+                <a href="#paper-structure" class="nav-link flex items-center px-3 py-2 text-sm font-medium text-slate-700 hover:bg-brand-50 hover:text-brand-500 rounded-lg transition">
+                    <svg class="w-4 h-4 mr-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    Paper Structure & Formatting
+                </a>
             </nav>
         </aside>
 
@@ -307,83 +319,72 @@
                 </div>
             </section>
 
-            <!-- SECTION 6: ADVANCED MULTI-SOURCE CITATION GENERATOR -->
-            <section id="generator" class="content-block bg-white p-6 sm:p-8 rounded-xl border border-slate-200 shadow-sm space-y-6">
+            <!-- SECTION 6: ADVANCED MULTI-SOURCE CITATION GENERATOR & PAPER EXAMPLES -->
+            <section id="generator" class="content-block bg-white p-6 sm:p-8 rounded-xl border border-slate-200 shadow-sm space-y-8">
                 <div class="border-b pb-3 flex items-center justify-between">
                     <div>
-                        <h2 class="text-2xl font-bold text-slate-900">MLA 9th Multi-Source Generator</h2>
-                        <p class="text-xs text-slate-500 mt-0.5">Select a source type to generate proper Works Cited and parenthetical citations.</p>
+                        <h2 class="text-2xl font-bold text-slate-900">MLA 9th Citation & Paper Drafter</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Select a source type to generate accurate citations and view paper application examples.</p>
                     </div>
-                    <span class="text-xs px-2.5 py-1 bg-brand-50 text-brand-500 font-medium rounded-full">Interactive</span>
+                    <span class="text-xs px-2.5 py-1 bg-brand-50 text-brand-500 font-medium rounded-full">Interactive Tool</span>
                 </div>
 
                 <!-- Source Selector -->
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Select Source Type</label>
                     <select id="sourceType" onchange="toggleFormFields()" class="w-full text-sm p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:border-brand-500 font-medium text-slate-800">
-                        <option value="book">Book (Single, Multiple Authors, or Corporate)</option>
+                        <option value="poem">Poem (Anthology, Collection, or Website)</option>
+                        <option value="book">Book (Print, E-Book, or Translated)</option>
+                        <option value="ebook">E-Book from Academic Database (EBSCOhost, ProQuest)</option>
                         <option value="website">Website / Online Article</option>
+                        <option value="news">Online Newspaper / Magazine</option>
                         <option value="journal">Academic Journal (Database with DOI/URL)</option>
                         <option value="anthology">Edited Book Chapter / Anthology</option>
-                        <option value="poem">Poem (Anthology, Collection, or Website)</option>
                         <option value="youtube">YouTube / Online Video</option>
+                        <option value="podcast">Podcast / Audio Episode</option>
+                        <option value="ai">AI Tool Output (ChatGPT, Gemini, etc.)</option>
+                        <option value="course">Course Material / Lecture / Canvas</option>
                         <option value="bible">Scripture / Bible Edition</option>
                     </select>
                 </div>
 
-                <!-- Form Inputs -->
+                <!-- Generator Form -->
                 <form id="multiCitationForm" onsubmit="generateMultiCitation(event)" class="space-y-4">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        
-                        <!-- Primary Author / Creator -->
                         <div id="fieldAuthor">
-                            <label id="lblAuthor" class="block text-xs font-medium text-slate-600 mb-1">Author (Last, First M.)</label>
-                            <input type="text" id="inpAuthor" placeholder="e.g. Cabrera, Justin" class="w-full text-sm p-2 bg-slate-50 border border-slate-300 rounded focus:bg-white focus:outline-none focus:border-brand-500">
-                            <span class="text-[10px] text-slate-400 block mt-0.5">For 2 authors: Last, First, and First Last. For 3+: Last, First, et al.</span>
+                            <label id="lblAuthor" class="block text-xs font-medium text-slate-600 mb-1">Poet Name (Last, First)</label>
+                            <input type="text" id="inpAuthor" placeholder="e.g. Hughes, Langston" class="w-full text-sm p-2 bg-slate-50 border border-slate-300 rounded focus:bg-white focus:outline-none focus:border-brand-500">
                         </div>
 
-                        <!-- Source Title -->
                         <div id="fieldTitle">
-                            <label id="lblTitle" class="block text-xs font-medium text-slate-600 mb-1">Title of Source / Work</label>
-                            <input type="text" id="inpTitle" placeholder="e.g. Rhetoric and Academic Integrity" class="w-full text-sm p-2 bg-slate-50 border border-slate-300 rounded focus:bg-white focus:outline-none focus:border-brand-500">
+                            <label id="lblTitle" class="block text-xs font-medium text-slate-600 mb-1">Title</label>
+                            <input type="text" id="inpTitle" placeholder="e.g. Theme for English B" class="w-full text-sm p-2 bg-slate-50 border border-slate-300 rounded focus:bg-white focus:outline-none focus:border-brand-500">
                         </div>
 
-                        <!-- Container Title -->
                         <div id="fieldContainer">
-                            <label id="lblContainer" class="block text-xs font-medium text-slate-600 mb-1">Container / Publisher / Website Name</label>
-                            <input type="text" id="inpContainer" placeholder="e.g. Academic Press or Journal of Humanities" class="w-full text-sm p-2 bg-slate-50 border border-slate-300 rounded focus:bg-white focus:outline-none focus:border-brand-500">
+                            <label id="lblContainer" class="block text-xs font-medium text-slate-600 mb-1">Container / Book Title</label>
+                            <input type="text" id="inpContainer" placeholder="e.g. The Collected Poems of Langston Hughes" class="w-full text-sm p-2 bg-slate-50 border border-slate-300 rounded focus:bg-white focus:outline-none focus:border-brand-500">
                         </div>
 
-                        <!-- Contributors / Editors -->
-                        <div id="fieldContributor" class="hidden">
-                            <label id="lblContributor" class="block text-xs font-medium text-slate-600 mb-1">Editor / Translator / Contributor</label>
-                            <input type="text" id="inpContributor" placeholder="e.g. edited by Jane Doe" class="w-full text-sm p-2 bg-slate-50 border border-slate-300 rounded focus:bg-white focus:outline-none focus:border-brand-500">
+                        <div id="fieldContributor">
+                            <label id="lblContributor" class="block text-xs font-medium text-slate-600 mb-1">Contributor / Editor</label>
+                            <input type="text" id="inpContributor" placeholder="e.g. edited by Arnold Rampersad" class="w-full text-sm p-2 bg-slate-50 border border-slate-300 rounded focus:bg-white focus:outline-none focus:border-brand-500">
                         </div>
 
-                        <!-- Volume, Issue, or Version -->
-                        <div id="fieldVolume" class="hidden">
-                            <label id="lblVolume" class="block text-xs font-medium text-slate-600 mb-1">Volume & Issue Number</label>
-                            <input type="text" id="inpVolume" placeholder="e.g. vol. 12, no. 3" class="w-full text-sm p-2 bg-slate-50 border border-slate-300 rounded focus:bg-white focus:outline-none focus:border-brand-500">
+                        <div id="fieldPublisher">
+                            <label id="lblPublisher" class="block text-xs font-medium text-slate-600 mb-1">Publisher</label>
+                            <input type="text" id="inpPublisher" placeholder="e.g. Vintage Books" class="w-full text-sm p-2 bg-slate-50 border border-slate-300 rounded focus:bg-white focus:outline-none focus:border-brand-500">
                         </div>
 
-                        <!-- Secondary Database / Platform Container -->
-                        <div id="fieldDatabase" class="hidden">
-                            <label id="lblDatabase" class="block text-xs font-medium text-slate-600 mb-1">Database / Platform (Container 2)</label>
-                            <input type="text" id="inpDatabase" placeholder="e.g. JSTOR or YouTube" class="w-full text-sm p-2 bg-slate-50 border border-slate-300 rounded focus:bg-white focus:outline-none focus:border-brand-500">
-                        </div>
-
-                        <!-- Publication Date / Year -->
                         <div id="fieldDate">
                             <label id="lblDate" class="block text-xs font-medium text-slate-600 mb-1">Publication Date / Year</label>
-                            <input type="text" id="inpDate" placeholder="e.g. 2026 or 15 Jan. 2026" class="w-full text-sm p-2 bg-slate-50 border border-slate-300 rounded focus:bg-white focus:outline-none focus:border-brand-500">
+                            <input type="text" id="inpDate" placeholder="e.g. 1994" class="w-full text-sm p-2 bg-slate-50 border border-slate-300 rounded focus:bg-white focus:outline-none focus:border-brand-500">
                         </div>
 
-                        <!-- Pages or Location -->
-                        <div id="fieldLocation">
-                            <label id="lblLocation" class="block text-xs font-medium text-slate-600 mb-1">Location (Pages / DOI / URL)</label>
-                            <input type="text" id="inpLocation" placeholder="e.g. pp. 45-58 or https://doi.org/10.1000/182" class="w-full text-sm p-2 bg-slate-50 border border-slate-300 rounded focus:bg-white focus:outline-none focus:border-brand-500">
+                        <div id="fieldLocation" class="sm:col-span-2">
+                            <label id="lblLocation" class="block text-xs font-medium text-slate-600 mb-1">Page Range or Location</label>
+                            <input type="text" id="inpLocation" placeholder="e.g. pp. 247–248 or lines 1–41" class="w-full text-sm p-2 bg-slate-50 border border-slate-300 rounded focus:bg-white focus:outline-none focus:border-brand-500">
                         </div>
-
                     </div>
 
                     <button type="submit" class="px-6 py-2.5 bg-brand-500 text-white font-medium text-sm rounded-lg hover:bg-brand-800 transition shadow">
@@ -392,18 +393,259 @@
                 </form>
 
                 <!-- Output Display Window -->
-                <div id="multiOutputBox" class="hidden p-5 bg-slate-900 text-slate-100 rounded-xl space-y-4">
+                <div id="multiOutputBox" class="p-5 bg-slate-900 text-slate-100 rounded-xl space-y-4">
                     <div>
                         <span class="text-xs font-sans text-brand-400 font-semibold uppercase tracking-wider block mb-1">Works Cited Entry:</span>
-                        <div id="outWorksCited" class="font-serif text-sm leading-relaxed text-slate-100 bg-slate-950 p-3 rounded border border-slate-800"></div>
+                        <div id="outWorksCited" class="font-serif text-sm leading-relaxed text-slate-100 bg-slate-950 p-3 rounded border border-slate-800">
+                            Hughes, Langston. "Theme for English B." <em>The Collected Poems of Langston Hughes</em>, edited by Arnold Rampersad and David Roessel, Vintage Books, 1994, pp. 247–248.
+                        </div>
                     </div>
                     <div>
-                        <span class="text-xs font-sans text-brand-400 font-semibold uppercase tracking-wider block mb-1">In-Text Parenthetical Format:</span>
-                        <div id="outInText" class="font-serif text-sm leading-relaxed text-slate-300 bg-slate-950 p-3 rounded border border-slate-800"></div>
+                        <span class="text-xs font-sans text-brand-400 font-semibold uppercase tracking-wider block mb-1">In-Text Citation Options:</span>
+                        <div id="outInText" class="font-serif text-sm leading-relaxed text-slate-300 bg-slate-950 p-3 rounded border border-slate-800 space-y-1">
+                            <p><strong>First Citation (Lines):</strong> (Hughes, lines 1–5)</p>
+                            <p><strong>Subsequent Citations:</strong> (Hughes 12–15)</p>
+                        </div>
                     </div>
-                    <button onclick="copyCitationOutput()" class="px-3 py-1.5 bg-slate-800 text-xs font-sans text-slate-200 rounded hover:bg-slate-700 transition">
-                        Copy Works Cited
-                    </button>
+                </div>
+
+                <!-- REAL-WORLD PAPER EXAMPLES SECTION -->
+                <div class="border-t pt-6 space-y-6">
+                    <h3 class="text-lg font-bold text-slate-900">How to Apply This in Your MLA Paper</h3>
+                    
+                    <!-- Example 1: In-Text Quote in Prose -->
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
+                        <span class="text-xs font-semibold text-brand-500 uppercase tracking-wider">1. Short Quote Integrated in Paragraph</span>
+                        <p class="font-serif text-sm text-slate-800 leading-relaxed bg-white p-3 border rounded">
+                            In his assignment reflection, the speaker emphasizes his identity by stating, "I am twenty-two, colored, born in Winston-Salem. / I went to school there, then Durham, raised there" (Hughes, lines 7–9). This detail establishes his unique perspective within the classroom.
+                        </p>
+                        <p class="text-xs text-slate-500">Note: Use a forward slash <code class="bg-slate-200 px-1 border rounded">/</code> with spaces on both sides to show line breaks in poetry.</p>
+                    </div>
+
+                    <!-- Example 2: Block Quote Example -->
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
+                        <span class="text-xs font-semibold text-brand-500 uppercase tracking-wider">2. Block Quote Format (3+ Lines of Verse)</span>
+                        <div class="font-serif text-sm text-slate-800 leading-relaxed bg-white p-4 border rounded space-y-1 pl-8 border-l-4 border-l-brand-500">
+                            <p>It's not easy to know what is true for you or me</p>
+                            <p>at twenty-two, my age. But I guess I'm what</p>
+                            <p>I feel and see and hear, Harlem, I hear you: (Hughes 16–18)</p>
+                        </div>
+                        <p class="text-xs text-slate-500">Note: Indent block quotes 0.5 inches from the left margin, omit quotation marks, and place the citation <strong>after</strong> the punctuation.</p>
+                    </div>
+
+                    <!-- Example 3: Works Cited Page Format -->
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
+                        <span class="text-xs font-semibold text-brand-500 uppercase tracking-wider">3. Works Cited Page Layout (Hanging Indent)</span>
+                        <div class="bg-white p-4 border rounded font-serif text-sm text-slate-900">
+                            <p class="text-center font-bold mb-3">Works Cited</p>
+                            <p class="pl-8 -indent-8 leading-relaxed">
+                                Hughes, Langston. "Theme for English B." <em>The Collected Poems of Langston Hughes</em>, edited by Arnold Rampersad and David Roessel, Vintage Books, 1994, pp. 247–248.
+                            </p>
+                        </div>
+                        <p class="text-xs text-slate-500">Note: Title "Works Cited" is centered at the top. The entry uses a <strong>hanging indent</strong> (0.5 inches on subsequent lines).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 7: MULTIPLE AUTHORS & EDGE CASES -->
+            <section id="citations-advanced" class="content-block bg-white p-6 sm:p-8 rounded-xl border border-slate-200 shadow-sm space-y-6">
+                <div class="border-b pb-3 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900">Multiple Authors & Edge Cases</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Handle complex citation scenarios with confidence.</p>
+                    </div>
+                    <span class="text-xs px-2.5 py-1 bg-brand-50 text-brand-500 font-medium rounded-full">Advanced</span>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-6">
+                    <!-- Two Authors -->
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-3">
+                        <span class="text-xs font-semibold text-brand-500 uppercase tracking-wider">Two Authors</span>
+                        <div class="space-y-2">
+                            <p class="text-xs font-medium text-slate-700">Works Cited:</p>
+                            <div class="bg-white p-3 border rounded font-serif text-xs text-slate-800">
+                                Smith, John, and Jane Doe. <em>Collaborative Research</em>. Academic Press, 2024.
+                            </div>
+                            <p class="text-xs font-medium text-slate-700">In-Text:</p>
+                            <div class="bg-white px-3 py-2 border rounded font-mono text-xs text-slate-800">
+                                (Smith and Doe 45)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Three or More Authors -->
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-3">
+                        <span class="text-xs font-semibold text-brand-500 uppercase tracking-wider">Three or More Authors</span>
+                        <div class="space-y-2">
+                            <p class="text-xs font-medium text-slate-700">Works Cited:</p>
+                            <div class="bg-white p-3 border rounded font-serif text-xs text-slate-800">
+                                Garcia, Maria, et al. <em>Team Research Methods</em>. Oxford UP, 2023.
+                            </div>
+                            <p class="text-xs font-medium text-slate-700">In-Text:</p>
+                            <div class="bg-white px-3 py-2 border rounded font-mono text-xs text-slate-800">
+                                (Garcia et al. 102)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Corporate / Institutional Author -->
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-3">
+                        <span class="text-xs font-semibold text-brand-500 uppercase tracking-wider">Corporate / Institutional Author</span>
+                        <div class="space-y-2">
+                            <p class="text-xs font-medium text-slate-700">Works Cited:</p>
+                            <div class="bg-white p-3 border rounded font-serif text-xs text-slate-800">
+                                College of Southern Nevada. <em>Student Handbook</em>. CSN, 2026.
+                            </div>
+                            <p class="text-xs font-medium text-slate-700">In-Text:</p>
+                            <div class="bg-white px-3 py-2 border rounded font-mono text-xs text-slate-800">
+                                (College of Southern Nevada 12)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- No Author Available -->
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-3">
+                        <span class="text-xs font-semibold text-brand-500 uppercase tracking-wider">No Author Available</span>
+                        <div class="space-y-2">
+                            <p class="text-xs font-medium text-slate-700">Works Cited:</p>
+                            <div class="bg-white p-3 border rounded font-serif text-xs text-slate-800">
+                                "Theme for English B." <em>The Collected Poems of Langston Hughes</em>, Vintage Books, 1994, pp. 247–248.
+                            </div>
+                            <p class="text-xs font-medium text-slate-700">In-Text:</p>
+                            <div class="bg-white px-3 py-2 border rounded font-mono text-xs text-slate-800">
+                                ("Theme for English" 4)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Indirect Sources (Qtd. In) -->
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-3">
+                        <span class="text-xs font-semibold text-brand-500 uppercase tracking-wider">Indirect Sources (Quoted In)</span>
+                        <div class="space-y-2">
+                            <p class="text-xs font-medium text-slate-700">Use when you find a quote cited in another source:</p>
+                            <div class="bg-white px-3 py-2 border rounded font-mono text-xs text-slate-800">
+                                (Original Author, qtd. in Cabrera 88)
+                            </div>
+                            <p class="text-xs text-slate-600 mt-2"><strong>Note:</strong> Cite the intermediate source in Works Cited, not the original.</p>
+                        </div>
+                    </div>
+
+                    <!-- Translated Work -->
+                    <div class="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-3">
+                        <span class="text-xs font-semibold text-brand-500 uppercase tracking-wider">Translated Works</span>
+                        <div class="space-y-2">
+                            <p class="text-xs font-medium text-slate-700">Works Cited:</p>
+                            <div class="bg-white p-3 border rounded font-serif text-xs text-slate-800">
+                                García Márquez, Gabriel. <em>One Hundred Years of Solitude</em>. Translated by Gregory Rabassa, Harper, 1970.
+                            </div>
+                            <p class="text-xs text-slate-600 mt-2"><strong>In-Text:</strong> (García Márquez 45)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 8: PAPER STRUCTURE & FORMATTING -->
+            <section id="paper-structure" class="content-block bg-white p-6 sm:p-8 rounded-xl border border-slate-200 shadow-sm space-y-6">
+                <div class="border-b pb-3 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900">Paper Structure & Formatting</h2>
+                        <p class="text-xs text-slate-500 mt-0.5">Complete guide to MLA 9th edition paper layout and special elements.</p>
+                    </div>
+                    <span class="text-xs px-2.5 py-1 bg-brand-50 text-brand-500 font-medium rounded-full">Format Guide</span>
+                </div>
+
+                <!-- First Page Heading -->
+                <div class="p-5 bg-gradient-to-br from-slate-50 to-blue-50 border border-slate-200 rounded-lg space-y-3">
+                    <h3 class="font-semibold text-slate-900 text-sm">First-Page Heading (No Title Page Required)</h3>
+                    <p class="text-xs text-slate-600">MLA 9th edition does <strong>not</strong> require a separate title page. Instead, format the top-left corner of your first page:</p>
+                    <div class="bg-white p-4 border border-dashed border-slate-300 rounded font-serif text-sm space-y-1 text-slate-900">
+                        <p>Justin Cabrera</p>
+                        <p>Dr. Smith</p>
+                        <p>ENG 102</p>
+                        <p>28 Aug. 2026</p>
+                    </div>
+                    <p class="text-xs text-slate-600"><strong>Formatting:</strong> Single-space, left-aligned, 1-inch margins. Double-space begins after this heading and the centered title.</p>
+                </div>
+
+                <!-- Title on First Page -->
+                <div class="p-5 bg-gradient-to-br from-slate-50 to-blue-50 border border-slate-200 rounded-lg space-y-3">
+                    <h3 class="font-semibold text-slate-900 text-sm">Title on First Page</h3>
+                    <p class="text-xs text-slate-600">After the heading, center your essay title on its own line. Do <strong>not</strong> underline, italicize, or use quotation marks (unless the title contains a quoted phrase).</p>
+                    <div class="bg-white p-4 border border-dashed border-slate-300 rounded text-center font-serif text-sm text-slate-900">
+                        The Power of Language in "Theme for English B"
+                    </div>
+                    <p class="text-xs text-slate-600"><strong>Note:</strong> Your essay body begins on the next line, double-spaced.</p>
+                </div>
+
+                <!-- Headers and Running Heads -->
+                <div class="p-5 bg-gradient-to-br from-slate-50 to-blue-50 border border-slate-200 rounded-lg space-y-3">
+                    <h3 class="font-semibold text-slate-900 text-sm">Running Header (Every Page)</h3>
+                    <p class="text-xs text-slate-600">Right-align your last name and page number at the top of every page, including the Works Cited.</p>
+                    <div class="bg-white p-3 border border-dashed border-slate-300 rounded text-right font-mono text-xs text-slate-900">
+                        Cabrera 1
+                    </div>
+                    <p class="text-xs text-slate-600"><strong>Format:</strong> 0.5 inches from the top of the page, right-aligned, no extra space.</p>
+                </div>
+
+                <!-- Tables and Figures -->
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg space-y-3">
+                        <h3 class="font-semibold text-slate-900 text-sm">Table Formatting</h3>
+                        <ul class="text-xs text-slate-700 space-y-1">
+                            <li>• <strong>Label above:</strong> "Table 1. [Title]"</li>
+                            <li>• <strong>Caption style:</strong> Use sentence case, flush left</li>
+                            <li>• <strong>Border:</strong> Simple lines, no shading (unless necessary)</li>
+                            <li>• <strong>Source:</strong> Include below if data is external</li>
+                            <li>• <strong>Font:</strong> Same as body text (10pt minimum)</li>
+                        </ul>
+                    </div>
+
+                    <div class="p-4 bg-amber-50 border border-amber-200 rounded-lg space-y-3">
+                        <h3 class="font-semibold text-slate-900 text-sm">Figure / Image Formatting</h3>
+                        <ul class="text-xs text-slate-700 space-y-1">
+                            <li>• <strong>Label below:</strong> "Fig. 1. Description of image."</li>
+                            <li>• <strong>Citation:</strong> Include source information</li>
+                            <li>• <strong>Alignment:</strong> Center if standalone, or left if text flows</li>
+                            <li>• <strong>Captions:</strong> Double-spaced, same font as body</li>
+                            <li>• <strong>Copyright:</strong> Ensure permissions noted if necessary</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Endnotes and Footnotes -->
+                <div class="p-5 bg-gradient-to-br from-slate-50 to-green-50 border border-slate-200 rounded-lg space-y-3">
+                    <h3 class="font-semibold text-slate-900 text-sm">Endnotes & Footnotes (Content Notes)</h3>
+                    <p class="text-xs text-slate-600">MLA 9 permits <strong>content notes</strong> for clarification or supplementary information. Use sparingly.</p>
+                    <div class="space-y-2">
+                        <p class="text-xs font-semibold text-slate-700">Superscript Number in Text:</p>
+                        <div class="bg-white p-3 border rounded font-serif text-sm text-slate-800">
+                            The significance of this metaphor<span class="text-xs align-super">1</span> cannot be overstated in contemporary discourse.
+                        </div>
+                    </div>
+                    <div class="space-y-2 pt-3">
+                        <p class="text-xs font-semibold text-slate-700">Endnote (on separate page before Works Cited):</p>
+                        <div class="bg-white p-3 border rounded font-serif text-sm text-slate-800">
+                            <p class="font-semibold mb-1">Notes</p>
+                            <p><span class="text-xs align-super">1</span> Critics debate whether the "yellow wood" represents nature's indifference or human choice.</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600"><strong>Placement:</strong> Create a "Notes" page after your essay but before Works Cited. Number all notes to match in-text superscripts.</p>
+                </div>
+
+                <!-- Spacing and Margins Checklist -->
+                <div class="p-4 bg-slate-900 text-slate-100 rounded-lg space-y-3">
+                    <h3 class="font-semibold text-sm">Final Formatting Checklist</h3>
+                    <ul class="text-xs space-y-2 text-slate-200">
+                        <li>✓ All margins are 1 inch on all sides</li>
+                        <li>✓ Double-spaced throughout (including quotes and Works Cited)</li>
+                        <li>✓ Font is readable (Times New Roman 12pt, Georgia, Computer Modern)</li>
+                        <li>✓ First page has 4-line heading on top left + centered title</li>
+                        <li>✓ Running header on every page (Last Name + page number, right-aligned)</li>
+                        <li>✓ Paragraph indentation is 0.5 inches</li>
+                        <li>✓ Works Cited uses hanging indents (0.5 inches on subsequent lines)</li>
+                        <li>✓ All source entries alphabetized by author's last name</li>
+                        <li>✓ No extra space between entries or paragraphs</li>
+                    </ul>
                 </div>
             </section>
 
@@ -440,58 +682,125 @@
             });
         }
 
-        // Controls field visibility depending on selected source type
+        function setField(id, labelText, placeholderText, isHidden = false) {
+            const fieldEl = document.getElementById(id);
+            const labelEl = document.getElementById('lbl' + id.replace('field', ''));
+            const inputEl = document.getElementById('inp' + id.replace('field', ''));
+
+            if (isHidden) {
+                fieldEl.classList.add('hidden');
+            } else {
+                fieldEl.classList.remove('hidden');
+                if (labelEl) labelEl.innerText = labelText;
+                if (inputEl) inputEl.placeholder = placeholderText;
+            }
+        }
+
         function toggleFormFields() {
             const type = document.getElementById('sourceType').value;
 
-            // Reset standard visible fields
-            document.getElementById('fieldAuthor').classList.remove('hidden');
-            document.getElementById('fieldContributor').classList.add('hidden');
-            document.getElementById('fieldVolume').classList.add('hidden');
-            document.getElementById('fieldDatabase').classList.add('hidden');
+            // 1. Reset all text input fields to blank when dropdown selection changes
+            ['inpAuthor', 'inpTitle', 'inpContainer', 'inpContributor', 'inpPublisher', 'inpDate', 'inpLocation'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
 
-            // Label Adjustments based on Type
-            if (type === 'book') {
-                document.getElementById('lblAuthor').innerText = 'Author (Last, First)';
-                document.getElementById('lblTitle').innerText = 'Book Title';
-                document.getElementById('lblContainer').innerText = 'Publisher';
-                document.getElementById('lblLocation').innerText = 'Page Range (Optional)';
+            // 2. Configure visibility, labels, and placeholders based on selected source type
+            if (type === 'poem') {
+                setField('fieldAuthor', 'Poet Name (Last, First)', 'e.g. Hughes, Langston');
+                setField('fieldTitle', 'Poem Title', 'e.g. Theme for English B');
+                setField('fieldContainer', 'Book / Anthology or Website Title', 'e.g. The Collected Poems of Langston Hughes');
+                setField('fieldContributor', 'Editor / Translator', 'e.g. edited by Arnold Rampersad');
+                setField('fieldPublisher', 'Publisher', 'e.g. Vintage Books');
+                setField('fieldDate', 'Publication Date / Year', 'e.g. 1994');
+                setField('fieldLocation', 'Page Range or Line Numbers', 'e.g. lines 1–41');
+            } else if (type === 'book') {
+                setField('fieldAuthor', 'Author Name (Last, First)', 'e.g. Ellison, Ralph');
+                setField('fieldTitle', 'Book Title', 'e.g. Invisible Man');
+                setField('fieldContainer', 'Series Title (Optional)', 'e.g. American Classics');
+                setField('fieldContributor', '', '', true); // Hidden
+                setField('fieldPublisher', 'Publisher', 'e.g. Vintage Books');
+                setField('fieldDate', 'Publication Year', 'e.g. 1995');
+                setField('fieldLocation', 'Page Range (Optional)', 'e.g. pp. 10–25');
             } else if (type === 'website') {
-                document.getElementById('lblAuthor').innerText = 'Author (Leave blank if unavailable)';
-                document.getElementById('lblTitle').innerText = 'Article / Page Title';
-                document.getElementById('lblContainer').innerText = 'Website Title';
-                document.getElementById('lblLocation').innerText = 'URL (omit https://)';
+                setField('fieldAuthor', 'Author (Last, First)', 'e.g. Smith, John');
+                setField('fieldTitle', 'Article Title', 'e.g. Understanding MLA Style');
+                setField('fieldContainer', 'Website Name', 'e.g. Purdue OWL');
+                setField('fieldContributor', '', '', true); // Hidden
+                setField('fieldPublisher', '', '', true);   // Hidden
+                setField('fieldDate', 'Publication Date', 'e.g. 14 Aug. 2024');
+                setField('fieldLocation', 'URL (omit https://)', 'e.g. owl.purdue.edu/mla');
             } else if (type === 'journal') {
-                document.getElementById('fieldVolume').classList.remove('hidden');
-                document.getElementById('fieldDatabase').classList.remove('hidden');
-                document.getElementById('lblAuthor').innerText = 'Author(s)';
-                document.getElementById('lblTitle').innerText = 'Article Title';
-                document.getElementById('lblContainer').innerText = 'Journal Title';
-                document.getElementById('lblLocation').innerText = 'Page Range & DOI / URL';
+                setField('fieldAuthor', 'Author (Last, First)', 'e.g. Ousmane, Sembène');
+                setField('fieldTitle', 'Article Title', 'e.g. Her Three Days');
+                setField('fieldContainer', 'Journal Title', 'e.g. African Studies Quarterly');
+                setField('fieldContributor', 'Volume & Issue', 'e.g. vol. 12, no. 3');
+                setField('fieldPublisher', 'Database Name', 'e.g. JSTOR');
+                setField('fieldDate', 'Publication Year', 'e.g. 2011');
+                setField('fieldLocation', 'Page Range / DOI', 'e.g. pp. 45–58');
             } else if (type === 'anthology') {
-                document.getElementById('fieldContributor').classList.remove('hidden');
-                document.getElementById('lblAuthor').innerText = 'Chapter Author';
-                document.getElementById('lblTitle').innerText = 'Chapter / Essay Title';
-                document.getElementById('lblContainer').innerText = 'Book / Anthology Title';
-                document.getElementById('lblContributor').innerText = 'Editor(s) (e.g. edited by Jane Doe)';
-                document.getElementById('lblLocation').innerText = 'Chapter Page Range (e.g. pp. 21-45)';
+                setField('fieldAuthor', 'Chapter Author (Last, First)', 'e.g. Baldwin, James');
+                setField('fieldTitle', 'Chapter / Essay Title', 'e.g. Notes of a Native Son');
+                setField('fieldContainer', 'Anthology Book Title', 'e.g. The Essay Reader');
+                setField('fieldContributor', 'Editor(s)', 'e.g. edited by Jane Doe');
+                setField('fieldPublisher', 'Publisher', 'e.g. Penguin Books');
+                setField('fieldDate', 'Publication Year', 'e.g. 1984');
+                setField('fieldLocation', 'Page Range', 'e.g. pp. 120–135');
             } else if (type === 'youtube') {
-                document.getElementById('lblAuthor').innerText = 'Creator / Channel Name';
-                document.getElementById('lblTitle').innerText = 'Video Title';
-                document.getElementById('lblContainer').innerText = 'Platform (e.g. YouTube)';
-                document.getElementById('lblLocation').innerText = 'URL';
-            } else if (type === 'poem') {
-                document.getElementById('fieldContributor').classList.remove('hidden');
-                document.getElementById('lblAuthor').innerText = 'Poet Name (Last, First)';
-                document.getElementById('lblTitle').innerText = 'Poem Title';
-                document.getElementById('lblContainer').innerText = 'Book / Anthology or Website Title';
-                document.getElementById('lblContributor').innerText = 'Editor / Translator (e.g., edited by Jane Doe)';
-                document.getElementById('lblLocation').innerText = 'Page Range or Line Numbers (e.g., lines 10–24 or pp. 45–46)';
+                setField('fieldAuthor', 'Creator / Channel Name', 'e.g. CrashCourse');
+                setField('fieldTitle', 'Video Title', 'e.g. How to Cite Sources');
+                setField('fieldContainer', 'Platform Name', 'e.g. YouTube');
+                setField('fieldContributor', '', '', true); // Hidden
+                setField('fieldPublisher', 'Uploader (if different)', 'e.g. PBS Digital Studios');
+                setField('fieldDate', 'Upload Date', 'e.g. 10 May 2022');
+                setField('fieldLocation', 'URL', 'e.g. youtube.com/watch?v=12345');
             } else if (type === 'bible') {
-                document.getElementById('fieldAuthor').classList.add('hidden');
-                document.getElementById('lblTitle').innerText = 'Bible Edition Title';
-                document.getElementById('lblContainer').innerText = 'Publisher';
-                document.getElementById('lblLocation').innerText = 'Book, Chapter, and Verse (In-text focus)';
+                setField('fieldAuthor', 'Bible Edition Title', 'e.g. The Holy Bible, English Standard Version');
+                setField('fieldTitle', 'Book, Chapter, Verse', 'e.g. Prov. 12.22');
+                setField('fieldContainer', 'Series / Editor (Optional)', 'e.g. Study Edition');
+                setField('fieldContributor', '', '', true); // Hidden
+                setField('fieldPublisher', 'Publisher', 'e.g. Crossway Bibles');
+                setField('fieldDate', 'Publication Year', 'e.g. 2016');
+                setField('fieldLocation', 'Page / Chapter Range', 'e.g. p. 450');
+            } else if (type === 'ebook') {
+                setField('fieldAuthor', 'Author Name (Last, First)', 'e.g. Morrison, Toni');
+                setField('fieldTitle', 'Book Title', 'e.g. Beloved');
+                setField('fieldContainer', 'Database Name', 'e.g. EBSCOhost or ProQuest');
+                setField('fieldContributor', '', '', true); // Hidden
+                setField('fieldPublisher', 'Publisher', 'e.g. Knopf');
+                setField('fieldDate', 'Publication Year', 'e.g. 1987');
+                setField('fieldLocation', 'DOI or URL', 'e.g. https://doi.org/10.1234/example');
+            } else if (type === 'news') {
+                setField('fieldAuthor', 'Author (Last, First)', 'e.g. Reporter, Jane');
+                setField('fieldTitle', 'Article Title', 'e.g. New Policy Takes Effect');
+                setField('fieldContainer', 'Publication Name', 'e.g. The New York Times');
+                setField('fieldContributor', '', '', true); // Hidden
+                setField('fieldPublisher', '', '', true);   // Hidden
+                setField('fieldDate', 'Publication Date', 'e.g. 15 Aug. 2026');
+                setField('fieldLocation', 'URL (omit https://)', 'e.g. nytimes.com/2026/08');
+            } else if (type === 'podcast') {
+                setField('fieldAuthor', 'Host Name(s)', 'e.g. Gladwell, Malcolm');
+                setField('fieldTitle', 'Episode Title', 'e.g. The Breakdown of Trust');
+                setField('fieldContainer', 'Podcast Title', 'e.g. Revisionist History');
+                setField('fieldContributor', 'Producer / Network', 'e.g. Panoply Media');
+                setField('fieldPublisher', '', '', true);   // Hidden
+                setField('fieldDate', 'Release Date', 'e.g. 3 June 2019');
+                setField('fieldLocation', 'URL or Timestamp', 'e.g. 12:35–14:50');
+            } else if (type === 'ai') {
+                setField('fieldAuthor', 'AI Model Name', 'e.g. ChatGPT, Gemini');
+                setField('fieldTitle', 'Prompt or Request', 'e.g. Explain MLA citation rules');
+                setField('fieldContainer', 'Platform / Provider', 'e.g. OpenAI or Google AI');
+                setField('fieldContributor', '', '', true); // Hidden
+                setField('fieldPublisher', '', '', true);   // Hidden
+                setField('fieldDate', 'Access Date', 'e.g. 28 Aug. 2026');
+                setField('fieldLocation', 'URL / Model Version', 'e.g. openai.com/chatgpt, GPT-4');
+            } else if (type === 'course') {
+                setField('fieldAuthor', 'Instructor Name (Last, First)', 'e.g. Smith, Dr. John');
+                setField('fieldTitle', 'Material Title', 'e.g. Lecture Slides Week 5 or Syllabus');
+                setField('fieldContainer', 'Course Name & Number', 'e.g. ENG 102: Composition I');
+                setField('fieldContributor', 'Institution', 'e.g. College of Southern Nevada');
+                setField('fieldPublisher', '', '', true);   // Hidden
+                setField('fieldDate', 'Date Posted / Semester', 'e.g. Fall 2026');
+                setField('fieldLocation', 'Canvas URL or Page #', 'e.g. canvas.csn.edu/courses/...');
             }
         }
 
@@ -504,83 +813,115 @@
             const title = document.getElementById('inpTitle').value.trim();
             const container = document.getElementById('inpContainer').value.trim();
             const contributor = document.getElementById('inpContributor').value.trim();
-            const volume = document.getElementById('inpVolume').value.trim();
-            const database = document.getElementById('inpDatabase').value.trim();
+            const publisher = document.getElementById('inpPublisher').value.trim();
             const date = document.getElementById('inpDate').value.trim();
             const location = document.getElementById('inpLocation').value.trim();
 
+            const authorLastName = author ? author.split(',')[0].trim() : '';
             let wc = '';
-            let inText = '';
+            let inTextHTML = '';
 
-            // Extract last name for in-text parenthetical citations
-            const authorLastName = author ? author.split(',')[0].split(' ').pop() : '';
-
-            if (type === 'book') {
+            // Type-specific citation formatting
+            if (type === 'book' || type === 'ebook') {
                 if (author) wc += `${author}. `;
                 if (title) wc += `<span class="italic">${title}</span>. `;
-                if (container) wc += `${container}, `;
-                if (date) wc += `${date}.`;
-                inText = author ? `(${authorLastName} ${location || 'page'})` : `(<span class="italic">${title}</span> ${location || 'page'})`;
-
+                if (container && type === 'ebook') wc += `${container}, `;
+                if (publisher) wc += `${publisher}, `;
+                if (date) wc += `${date}`;
+                if (location && type === 'ebook') wc += `, ${location}`;
+                wc += `.`;
+                inTextHTML = `<p><strong>In-Text:</strong> (${authorLastName} ${location ? location.replace('pp. ', '') : 'page#'})</p>`;
+            } else if (type === 'poem') {
+                if (author) wc += `${author}. `;
+                if (title) wc += `"${title}." `;
+                if (container) wc += `<span class="italic">${container}</span>, `;
+                if (contributor) wc += `${contributor}, `;
+                if (publisher) wc += `${publisher}, `;
+                if (date) wc += `${date}, `;
+                if (location) wc += `${location}.`;
+                const cleanLoc = location.replace('pp. ', '').replace('lines ', '').trim();
+                if (location.includes('line')) {
+                    inTextHTML = `<p><strong>First (Lines):</strong> (${authorLastName}, ${location})</p>`;
+                    inTextHTML += `<p><strong>Subsequent:</strong> (${authorLastName} ${cleanLoc})</p>`;
+                } else {
+                    inTextHTML = `<p><strong>In-Text:</strong> (${authorLastName} ${cleanLoc})</p>`;
+                }
             } else if (type === 'website') {
                 if (author) wc += `${author}. `;
                 if (title) wc += `"${title}." `;
                 if (container) wc += `<span class="italic">${container}</span>, `;
                 if (date) wc += `${date}, `;
                 if (location) wc += `${location}.`;
-                inText = author ? `(${authorLastName})` : `("${title}")`;
-
-            } else if (type === 'journal') {
+                inTextHTML = author ? `<p><strong>In-Text:</strong> (${authorLastName})</p>` : `<p><strong>In-Text:</strong> ("${title}")</p>`;
+            } else if (type === 'news') {
                 if (author) wc += `${author}. `;
                 if (title) wc += `"${title}." `;
                 if (container) wc += `<span class="italic">${container}</span>, `;
-                if (volume) wc += `${volume}, `;
                 if (date) wc += `${date}, `;
-                if (location) wc += `${location}. `;
-                if (database) wc += `<span class="italic">${database}</span>.`;
-                inText = author ? `(${authorLastName} ${location ? location.split('pp. ')[1] || '' : ''})` : `("${title}")`;
-
-            } else if (type === 'anthology') {
+                if (location) wc += `${location}.`;
+                inTextHTML = author ? `<p><strong>In-Text:</strong> (${authorLastName})</p>` : `<p><strong>In-Text:</strong> ("${title}")</p>`;
+            } else if (type === 'journal') {
                 if (author) wc += `${author}. `;
                 if (title) wc += `"${title}." `;
                 if (container) wc += `<span class="italic">${container}</span>, `;
                 if (contributor) wc += `${contributor}, `;
                 if (date) wc += `${date}, `;
+                if (location) wc += `${location}. `;
+                if (publisher) wc += `<span class="italic">${publisher}</span>.`;
+                inTextHTML = `<p><strong>In-Text:</strong> (${authorLastName} ${location.replace('pp. ', '').split('–')[0]})</p>`;
+            } else if (type === 'anthology') {
+                if (author) wc += `${author}. `;
+                if (title) wc += `"${title}." `;
+                if (container) wc += `<span class="italic">${container}</span>, `;
+                if (contributor) wc += `${contributor}, `;
+                if (publisher) wc += `${publisher}, `;
+                if (date) wc += `${date}, `;
                 if (location) wc += `${location}.`;
-                inText = author ? `(${authorLastName} ${location ? location.replace('pp. ', '') : ''})` : `("${title}")`;
-
+                inTextHTML = `<p><strong>In-Text:</strong> (${authorLastName} ${location.replace('pp. ', '')})</p>`;
             } else if (type === 'youtube') {
                 if (author) wc += `${author}. `;
                 if (title) wc += `"${title}." `;
                 if (container) wc += `<span class="italic">${container}</span>, `;
                 if (date) wc += `${date}, `;
                 if (location) wc += `${location}.`;
-                inText = author ? `(${authorLastName})` : `("${title}")`;
-
-            } else if (type === 'poem') {
+                inTextHTML = author ? `<p><strong>In-Text:</strong> (${authorLastName})</p>` : `<p><strong>In-Text:</strong> ("${title}")</p>`;
+            } else if (type === 'podcast') {
                 if (author) wc += `${author}. `;
                 if (title) wc += `"${title}." `;
                 if (container) wc += `<span class="italic">${container}</span>, `;
-                if (contributor) wc += `${contributor}, `;
+                if (contributor) wc += `hosted by ${contributor}, `;
                 if (date) wc += `${date}, `;
                 if (location) wc += `${location}.`;
-                
-                // In-text citation uses line numbers if specified, otherwise poet's last name
-                const lineRef = location ? location.replace('pp. ', '').replace('lines ', '') : '';
-                inText = author ? `(${authorLastName} ${lineRef})` : `("${title}" ${lineRef})`;
-
+                inTextHTML = author ? `<p><strong>In-Text:</strong> (${authorLastName})</p>` : `<p><strong>In-Text:</strong> ("${title}")</p>`;
+            } else if (type === 'ai') {
+                if (author) wc += `${author}. `;
+                if (title) wc += `"${title}," `;
+                if (container) wc += `prompt, ${container}, `;
+                if (date) wc += `accessed ${date}`;
+                if (location) wc += `, ${location}`;
+                wc += `.`;
+                inTextHTML = `<p><strong>In-Text:</strong> (${author} ${date})</p><p class="text-xs text-slate-400">Note: Always include access date for AI-generated content.</p>`;
+            } else if (type === 'course') {
+                if (author) wc += `${author}. `;
+                if (title) wc += `"${title}." `;
+                if (container) wc += `${container}, `;
+                if (contributor) wc += `${contributor}, `;
+                if (date) wc += `${date}`;
+                if (location) wc += `, ${location}`;
+                wc += `.`;
+                inTextHTML = author ? `<p><strong>In-Text:</strong> (${authorLastName})</p>` : `<p><strong>In-Text:</strong> (Course Material)</p>`;
             } else if (type === 'bible') {
                 if (title) wc += `<span class="italic">${title}</span>. `;
                 if (container) wc += `${container}, `;
+                if (publisher) wc += `${publisher}, `;
                 if (date) wc += `${date}.`;
-                inText = `(<span class="italic">${title}</span>, ${location || 'Book Chap.Verse'})`;
+                inTextHTML = `<p><strong>In-Text:</strong> (<span class="italic">${title}</span>, ${location})</p>`;
             }
 
-            // Display Output
             document.getElementById('outWorksCited').innerHTML = wc;
-            document.getElementById('outInText').innerHTML = inText;
-            document.getElementById('multiOutputBox').classList.remove('hidden');
+            document.getElementById('outInText').innerHTML = inTextHTML;
         }
+
 
         // Clipboard Copy Helper
         function copyCitationOutput() {
