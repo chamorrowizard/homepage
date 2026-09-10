@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSC 101: Chapter 3 - Federalism Study Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Tailwind Configuration for Custom Theme & Dark Mode -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth scrolling behavior */
+        html { scroll-behavior: smooth; }
+        /* Custom scrollbar styling for slick UI appearance */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased min-h-screen flex flex-col transition-colors duration-200">
+
+    <!-- ========================================== -->
+    <!-- 1. HEADER & NAVIGATION BAR                -->
+    <!-- ========================================== -->
+    <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Branding / Title -->
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-blue-600/20 text-blue-400 rounded-lg border border-blue-500/30">
+                        <i data-lucide="book-open" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-white tracking-wide">PSC 101: Chapter 3</h1>
+                        <p class="text-xs text-slate-400">Federalism & Government Relations</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Search Bar -->
+                <div class="hidden md:flex flex-1 max-w-md mx-8">
+                    <div class="relative w-full">
+                        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="searchInput" placeholder="Search concepts, cases, clauses..." 
+                            class="w-full bg-slate-800 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-sm text-slate-200 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
+                    </div>
+                </div>
+
+                <!-- Controls: Dark Mode Toggle & Quick Stats -->
+                <div class="flex items-center gap-3">
+                    <span class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                        <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+                        <span id="topicCount">0 Modules Loaded</span>
+                    </span>
+                    <button id="themeToggle" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition" title="Toggle Theme">
+                        <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                        <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Search Bar (Below Header on small screens) -->
+            <div class="md:hidden pb-3">
+                <div class="relative w-full">
+                    <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="mobileSearchInput" placeholder="Search concepts, cases..." 
+                        class="w-full bg-slate-800 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-sm text-slate-200 placeholder-slate-400 focus:outline-none focus:border-blue-500">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- 2. MAIN LAYOUT (SIDEBAR + CONTENT)         -->
+    <!-- ========================================== -->
+    <div class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row gap-6">
+        
+        <!-- SIDEBAR NAVIGATION (Categories Filter) -->
+        <aside class="w-full md:w-64 flex-shrink-0">
+            <div class="sticky top-22 bg-slate-800/50 backdrop-blur border border-slate-700/60 rounded-2xl p-4">
+                <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3 px-2">Course Modules</h2>
+                <nav class="space-y-1" id="categoryNav">
+                    <!-- Nav buttons dynamically injected or hardcoded filter buttons -->
+                    <button onclick="filterCategory('all')" class="nav-btn active w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-xl text-blue-400 bg-blue-500/10 border border-blue-500/20 transition">
+                        <span class="flex items-center gap-2.5"><i data-lucide="grid" class="w-4 h-4"></i> All Topics</span>
+                        <span class="badge text-xs bg-blue-500/20 px-2 py-0.5 rounded-md">8</span>
+                    </button>
+                    <button onclick="filterCategory('foundations')" class="nav-btn w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-xl text-slate-300 hover:bg-slate-700/50 hover:text-white transition">
+                        <span class="flex items-center gap-2.5"><i data-lucide="shield" class="w-4 h-4"></i> Foundations</span>
+                    </button>
+                    <button onclick="filterCategory('powers')" class="nav-btn w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-xl text-slate-300 hover:bg-slate-700/50 hover:text-white transition">
+                        <span class="flex items-center gap-2.5"><i data-lucide="key" class="w-4 h-4"></i> Powers & Clauses</span>
+                    </button>
+                    <button onclick="filterCategory('evolution')" class="nav-btn w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-xl text-slate-300 hover:bg-slate-700/50 hover:text-white transition">
+                        <span class="flex items-center gap-2.5"><i data-lucide="git-branch" class="w-4 h-4"></i> Eras of Federalism</span>
+                    </button>
+                    <button onclick="filterCategory('cases')" class="nav-btn w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-xl text-slate-300 hover:bg-slate-700/50 hover:text-white transition">
+                        <span class="flex items-center gap-2.5"><i data-lucide="scale" class="w-4 h-4"></i> Supreme Court</span>
+                    </button>
+                    <button onclick="filterCategory('grants')" class="nav-btn w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-xl text-slate-300 hover:bg-slate-700/50 hover:text-white transition">
+                        <span class="flex items-center gap-2.5"><i data-lucide="dollar-sign" class="w-4 h-4"></i> Grants & Devolution</span>
+                    </button>
+                    <button onclick="filterCategory('tensions')" class="nav-btn w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-xl text-slate-300 hover:bg-slate-700/50 hover:text-white transition">
+                        <span class="flex items-center gap-2.5"><i data-lucide="alert-triangle" class="w-4 h-4"></i> Modern Tensions</span>
+                    </button>
+                </nav>
+
+                <!-- Data Counter Indicator -->
+                <div class="mt-6 pt-4 border-t border-slate-700/60 px-2 text-xs text-slate-400">
+                    Extracted from <span class="text-slate-200 font-medium">69 Lecture Slides</span>. Easily expandable.
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTENT AREA CONTAINER -->
+        <main class="flex-1 space-y-6" id="contentContainer">
+            <!-- Dynamic Content Cards Injected via JavaScript -->
+        </main>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 3. DETAIL MODAL (FOR DEEP DIVE/EXPANSION) -->
+    <!-- ========================================== -->
+    <div id="modalOverlay" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden transition-all scale-95 opacity-0 duration-200" id="modalContainer">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-6 border-b border-slate-800">
+                <div class="flex items-center gap-3">
+                    <span id="modalCategoryBadge" class="px-2.5 py-1 text-xs font-semibold rounded-md bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-wider">
+                        Category
+                    </span>
+                    <h3 id="modalTitle" class="text-xl font-bold text-white">Title</h3>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto space-y-4 text-slate-300 text-sm leading-relaxed" id="modalBody">
+                <!-- Injected via JavaScript -->
+            </div>
+            <!-- Modal Footer -->
+            <div class="p-4 bg-slate-950/50 border-t border-slate-800 flex justify-end">
+                <button onclick="closeModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-sm font-medium transition">
+                    Close Overview
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 4. JAVASCRIPT: DATA STRUCTURE & LOGIC      -->
+    <!-- ========================================== -->
+    <script>
+        /* 
+         * DATA MODEL (EASILY EXPANDABLE)
+         * To add more detail later: Simply append objects to this `studyData` array.
+         * Fields: id, title, category, icon, summary, bulletPoints, detailedNotes
+         */
+        const studyData = [
+            {
+                id: "overview-1",
+                category: "foundations",
+                categoryLabel: "Foundations",
+                icon: "shield",
+                title: "Core Concepts & Federalism Overview",
+                summary: "Definition of federalism, comparisons to unitary systems, and primary characteristics of governmental division.",
+                bulletPoints: [
+                    "<strong>Federalism:</strong> A system where power is divided by a constitution between a central government and regional (state) governments.",
+                    "<strong>Unitary System:</strong> Central government holds primary authority; lower levels mainly execute central mandates.",
+                    "<strong>Intergovernmental Relations:</strong> The continuous process of negotiation and compromise over policy between federal, state, and local entities.",
+                    "<strong>Demographic Alignment:</strong> Federal systems are most common in countries with diverse ethnic or language populations (e.g., Canada, Switzerland)."
+                ],
+                detailedNotes: `
+                    <p class="mb-3">Federalism creates policy experimentation and innovation (states as "laboratories of democracy"). It encourages competition among states to attract businesses and citizens by optimizing government service efficiency.</p>
+                    <p class="mb-3">Unlike unitary systems where regional governments lack independent authority, American federalism relies heavily on a constitutional division of labor.</p>
+                    <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/50 my-2">
+                        <strong class="text-blue-400 block mb-1">Key Takeaway:</strong>
+                        Political preferences regarding federal vs. state authority are fluid and situational for both conservatives and liberals depending on who holds national power.
+                    </div>
+                `
+            },
+            {
+                id: "powers-1",
+                category: "powers",
+                categoryLabel: "Powers & Clauses",
+                icon: "key",
+                title: "National Powers & Constitutional Clauses",
+                summary: "Expressed, implied, and supremacy powers governing the national legislative authority.",
+                bulletPoints: [
+                    "<strong>Expressed Powers:</strong> 17 explicit powers granted to Congress under Article I, Section 8 (taxing, declaring war, coining money, tariffs).",
+                    "<strong>Implied Powers:</strong> Derived from the <em>Necessary and Proper Clause</em> (Elastic Clause), granting power to execute delegated authority.",
+                    "<strong>Supremacy Clause (Article VI):</strong> Mandates that national laws and treaties are the 'supreme Law of the Land' when conflicting with state policies.",
+                    "<strong>Commerce Clause (Art. I, Sec. 8):</strong> Authorizes federal regulation of commerce with foreign nations, among states, and with Indian tribes."
+                ],
+                detailedNotes: `
+                    <p class="mb-3">The implied powers doctrine was crucial in expanding national scope beyond strict textual enumerations, allowing the federal government to adapt to modern economic and civil needs.</p>
+                `
+            },
+            {
+                id: "powers-2",
+                category: "powers",
+                categoryLabel: "Powers & Clauses",
+                icon: "scale",
+                title: "State & Shared Powers",
+                summary: "Reserved powers under the 10th Amendment, concurrent authority, and state police powers.",
+                bulletPoints: [
+                    "<strong>Reserved Powers (10th Amendment):</strong> Powers not delegated to the federal government nor prohibited to states are reserved for the states.",
+                    "<strong>Police Power:</strong> A foundational state power to coerce and regulate citizens' health, safety, welfare, and morals (criminal codes, marriage/divorce).",
+                    "<strong>Concurrent Powers:</strong> Authority shared by both state and national governments, such as levying taxes, chartering banks, and licensing businesses."
+                ],
+                detailedNotes: `
+                    <p class="mb-3">The Tenth Amendment was heavily championed by Anti-Federalists fearing central encroachment. Today, police power allows states to handle emergency responses, public health codes, and criminal justice systems.</p>
+                `
+            },
+            {
+                id: "clauses-horizontal",
+                category: "powers",
+                categoryLabel: "Powers & Clauses",
+                icon: "file-text",
+                title: "Interstate Relations (Horizontal Federalism)",
+                summary: "Constitutional clauses governing how individual states interact with one another.",
+                bulletPoints: [
+                    "<strong>Full Faith and Credit Clause (Art. IV, Sec. 1):</strong> Requires states to honor the public acts, judicial records, and civil decisions of other states.",
+                    "<strong>Comity / Privileges & Immunities Clause (Art. IV, Sec. 2):</strong> Prevents a state from discriminating against citizens from other states.",
+                    "<strong>Extradition Requirement:</strong> Mandates the return of fugitives fleeing justice across state lines back to the originating state."
+                ],
+                detailedNotes: `
+                    <p class="mb-3">Notable controversies surrounding Full Faith and Credit included the Defense of Marriage Act (DOMA, 1996) before the Supreme Court legalized same-sex marriage nationwide in <em>Obergefell v. Hodges</em> (2015).</p>
+                `
+            },
+            {
+                id: "evolution-1",
+                category: "evolution",
+                categoryLabel: "Eras of Federalism",
+                icon: "git-branch",
+                title: "Historical Phases of American Federalism",
+                summary: "The shift from Dual Federalism (Layer Cake) to Cooperative (Marble Cake) and New Federalism.",
+                bulletPoints: [
+                    "<strong>Dual Federalism (1789–1937):</strong> 'Layer Cake' model. Federal power remained strictly limited; states handled almost all internal governance and commerce regulations.",
+                    "<strong>Cooperative Federalism (1933–1970s):</strong> 'Marble Cake' model born out of the New Deal. Lines of authority blurred through joint funding and federal <em>grants-in-aid</em>.",
+                    "<strong>Regulated Federalism (1970s):</strong> National government set strict standards/preemptions forcing states to comply (often via unfunded mandates).",
+                    "<strong>Devolution & New Federalism (1980s–Present):</strong> Efforts under Nixon & Reagan to shift power and discretionary authority back to states via block grants."
+                ],
+                detailedNotes: `
+                    <p class="mb-3">The New Deal marked the sharpest transition in American power distribution. Federal grants grew exponentially to tackle widespread economic collapse during the Great Depression and World War II.</p>
+                `
+            },
+            {
+                id: "cases-1",
+                category: "cases",
+                categoryLabel: "Supreme Court Cases",
+                icon: "landmark",
+                title: "Landmark Federalism Jurisprudence",
+                summary: "Key Supreme Court decisions defining federal supremacy and limits under the Commerce Clause.",
+                bulletPoints: [
+                    "<strong>McCulloch v. Maryland (1819):</strong> Confirmed implied powers (chartering a national bank) and ruled states cannot tax federal agencies.",
+                    "<strong>Gibbons v. Ogden (1824):</strong> Established national supremacy in regulating interstate commerce.",
+                    "<strong>United States v. Lopez (1995):</strong> Struck down federal Gun-Free School Zones Act; landmark ruling limiting congressional expansion under the Commerce Clause.",
+                    "<strong>Obergefell v. Hodges (2015):</strong> Declared same-sex marriage a fundamental right under the 14th Amendment, overriding conflicting state laws."
+                ],
+                detailedNotes: `
+                    <p class="mb-3">Supreme Court rulings historically swung between expanding federal reach (McCulloch, Gibbons) and protecting states' rights (Lopez in the 1990s revival of the 10th Amendment).</p>
+                `
+            },
+            {
+                id: "grants-1",
+                category: "grants",
+                categoryLabel: "Grants & Devolution",
+                icon: "dollar-sign",
+                title: "Fiscal Federalism & Funding Models",
+                summary: "Categorical grants, block grants, revenue sharing, and unfunded mandates.",
+                bulletPoints: [
+                    "<strong>Categorical Grants:</strong> Funds allocated to states for specific, narrow statutory purposes (e.g., Medicaid, highway funding). Highly restrictive.",
+                    "<strong>Block Grants:</strong> Broad grants allowing states wide discretion in spending within general policy areas (e.g., welfare reform in 1996).",
+                    "<strong>Unfunded Mandates:</strong> Federal regulations imposed on states without financial reimbursement for compliance (e.g., Americans with Disabilities Act transit upgrades).",
+                    "<strong>General Revenue Sharing:</strong> Yielding federal tax income directly to lower government tiers with few strings attached (used in New Federalism)."
+                ],
+                detailedNotes: `
+                    <p class="mb-3">Categorical grants ballooned from $54.8B in 1960 to over $1 Trillion in 2022, highlighting how fiscal leverage remains D.C.'s most powerful tool.</p>
+                `
+            },
+            {
+                id: "tensions-1",
+                category: "tensions",
+                categoryLabel: "Modern Tensions",
+                icon: "alert-triangle",
+                title: "Contemporary Conflicts & Local Preemption",
+                summary: "State vs. local preemption, immigration sanctuary disputes, and legalization conflicts.",
+                bulletPoints: [
+                    "<strong>State Preemption of Local Laws:</strong> States frequently override progressive/conservative city policies (e.g., local minimum wage, plastic bag bans, municipal broadband).",
+                    "<strong>Immigration Policies:</strong> Disputes over 'sanctuary cities' limiting local cooperation with federal immigration enforcement (ICE/DHS).",
+                    "<strong>Marijuana Policy:</strong> Federal law strictly prohibits marijuana under the Commerce Clause, yet over 35+ states have legalized medical/recreational use.",
+                    "<strong>Home Rule:</strong> Authority granted by states to larger municipalities to govern local affairs, frequently contested by state legislatures."
+                ],
+                detailedNotes: `
+                    <p class="mb-3">Federalism today operates as 'three-corner chess' involving Federal, State, and Local governments continually pushing boundaries on health rules, voter laws, and civil rights.</p>
+                `
+            },
+            {
+    id: "gov-structure-1",
+    category: "foundations",
+    categoryLabel: "Foundations",
+    icon: "building-2",
+    title: "Structure & Quantities of U.S. Governments",
+    summary: "Statistical distribution of national, state, and local governmental units across the United States.",
+    bulletPoints: [
+        "<strong>Total Units:</strong> Over 90,000 distinct governmental entities exist in the U.S.",
+        "<strong>Local Breakdown:</strong> Includes 3,031 counties, 19,495 municipalities, 16,253 townships, and 12,754 school districts.",
+        "<strong>Special Districts:</strong> The largest category (38,542), covering single-purpose entities like water, transit, or fire districts."
+    ],
+    detailedNotes: `
+        <p class="mb-3">Local governments have no independent constitutional status; they exist as administrative subunits under state authority, often receiving power through state-granted home rule.</p>
+    `
+},
+{
+    id: "states-rights-history",
+    category: "evolution",
+    categoryLabel: "Eras of Federalism",
+    icon: "history",
+    title: "States' Rights, Nullification & Segregation",
+    summary: "Historical resistance to national authority from the 19th century through the Civil Rights movement.",
+    bulletPoints: [
+        "<strong>Nullification Doctrine:</strong> Advanced by John C. Calhoun, arguing states could declare federal laws unconstitutional.",
+        "<strong>Southern Manifesto (1950s):</strong> Document signed by Southern lawmakers asserting states were not bound by Supreme Court desegregation rulings.",
+        "<strong>Stigmatization:</strong> The phrase 'states' rights' became historically tarnished due to its repeated invocation to preserve racial inequality."
+    ],
+    detailedNotes: `
+        <p class="mb-3">While states' rights saw a conservative revival in the 1990s focusing on 10th Amendment liberties (e.g., <em>United States v. Lopez</em>), its historical reliance during the antebellum era and Jim Crow era remains a primary political touchstone.</p>
+    `
+},
+{
+    id: "lecture-nuances-1",
+    category: "tensions",
+    categoryLabel: "Modern Tensions",
+    icon: "file-text",
+    title: "Executive Orders & Voting Preemptions",
+    summary: "Specific contemporary case studies in presidential authority, voting requirements, and state preemptions.",
+    bulletPoints: [
+        "<strong>Executive Orders:</strong> Presidential orders frequently test the Supremacy Clause and Congressional authority (e.g., immigration deportation mandates and sanctuary city funding threats).",
+        "<strong>Voting Identification:</strong> State rules requiring specific documentation (like Arizona passport laws) conflict with federal standards and affect tribal ID validity.",
+        "<strong>Environmental & Business Preemption:</strong> State laws overriding local bans on plastic bags (Michigan) and fracking (Texas).",
+        "<strong>Judicial Philosophy:</strong> The 6-3 conservative majority on the Supreme Court actively re-evaluating the boundaries between federal and state power."
+    ],
+    detailedNotes: `
+        <p class="mb-3">The lecture slides highlight how political views on federal vs. state authority are fluid. Whichever party holds national office often expands federal reach (e.g., Bush's No Child Left Behind), while the opposing party champions states' rights.</p>
+    `
+}
+        ];
+
+        // STATE MANAGEMENT
+        let currentCategory = 'all';
+        let searchQuery = '';
+
+        // DOM ELEMENTS
+        const contentContainer = document.getElementById('contentContainer');
+        const searchInput = document.getElementById('searchInput');
+        const mobileSearchInput = document.getElementById('mobileSearchInput');
+        const topicCountEl = document.getElementById('topicCount');
+
+        // INITIALIZATION
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCards();
+            lucide.createIcons();
+            
+            // Search listeners
+            searchInput.addEventListener('input', (e) => handleSearch(e.target.value));
+            mobileSearchInput.addEventListener('input', (e) => handleSearch(e.target.value));
+        });
+
+        // SEARCH HANDLER
+        function handleSearch(query) {
+            searchQuery = query.toLowerCase().trim();
+            renderCards();
+        }
+
+        // CATEGORY FILTER
+        function filterCategory(cat) {
+            currentCategory = cat;
+            
+            // Update Active UI on sidebar buttons
+            document.querySelectorAll('#categoryNav .nav-btn').forEach(btn => {
+                btn.classList.remove('text-blue-400', 'bg-blue-500/10', 'border', 'border-blue-500/20');
+                btn.classList.add('text-slate-300');
+            });
+            event.currentTarget.classList.add('text-blue-400', 'bg-blue-500/10', 'border', 'border-blue-500/20');
+
+            renderCards();
+        }
+
+        // RENDER CARDS FUNCTION
+        function renderCards() {
+            contentContainer.innerHTML = '';
+
+            const filteredData = studyData.filter(item => {
+                const matchesCategory = currentCategory === 'all' || item.category === currentCategory;
+                const matchesSearch = searchQuery === '' || 
+                    item.title.toLowerCase().includes(searchQuery) || 
+                    item.summary.toLowerCase().includes(searchQuery) ||
+                    item.bulletPoints.some(b => b.toLowerCase().includes(searchQuery));
+                return matchesCategory && matchesSearch;
+            });
+
+            topicCountEl.textContent = `${filteredData.length} Modules Shown`;
+
+            if (filteredData.length === 0) {
+                contentContainer.innerHTML = `
+                    <div class="text-center py-16 bg-slate-800/30 rounded-2xl border border-slate-800">
+                        <i data-lucide="search-x" class="w-12 h-12 mx-auto text-slate-500 mb-3"></i>
+                        <h3 class="text-lg font-semibold text-slate-300">No matching concepts found</h3>
+                        <p class="text-sm text-slate-500 mt-1">Try adjusting your search terms or sidebar filters.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            filteredData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-800/50 hover:bg-slate-800 border border-slate-700/60 rounded-2xl p-6 transition-all duration-200 shadow-lg hover:shadow-blue-500/5 group flex flex-col justify-between";
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-wider">
+                                ${item.categoryLabel}
+                            </span>
+                            <div class="p-2 text-slate-400 group-hover:text-blue-400 transition">
+                                <i data-lucide="${item.icon}" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                        
+                        <h3 class="text-lg font-bold text-white mb-2 group-hover:text-blue-300 transition">${item.title}</h3>
+                        <p class="text-sm text-slate-400 mb-4 leading-relaxed">${item.summary}</p>
+                        
+                        <ul class="space-y-2 mb-6 text-sm text-slate-300">
+                            ${item.bulletPoints.map(bp => `
+                                <li class="flex items-start gap-2">
+                                    <i data-lucide="chevron-right" class="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5"></i>
+                                    <span>${bp}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-700/50 flex items-center justify-between">
+                        <button onclick="openModal('${item.id}')" class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-400 hover:text-blue-300 transition">
+                            <span>Deep Dive & Analysis</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                `;
+                contentContainer.appendChild(card);
+            });
+
+            lucide.createIcons();
+        }
+
+        // MODAL FUNCTIONS
+        function openModal(id) {
+            const item = studyData.find(d => d.id === id);
+            if (!item) return;
+
+            document.getElementById('modalTitle').textContent = item.title;
+            document.getElementById('modalCategoryBadge').textContent = item.categoryLabel;
+            
+            document.getElementById('modalBody').innerHTML = `
+                <div class="mb-4 text-slate-200 font-medium">${item.summary}</div>
+                <div class="space-y-2 mb-6">
+                    <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Core Elements</h4>
+                    <ul class="space-y-2">
+                        ${item.bulletPoints.map(bp => `<li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0"></i><span>${bp}</span></li>`).join('')}
+                    </ul>
+                </div>
+                <div class="border-t border-slate-800 pt-4">
+                    <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Detailed Context & Lecture Analysis</h4>
+                    ${item.detailedNotes}
+                </div>
+            `;
+
+            const overlay = document.getElementById('modalOverlay');
+            const container = document.getElementById('modalContainer');
+            
+            overlay.classList.remove('hidden');
+            setTimeout(() => {
+                container.classList.remove('scale-95', 'opacity-0');
+                container.classList.add('scale-100', 'opacity-100');
+            }, 10);
+
+            lucide.createIcons();
+        }
+
+        function closeModal() {
+            const overlay = document.getElementById('modalOverlay');
+            const container = document.getElementById('modalContainer');
+            
+            container.classList.remove('scale-100', 'opacity-100');
+            container.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+            }, 200);
+        }
+
+        // THEME TOGGLE LOGIC
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+        });
+    </script>
+</body>
+</html>
