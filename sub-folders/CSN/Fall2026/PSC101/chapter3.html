@@ -408,7 +408,16 @@
             renderCards();
         }
 
-        // RENDER CARDS FUNCTION
+        // HELPER FUNCTION: Wraps matching search query text in a highlighted span
+        function highlightText(text) {
+            if (!searchQuery) return text;
+            // Escape special regex characters in the search query
+            const escapedQuery = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(${escapedQuery})`, 'gi');
+            return text.replace(regex, '<mark class="bg-yellow-400/30 text-yellow-200 font-semibold px-0.5 rounded">$1</mark>');
+        }
+
+        // UPDATED RENDER CARDS FUNCTION WITH HIGHLIGHTING
         function renderCards() {
             contentContainer.innerHTML = '';
 
@@ -438,6 +447,11 @@
             filteredData.forEach(item => {
                 const card = document.createElement('div');
                 card.className = "bg-slate-800/50 hover:bg-slate-800 border border-slate-700/60 rounded-2xl p-6 transition-all duration-200 shadow-lg hover:shadow-blue-500/5 group flex flex-col justify-between";
+
+                // Apply highlighting to title, summary, and bullet points
+                const highlightedTitle = highlightText(item.title);
+                const highlightedSummary = highlightText(item.summary);
+                const highlightedBullets = item.bulletPoints.map(bp => highlightText(bp));
                 
                 card.innerHTML = `
                     <div>
@@ -450,11 +464,11 @@
                             </div>
                         </div>
                         
-                        <h3 class="text-lg font-bold text-white mb-2 group-hover:text-blue-300 transition">${item.title}</h3>
-                        <p class="text-sm text-slate-400 mb-4 leading-relaxed">${item.summary}</p>
+                        <h3 class="text-lg font-bold text-white mb-2 group-hover:text-blue-300 transition">${highlightedTitle}</h3>
+                        <p class="text-sm text-slate-400 mb-4 leading-relaxed">${highlightedSummary}</p>
                         
                         <ul class="space-y-2 mb-6 text-sm text-slate-300">
-                            ${item.bulletPoints.map(bp => `
+                            ${highlightedBullets.map(bp => `
                                 <li class="flex items-start gap-2">
                                     <i data-lucide="chevron-right" class="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5"></i>
                                     <span>${bp}</span>
