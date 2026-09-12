@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 3: Conditions Notes & Examples</title>
+    
+    <!-- Google Fonts & Font Awesome Icons for UX Styling -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ==========================================================================
+           1. CSS CONSTANTS & SYSTEM DESIGN VARS
+           ========================================================================== */
+        :root {
+            --bg-base: #0f172a;
+            --bg-surface: #1e293b;
+            --bg-surface-hover: #334155;
+            --border-color: #334155;
+            --accent-primary: #38bdf8;
+            --accent-success: #4ade80;
+            --accent-warning: #facc15;
+            --accent-danger: #f87171;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'Fira Code', monospace;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+            --shadow-glow: 0 0 20px rgba(56, 189, 248, 0.15);
+        }
+
+        /* ==========================================================================
+           2. GLOBAL & RESET STYLES
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Responsive Layout Container */
+        .app-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* Header UI */
+        header {
+            border-bottom: 1px solid var(--border-color);
+            padding: 24px 0;
+            margin-bottom: 32px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .badge {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-primary);
+            border: 1px solid var(--accent-primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-top: 8px;
+            background: linear-gradient(to right, #f8fafc, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Quick Search & Controls Bar */
+        .controls-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 10px 10px 38px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-primary);
+        }
+
+        .btn-action {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px 16px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            background: var(--bg-surface-hover);
+            border-color: var(--accent-primary);
+        }
+
+        /* ==========================================================================
+           3. EXPANDABLE / EXTENSIBLE MODULE CARDS (Modular Architecture)
+           ========================================================================== */
+        .module-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+
+        .card-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .card-title-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        .toggle-icon {
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+        }
+
+        .card.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .card-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+            padding: 0 20px;
+        }
+
+        .card.active .card-body {
+            max-height: 2000px; /* High max-height for dynamic content expansion */
+            padding: 0 20px 20px 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* ==========================================================================
+           4. CODE BLOCKS & INTERACTIVE TERMINALS
+           ========================================================================== */
+        .code-block {
+            background: var(--bg-base);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            margin: 12px 0;
+            position: relative;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .kw-if { color: #f472b6; font-weight: bold; }
+        .kw-else { color: #c084fc; font-weight: bold; }
+        .kw-op { color: #38bdf8; font-weight: bold; }
+        .str { color: #4ade80; }
+        .num { color: #fb923c; }
+
+        /* Interactive Simulator Component */
+        .simulator {
+            background: #020617;
+            border: 1px solid var(--accent-primary);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin: 16px 0;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .simulator-title {
+            font-size: 0.85rem;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sim-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .sim-input {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 12px;
+            border-radius: var(--radius-md);
+            font-family: var(--font-mono);
+            outline: none;
+        }
+
+        .sim-btn {
+            background: var(--accent-primary);
+            color: #020617;
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .sim-btn:hover {
+            opacity: 0.9;
+        }
+
+        .sim-output {
+            background: var(--bg-base);
+            border-left: 3px solid var(--accent-success);
+            padding: 10px;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--accent-success);
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* ==========================================================================
+           5. DATA TABLES & TRUTH TABLES UI
+           ========================================================================== */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .tag-true {
+            color: var(--accent-success);
+            font-weight: bold;
+            font-family: var(--font-mono);
+        }
+
+        .tag-false {
+            color: var(--accent-danger);
+            font-weight: bold;
+            font-family: var(--font-mono);
+        }
+
+        /* ==========================================================================
+           6. FOOTER & EXPORT UTILITIES
+           ========================================================================== */
+        footer {
+            margin-top: 48px;
+            border-top: 1px solid var(--border-color);
+            padding: 24px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Template Container for Extensibility */
+        .extensibility-notice {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            text-align: center;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.005);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- HEADER SECTION -->
+        <header>
+            <div class="header-content">
+                <div>
+                    <span class="badge">CIT 129 • Logic & Design</span>
+                    <h1>Week 3: Conditions Notes + Examples</h1>
+                </div>
+                <div>
+                    <button class="btn-action" onclick="expandAll()">
+                        <i class="fa-solid fa-angles-down"></i> Expand All
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTROLS & FILTERING BAR -->
+        <div class="controls-bar">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="Search conditions, operators, keywords (e.g. AND, ELSE)..." onkeyup="filterCards()">
+            </div>
+        </div>
+
+        <!-- MAIN MODULE CONTENT GRID -->
+        <div class="module-grid" id="moduleContainer">
+
+            <!-- MODULE 1: CONDITIONAL PROGRAMMING & IF/ELSE -->
+            <div class="card active" data-keywords="conditional branching logic if else pseudocode bouncer">
+                <div class="card-header" onclick="toggleCard(this)">
+                    <div class="card-title-group">
+                        <div class="card-icon"><i class="fa-solid fa-code-branch"></i></div>
+                        <div class="card-title">1. Conditional Programming & Branching</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="card-body">
+                    <p style="margin-top:16px;">Linear code executes start to finish. Real-world applications require <strong>branching logic</strong> to run different sections of code depending on user inputs or runtime variables.</p>
+
+                    <div class="code-block"><span class="kw-if">IF</span> &lt;condition&gt;:
+    <span class="str">PRINT "Runs only when condition is True"</span>
+<span class="kw-else">ELSE</span>:
+    <span class="str">PRINT "Runs only when condition is False"</span></div>
+
+                    <!-- Interactive Bouncer Tool -->
+                    <div class="simulator">
+                        <div class="simulator-title"><i class="fa-solid fa-terminal"></i> Interactive Simulator: Bar Bouncer</div>
+                        <div class="sim-controls">
+                            <input type="number" id="bouncerAge" class="sim-input" placeholder="Enter age..." value="19">
+                            <button class="sim-btn" onclick="runBouncerSim()">Run Logic</button>
+                        </div>
+                        <div class="sim-output" id="bouncerOutput">Output will display here...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODULE 2: COMPARISON OPERATORS -->
+            <div class="card" data-keywords="comparison operators condition greater than equal to less than equal boolean">
+                <div class="card-header" onclick="toggleCard(this)">
+                    <div class="card-title-group">
+                        <div class="card-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                        <div class="card-title">2. Comparison Operators</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="card-body">
+                    <p style="margin-top:16px;">Conditions are statements that evaluate to a Boolean value: <span class="tag-true">True</span> or <span class="tag-false">False</span>.</p>
+                    
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Operator Syntax</th>
+                                    <th>Meaning</th>
+                                    <th>Example</th>
+                                    <th>Evaluates To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>A &gt; B</code></td><td>Is A greater than B?</td><td><code>7 &gt; 21</code></td><td><span class="tag-false">False</span></td></tr>
+                                <tr><td><code>A &gt;= B</code></td><td>Is A greater than or equal to B?</td><td><code>12 &gt;= 12</code></td><td><span class="tag-true">True</span></td></tr>
+                                <tr><td><code>A &lt; B</code></td><td>Is A less than B?</td><td><code>12 &lt; 12</code></td><td><span class="tag-false">False</span></td></tr>
+                                <tr><td><code>A &lt;= B</code></td><td>Is A less than or equal to B?</td><td><code>12 &lt;= 15</code></td><td><span class="tag-true">True</span></td></tr>
+                                <tr><td><code>A == B</code></td><td>Is A strictly equal to B?</td><td><code>6 == 7</code></td><td><span class="tag-false">False</span></td></tr>
+                                <tr><td><code>A != B</code></td><td>Is A not equal to B?</td><td><code>6 != 7</code></td><td><span class="tag-true">True</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODULE 3: COMPOUND CONDITIONS (AND, OR, NOT) -->
+            <div class="card" data-keywords="compound conditions logic operators and or not truth table">
+                <div class="card-header" onclick="toggleCard(this)">
+                    <div class="card-title-group">
+                        <div class="card-icon"><i class="fa-solid fa-network-wired"></i></div>
+                        <div class="card-title">3. Compound Conditions (AND, OR, NOT)</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="card-body">
+                    <p style="margin-top:16px;">Compound conditions allow evaluation of multiple Boolean statements simultaneously.</p>
+                    
+                    <h4 style="margin-top: 16px; color: var(--accent-primary);">Truth Tables</h4>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 12px;">
+                        <!-- AND Table -->
+                        <div class="table-wrapper">
+                            <h5 style="margin-bottom:8px;">AND Operator (Both must be True)</h5>
+                            <table>
+                                <thead><tr><th>A AND B</th><th>Result</th></tr></thead>
+                                <tbody>
+                                    <tr><td>True AND True</td><td><span class="tag-true">True</span></td></tr>
+                                    <tr><td>True AND False</td><td><span class="tag-false">False</span></td></tr>
+                                    <tr><td>False AND True</td><td><span class="tag-false">False</span></td></tr>
+                                    <tr><td>False AND False</td><td><span class="tag-false">False</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- OR Table -->
+                        <div class="table-wrapper">
+                            <h5 style="margin-bottom:8px;">OR Operator (At least one True)</h5>
+                            <table>
+                                <thead><tr><th>A OR B</th><th>Result</th></tr></thead>
+                                <tbody>
+                                    <tr><td>True OR True</td><td><span class="tag-true">True</span></td></tr>
+                                    <tr><td>True OR False</td><td><span class="tag-true">True</span></td></tr>
+                                    <tr><td>False OR True</td><td><span class="tag-true">True</span></td></tr>
+                                    <tr><td>False OR False</td><td><span class="tag-false">False</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODULE 4: REAL-WORLD EXAMPLE (GRADE CALCULATOR) -->
+            <div class="card" data-keywords="example grade calculator score ranges nested if else">
+                <div class="card-header" onclick="toggleCard(this)">
+                    <div class="card-title-group">
+                        <div class="card-icon"><i class="fa-solid fa-calculator"></i></div>
+                        <div class="card-title">4. Comprehensive Example: Grade Evaluation</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="card-body">
+                    <p style="margin-top:16px;">Checking numeric ranges requires using boundary logic via compound operators to avoid edge-case evaluation bugs.</p>
+
+                    <div class="code-block"><span class="str">PRINT "Please enter your score (0-100)"</span>
+<span class="kw-op">INPUT</span> score
+
+<span class="kw-if">IF</span> score &gt;= <span class="num">90</span> <span class="kw-op">AND</span> score &lt;= <span class="num">100</span>:
+    <span class="str">PRINT "A"</span>
+<span class="kw-else">ELSE</span>:
+    <span class="kw-if">IF</span> score &gt;= <span class="num">80</span> <span class="kw-op">AND</span> score &lt; <span class="num">90</span>:
+        <span class="str">PRINT "B"</span>
+    <span class="kw-else">ELSE</span>:
+        <span class="kw-if">IF</span> score &gt;= <span class="num">70</span> <span class="kw-op">AND</span> score &lt; <span class="num">80</span>:
+            <span class="str">PRINT "C"</span>
+        <span class="kw-else">ELSE</span>:
+            <span class="kw-if">IF</span> score &lt; <span class="num">70</span>:
+                <span class="str">PRINT "D"</span></div>
+
+                    <!-- Interactive Grade Calculator -->
+                    <div class="simulator">
+                        <div class="simulator-title"><i class="fa-solid fa-terminal"></i> Interactive Simulator: Grade Assessor</div>
+                        <div class="sim-controls">
+                            <input type="number" id="gradeScore" class="sim-input" placeholder="Score (0-100)..." value="85.5">
+                            <button class="sim-btn" onclick="runGradeSim()">Evaluate Grade</button>
+                        </div>
+                        <div class="sim-output" id="gradeOutput">Grade will display here...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXTENSIBILITY TEMPLATE SECTION (Easily add more modules here) -->
+            <!-- To add a new topic later, duplicate the structure below! -->
+            <div class="extensibility-notice">
+                <i class="fa-solid fa-circle-plus" style="font-size: 1.5rem; color: var(--accent-primary); margin-bottom: 8px;"></i>
+                <h3 style="font-size: 1rem; font-weight: 600;">Extensible Architecture Ready</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">To add Week 4 notes or new subjects later, simply copy and paste a <code>&lt;div class="card"&gt;</code> block into the <code>moduleContainer</code> element in this HTML file.</p>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>CIT 129 Course Companion App • Responsive Single-File Architecture</p>
+        </footer>
+
+    </div>
+
+    <!-- ==========================================================================
+       7. JAVASCRIPT LOGIC & INTERACTIVITY
+       ========================================================================== -->
+    <script>
+        // --- 1. CARD ACCORDION TOGGLE LOGIC ---
+        function toggleCard(headerElement) {
+            const card = headerElement.parentElement;
+            card.classList.toggle('active');
+        }
+
+        function expandAll() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => card.classList.add('active'));
+        }
+
+        // --- 2. LIVE SEARCH FILTERING LOGIC ---
+        function filterCards() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.card');
+
+            cards.forEach(card => {
+                const keywords = card.getAttribute('data-keywords') || '';
+                const textContent = card.textContent.toLowerCase();
+
+                if (keywords.includes(query) || textContent.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // --- 3. INTERACTIVE SIMULATOR LOGIC (Bouncer Example) ---
+        function runBouncerSim() {
+            const ageInput = document.getElementById('bouncerAge').value;
+            const output = document.getElementById('bouncerOutput');
+
+            if (ageInput === '') {
+                output.style.color = 'var(--accent-warning)';
+                output.textContent = 'Please enter an age value.';
+                return;
+            }
+
+            const age = parseFloat(ageInput);
+            
+            // Execute Pseudocode Logic
+            if (age < 21) {
+                output.style.color = 'var(--accent-danger)';
+                output.textContent = 'Output: "You are not allowed to enter."';
+            } else {
+                output.style.color = 'var(--accent-success)';
+                output.textContent = 'Output: "Go ahead and enter."';
+            }
+        }
+
+        // --- 4. INTERACTIVE SIMULATOR LOGIC (Grade Calculator) ---
+        function runGradeSim() {
+            const scoreInput = document.getElementById('gradeScore').value;
+            const output = document.getElementById('gradeOutput');
+
+            if (scoreInput === '') {
+                output.style.color = 'var(--accent-warning)';
+                output.textContent = 'Please enter a test score.';
+                return;
+            }
+
+            const score = parseFloat(scoreInput);
+            output.style.color = 'var(--accent-success)';
+
+            // Execute Pseudocode Logic
+            if (score >= 90 && score <= 100) {
+                output.textContent = 'Output: "A"';
+            } else if (score >= 80 && score < 90) {
+                output.textContent = 'Output: "B"';
+            } else if (score >= 70 && score < 80) {
+                output.textContent = 'Output: "C"';
+            } else if (score < 70) {
+                output.textContent = 'Output: "D"';
+            } else {
+                output.style.color = 'var(--accent-danger)';
+                output.textContent = 'Output: Score out of range (0-100)';
+            }
+        }
+
+        // Initialize default simulator outputs on load
+        document.addEventListener('DOMContentLoaded', () => {
+            runBouncerSim();
+            runGradeSim();
+        });
+    </script>
+</body>
+</html>
