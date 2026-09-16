@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CIT 129: Week 4 - Loops Pt. 1 Dashboard</title>
+  
+  <!-- Tailwind CSS via CDN for responsive layout, spacing, and typography -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome for UI icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    /* Custom Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col antialiased">
+
+  <!-- TOP HEADER / NAVIGATION -->
+  <header class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 px-4 py-3 sm:px-6">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="bg-indigo-600/20 text-indigo-400 p-2 rounded-lg border border-indigo-500/30">
+          <i class="fa-solid fa-[#0000] fa-rotate"></i>
+        </div>
+        <div>
+          <h1 class="text-base font-bold text-slate-100 leading-none">CIT 129 Study Lab</h1>
+          <p class="text-xs text-slate-400 mt-1">Week 4 • Loops Part 1</p>
+        </div>
+      </div>
+      
+      <!-- Progress Indicator -->
+      <div class="hidden sm:flex items-center gap-3 bg-slate-800/60 px-3 py-1.5 rounded-full border border-slate-700/50">
+        <span class="text-xs text-slate-400">Completion:</span>
+        <div class="w-24 bg-slate-700 h-2 rounded-full overflow-hidden">
+          <div id="progress-bar" class="bg-indigo-500 h-full w-0 transition-all duration-300"></div>
+        </div>
+        <span id="progress-text" class="text-xs font-mono text-indigo-400">0%</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <div class="flex-1 max-w-7xl w-full mx-auto flex flex-col md:flex-row overflow-hidden">
+    
+    <!-- SIDEBAR NAVIGATION (Desktop: Sticky Sidebar, Mobile: Top Scrollable Tabs) -->
+    <nav class="w-full md:w-64 bg-slate-900/40 border-b md:border-b-0 md:border-r border-slate-800 p-3 sm:p-4 shrink-0">
+      <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-2 hidden md:block">
+        Topics Outline
+      </div>
+      <div id="nav-list" class="flex md:flex-col gap-1 overflow-x-auto md:overflow-y-auto no-scrollbar">
+        <!-- Navigation items rendered dynamically by JS -->
+      </div>
+    </nav>
+
+    <!-- CONTENT DISPLAY AREA -->
+    <main class="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto max-h-[calc(100vh-4rem)]">
+      <div id="content-container" class="max-w-4xl mx-auto space-y-6">
+        <!-- Active topic content rendered dynamically by JS -->
+      </div>
+    </main>
+
+  </div>
+
+  <!-- APPLICATION LOGIC & DATA MODEL -->
+  <script>
+    /**
+     * TOPIC DATA STRUCTURE
+     * Easy-to-expand data model. To add new topics or content later:
+     * Simply copy one of the objects below and append it to the `topics` array.
+     */
+    const topics = [
+      {
+        id: "basics",
+        title: "Basics of Looping",
+        icon: "fa-arrows-rotate",
+        summary: "Fundamental control flow mechanism for repeating execution.",
+        content: `
+          <div class="space-y-4">
+            <p class="text-slate-300 leading-relaxed">
+              A loop runs a block of code repeatedly as long as a specified conditional statement remains 
+              <code class="text-emerald-400 font-mono">True</code>. To prevent an infinite loop, the condition must eventually evaluate to 
+              <code class="text-rose-400 font-mono">False</code>.
+            </p>
+            
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 font-mono text-sm shadow-inner">
+              <div class="text-slate-500 mb-2">// Pseudocode Structure</div>
+              <div class="text-indigo-400">WHILE <span class="text-amber-300 font-semibold">&lt;condition&gt;</span>:</div>
+              <div class="text-slate-400 pl-4 border-l-2 border-indigo-500/30 my-1">
+                # Executed continuously while condition is True<br/>
+                # Must update variables to eventually make condition False
+              </div>
+              <div class="text-slate-500 mt-2"># Execution resumes here when condition becomes False</div>
+            </div>
+
+            <div class="bg-indigo-950/30 border border-indigo-800/40 rounded-lg p-4 text-xs text-indigo-300 flex items-start gap-3">
+              <i class="fa-solid fa-lightbulb text-indigo-400 text-base mt-0.5"></i>
+              <div>
+                <strong>Key Takeaway:</strong> Controlling the loop relies entirely on managing state changes within the loop body that directly affect the loop condition.
+              </div>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: "counter",
+        title: "Counter-Controlled Loop",
+        icon: "fa-list-ol",
+        summary: "Execute code a predetermined or calculated number of times.",
+        content: `
+          <div class="space-y-4">
+            <p class="text-slate-300 leading-relaxed">
+              Used when you know beforehand how many iterations are required, or when counting through discrete items.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 my-4">
+              <div class="bg-slate-900 border border-slate-800 p-3 rounded-lg text-center">
+                <div class="text-xs text-slate-400 uppercase">1. Counter</div>
+                <div class="text-sm font-semibold text-indigo-400 mt-1">SET count = 1</div>
+              </div>
+              <div class="bg-slate-900 border border-slate-800 p-3 rounded-lg text-center">
+                <div class="text-xs text-slate-400 uppercase">2. Upper Bound</div>
+                <div class="text-sm font-semibold text-amber-400 mt-1">count &lt;= limit</div>
+              </div>
+              <div class="bg-slate-900 border border-slate-800 p-3 rounded-lg text-center">
+                <div class="text-xs text-slate-400 uppercase">3. Increment</div>
+                <div class="text-sm font-semibold text-emerald-400 mt-1">count = count + 1</div>
+              </div>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 font-mono text-sm overflow-x-auto">
+              <div class="text-slate-500 mb-2">// Example: Greeting Attendees</div>
+              <div><span class="text-indigo-400">PRINT</span> <span class="text-emerald-300">"How many people are at the party?"</span></div>
+              <div><span class="text-indigo-400">INPUT</span> num_of_people</div>
+              <div class="my-1 text-slate-400"><span class="text-indigo-400">SET</span> count = 1</div>
+              <div class="text-indigo-400">WHILE <span class="text-slate-200">count &lt;= num_of_people</span>:</div>
+              <div class="pl-4 border-l-2 border-slate-700 space-y-1 my-1">
+                <div><span class="text-indigo-400">PRINT</span> <span class="text-emerald-300">"What is the name of one person?"</span></div>
+                <div><span class="text-indigo-400">INPUT</span> name</div>
+                <div><span class="text-indigo-400">PRINT</span> <span class="text-emerald-300">"Hello there, "</span> + name</div>
+                <div class="text-emerald-400"><span class="text-indigo-400">SET</span> count = count + 1</div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: "validation",
+        title: "Data-Validation Loop",
+        icon: "fa-shield-halved",
+        summary: "Guard loops designed to reject faulty inputs.",
+        content: `
+          <div class="space-y-4">
+            <p class="text-slate-300 leading-relaxed">
+              Data validation loops force the system to repeatedly request input until valid data is supplied, preventing unexpected runtime errors or incorrect mathematical output downstream.
+            </p>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 font-mono text-sm">
+              <div class="text-slate-500 mb-2">// Radius Input Validation Example</div>
+              <div><span class="text-indigo-400">PRINT</span> <span class="text-emerald-300">"Please enter the radius of a circle."</span></div>
+              <div><span class="text-indigo-400">INPUT</span> radius</div>
+              <div class="text-amber-400 mt-2">WHILE <span class="text-slate-200">radius &lt; 0</span>: <span class="text-slate-500">// Check error condition</span></div>
+              <div class="pl-4 border-l-2 border-amber-500/30 my-1 space-y-1">
+                <div><span class="text-indigo-400">PRINT</span> <span class="text-rose-400">"Radius cannot be negative. Re-enter:"</span></div>
+                <div><span class="text-indigo-400">INPUT</span> radius</div>
+              </div>
+            </div>
+
+            <div class="border-l-4 border-amber-500 bg-amber-950/20 p-4 rounded-r-lg text-xs text-amber-200">
+              <strong>Crucial Rule:</strong> Only place the prompt/re-prompt logic inside a validation loop. Placing auxiliary application logic inside this loop will trigger logical bugs.
+            </div>
+          </div>
+        `
+      },
+      {
+        id: "summation",
+        title: "Summation & Averaging",
+        icon: "fa-calculator",
+        summary: "Accumulating totals across iterations and deriving averages.",
+        content: `
+          <div class="space-y-4">
+            <p class="text-slate-300 leading-relaxed">
+              Summation uses an <strong>accumulator</strong> variable initialized to 0 prior to the loop. Averages must only be calculated <em>after</em> the loop finishes.
+            </p>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 font-mono text-sm">
+              <div class="text-slate-500 mb-2">// Summation & Averaging Workflow</div>
+              <div><span class="text-indigo-400">PRINT</span> <span class="text-emerald-300">"How many items are there?"</span></div>
+              <div><span class="text-indigo-400">INPUT</span> num_of_items</div>
+              <div class="text-emerald-400"><span class="text-indigo-400">SET</span> total_price = 0 <span class="text-slate-500">// Initialize Accumulator</span></div>
+              <div><span class="text-indigo-400">SET</span> count = 1</div>
+              
+              <div class="text-indigo-400 mt-2">WHILE <span class="text-slate-200">count &lt;= num_of_items</span>:</div>
+              <div class="pl-4 border-l-2 border-slate-700 space-y-1 my-1">
+                <div><span class="text-indigo-400">PRINT</span> <span class="text-emerald-300">"Enter item price:"</span></div>
+                <div><span class="text-indigo-400">INPUT</span> price</div>
+                <div class="text-emerald-400"><span class="text-indigo-400">SET</span> total_price = total_price + price</div>
+                <div><span class="text-indigo-400">SET</span> count = count + 1</div>
+              </div>
+              
+              <div class="text-amber-400 mt-2"><span class="text-indigo-400">SET</span> average = total_price / num_of_items <span class="text-slate-500">// Calculated AFTER loop</span></div>
+            </div>
+          </div>
+        `
+      },
+      {
+        id: "comparison",
+        title: "IF vs. WHILE Decision Matrix",
+        icon: "fa-code-branch",
+        summary: "Knowing when to branch execution once vs continuously.",
+        content: `
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
+              <div class="flex items-center gap-2 text-indigo-400 font-bold">
+                <i class="fa-solid fa-code-branch"></i> IF Statement
+              </div>
+              <p class="text-xs text-slate-400">Evaluates condition <strong>exactly once</strong>.</p>
+              <div class="bg-slate-950 p-3 rounded font-mono text-xs text-slate-300">
+                IF age &lt; 21:<br/>
+                &nbsp;&nbsp;PRINT "Access Denied"
+              </div>
+              <p class="text-xs text-slate-400 italic">Use for one-time checks (e.g., identity checks, single thresholds).</p>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
+              <div class="flex items-center gap-2 text-emerald-400 font-bold">
+                <i class="fa-solid fa-rotate"></i> WHILE Loop
+              </div>
+              <p class="text-xs text-slate-400">Evaluates condition <strong>continuously</strong> until False.</p>
+              <div class="bg-slate-950 p-3 rounded font-mono text-xs text-slate-300">
+                WHILE val &lt; 0:<br/>
+                &nbsp;&nbsp;INPUT val
+              </div>
+              <p class="text-xs text-slate-400 italic">Use for multi-try input validation or repeated calculations.</p>
+            </div>
+          </div>
+        `
+      }
+    ];
+
+    // State management tracking active tab & completed topics
+    let activeTopicId = topics[0].id;
+    const completedTopics = new Set();
+
+    // Render Navigation Items
+    function renderNav() {
+      const navContainer = document.getElementById("nav-list");
+      navContainer.innerHTML = topics.map(topic => {
+        const isActive = topic.id === activeTopicId;
+        const isCompleted = completedTopics.has(topic.id);
+        
+        return `
+          <button 
+            onclick="setActiveTopic('${topic.id}')"
+            class="w-full text-left px-3 py-2.5 rounded-lg flex items-center justify-between transition-all shrink-0 md:shrink border ${
+              isActive 
+                ? 'bg-indigo-600/10 border-indigo-500/50 text-indigo-300 font-medium' 
+                : 'bg-transparent border-transparent text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
+            }"
+          >
+            <div class="flex items-center gap-2.5 overflow-hidden">
+              <i class="fa-solid ${topic.icon} text-sm w-4 text-center ${isActive ? 'text-indigo-400' : 'text-slate-500'}"></i>
+              <span class="text-xs sm:text-sm truncate">${topic.title}</span>
+            </div>
+            ${isCompleted ? '<i class="fa-solid fa-circle-check text-xs text-emerald-400 ml-2"></i>' : ''}
+          </button>
+        `;
+      }).join("");
+    }
+
+    // Render Main Display Area
+    function renderContent() {
+      const container = document.getElementById("content-container");
+      const topic = topics.find(t => t.id === activeTopicId);
+      const isCompleted = completedTopics.has(topic.id);
+
+      container.innerHTML = `
+        <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 backdrop-blur-sm space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+            <div>
+              <div class="flex items-center gap-2 text-xs font-mono text-indigo-400 mb-1">
+                <i class="fa-solid ${topic.icon}"></i> TOPIC MODULE
+              </div>
+              <h2 class="text-xl sm:text-2xl font-bold text-slate-100">${topic.title}</h2>
+              <p class="text-xs sm:text-sm text-slate-400 mt-1">${topic.summary}</p>
+            </div>
+            <button 
+              onclick="toggleComplete('${topic.id}')"
+              class="self-start sm:self-center px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all border ${
+                isCompleted 
+                  ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20' 
+                  : 'bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700'
+              }"
+            >
+              <i class="fa-solid ${isCompleted ? 'fa-circle-check text-emerald-400' : 'fa-circle-thin'}"></i>
+              ${isCompleted ? 'Completed' : 'Mark Complete'}
+            </button>
+          </div>
+
+          <!-- Dynamic Body Content -->
+          <div class="pt-2">
+            ${topic.content}
+          </div>
+        </div>
+      `;
+    }
+
+    // Progress Bar Updater
+    function updateProgress() {
+      const percentage = Math.round((completedTopics.size / topics.length) * 100);
+      document.getElementById("progress-bar").style.width = `${percentage}%`;
+      document.getElementById("progress-text").textContent = `${percentage}%`;
+    }
+
+    // Interactive Handlers
+    function setActiveTopic(id) {
+      activeTopicId = id;
+      renderNav();
+      renderContent();
+    }
+
+    function toggleComplete(id) {
+      if (completedTopics.has(id)) {
+        completedTopics.delete(id);
+      } else {
+        completedTopics.add(id);
+      }
+      renderNav();
+      renderContent();
+      updateProgress();
+    }
+
+    // Initial Launch
+    renderNav();
+    renderContent();
+    updateProgress();
+  </script>
+</body>
+</html>
