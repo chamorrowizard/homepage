@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MLA 9th Edition Master Study Guide</title>
+  
+  <!-- Modern Inter Font & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ==========================================================================
+       1. DESIGN SYSTEM & CSS VARIABLES
+       ========================================================================== */
+    :root {
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-sidebar: #0f172a;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #f8fafc;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --accent-success: #10b981;
+      --accent-warning: #f59e0b;
+      --accent-danger: #ef4444;
+      --border-color: #e2e8f0;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --sidebar-width: 280px;
+      --header-height: 70px;
+      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-code: 'Fira Code', monospace;
+    }
+
+    /* CSS Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.6;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ==========================================================================
+       2. LAYOUT & RESPONSIVE ARCHITECTURE
+       ========================================================================== */
+    /* Sidebar Navigation (Desktop) */
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--bg-sidebar);
+      color: var(--text-light);
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sidebar-header i {
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+
+    .sidebar-header h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 20px 12px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .nav-item {
+      margin-bottom: 6px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      color: #94a3b8;
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-link.active {
+      background-color: var(--primary);
+      color: #ffffff;
+    }
+
+    /* Main Content Wrapper */
+    .main-wrapper {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+      display: flex;
+      flex-direction: column;
+      min-width: 0; /* Prevents flex items from overflowing horizontally */
+    }
+
+    /* Header Bar */
+    .top-header {
+      height: var(--header-height);
+      background-color: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 90;
+    }
+
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .search-box {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px 16px 10px 40px;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--primary);
+      background-color: #ffffff;
+    }
+
+    /* Content Area */
+    .content-area {
+      padding: 32px;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ==========================================================================
+       3. CONTENT COMPONENTS & UI CARDS
+       ========================================================================== */
+    .module-section {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .module-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      margin-bottom: 32px;
+    }
+
+    /* Card Component */
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-title i {
+      color: var(--primary);
+    }
+
+    /* Academic Visual Preview Box */
+    .paper-preview {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-md);
+      padding: 40px;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 1.05rem;
+      line-height: 2;
+      color: #000;
+      margin: 20px 0;
+      border-radius: var(--radius-sm);
+      position: relative;
+    }
+
+    .paper-header-right {
+      text-align: right;
+      margin-bottom: 20px;
+    }
+
+    .paper-heading-left {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .paper-title-center {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    /* Code & Formula Displays */
+    .formula-box {
+      background-color: #1e293b;
+      color: #f8fafc;
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      font-family: var(--font-code);
+      font-size: 0.95rem;
+      margin: 16px 0;
+      overflow-x: auto;
+    }
+
+    /* Accordions (For Modular Extension) */
+    .accordion {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .accordion-header {
+      width: 100%;
+      padding: 16px 20px;
+      background-color: var(--bg-card);
+      border: none;
+      text-align: left;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .accordion-header:hover {
+      background-color: var(--bg-main);
+    }
+
+    .accordion-content {
+      padding: 0 20px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0, 1, 0, 1), padding 0.3s ease;
+      background-color: #ffffff;
+      border-top: 0px solid var(--border-color);
+    }
+
+    .accordion.open .accordion-content {
+      padding: 20px;
+      max-height: 1000px;
+      border-top-width: 1px;
+    }
+
+    .accordion-header i {
+      transition: transform 0.3s;
+    }
+
+    .accordion.open .accordion-header i {
+      transform: rotate(180deg);
+    }
+
+    /* Table Component */
+    .table-container {
+      overflow-x: auto;
+      margin: 16px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background-color: var(--bg-main);
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* Callout Boxes */
+    .callout {
+      padding: 16px;
+      border-left: 4px solid var(--primary);
+      background-color: var(--primary-light);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: 16px 0;
+      font-size: 0.95rem;
+    }
+
+    .callout.warning {
+      border-left-color: var(--accent-warning);
+      background-color: #fffbeb;
+    }
+
+    .callout.success {
+      border-left-color: var(--accent-success);
+      background-color: #ecfdf5;
+    }
+
+    /* Dynamic Container for adding new content */
+    .custom-content-slot {
+      margin-top: 20px;
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       4. MOBILE RESPONSIVE MEDIA QUERIES
+       ========================================================================== */
+    @media (max-width: 900px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main-wrapper {
+        margin-left: 0;
+      }
+
+      .mobile-toggle {
+        display: block;
+      }
+
+      .top-header {
+        padding: 0 16px;
+      }
+
+      .content-area {
+        padding: 20px 16px;
+      }
+
+      .paper-preview {
+        padding: 20px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       SIDEBAR NAVIGATION
+       ========================================================================== -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <i class="fa-solid fa-graduation-cap"></i>
+      <h2>MLA 9th Edition</h2>
+    </div>
+    <ul class="sidebar-menu">
+      <li class="nav-item">
+        <a class="nav-link active" onclick="switchTab('page-layout')">
+          <i class="fa-solid fa-file-lines"></i> Page Layout
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="switchTab('in-text-citations')">
+          <i class="fa-solid fa-quote-right"></i> In-Text Citations
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="switchTab('works-cited-core')">
+          <i class="fa-solid fa-list-check"></i> Works Cited: Core
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="switchTab('works-cited-examples')">
+          <i class="fa-solid fa-book"></i> Source Examples
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" onclick="switchTab('custom-notes')">
+          <i class="fa-solid fa-plus-circle"></i> Add Custom Detail
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ==========================================================================
+       MAIN CONTENT CONTAINER
+       ========================================================================== -->
+  <div class="main-wrapper">
+    
+    <!-- TOP HEADER / SEARCH -->
+    <header class="top-header">
+      <button class="mobile-toggle" id="mobileToggle" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Search rules, container titles, formulas..." onkeyup="filterContent()">
+      </div>
+    </header>
+
+    <!-- CONTENT MODULES -->
+    <main class="content-area">
+
+      <!-- ----------------------------------------------------------------------
+           MODULE 1: PAGE LAYOUT & MECHANICS
+           ---------------------------------------------------------------------- -->
+      <section id="page-layout" class="module-section active">
+        <h1 class="page-title">Document Layout & Mechanics</h1>
+        <p class="page-subtitle">Standard visual architecture for papers submitted in MLA 9th Edition format.</p>
+
+        <div class="card">
+          <h2 class="card-title"><i class="fa-solid fa-sliders"></i> Standard Document Settings</h2>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Element</th>
+                  <th>MLA Standard Requirement</th>
+                  <th>Common Mistake to Avoid</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Margins</strong></td>
+                  <td>1 inch on all four sides (top, bottom, left, right).</td>
+                  <td>Using default 1.25" margins or custom narrow margins.</td>
+                </tr>
+                <tr>
+                  <td><strong>Spacing</strong></td>
+                  <td>Double-spaced ($2.0$) throughout entire document.</td>
+                  <td>Adding extra line breaks (<kbd>Enter</kbd> key) between paragraphs.</td>
+                </tr>
+                <tr>
+                  <td><strong>Font Choice</strong></td>
+                  <td>Legible font (Times New Roman 12 pt, Arial 11 pt, Calibri 11 pt).</td>
+                  <td>Mixing multiple font styles or sizes across headings.</td>
+                </tr>
+                <tr>
+                  <td><strong>Paragraph Indent</strong></td>
+                  <td>$\frac{1}{2}$ inch ($0.5"$) indent on the first line of each paragraph.</td>
+                  <td>Using spaces instead of the <kbd>Tab</kbd> key or ruler margin setting.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title"><i class="fa-solid fa-eye"></i> Visual First-Page Blueprint</h2>
+          <p>Hover/examine the layout preview below to see how the running head, heading block, and title are arranged:</p>
+          
+          <!-- Interactive Visual Blueprint -->
+          <div class="paper-preview">
+            <div class="paper-header-right">Cabrera 1</div>
+            <div class="paper-heading-left">
+              Justin Cabrera<br>
+              Dr. Alexander<br>
+              ENG 102<br>
+              19 Sept. 2026
+            </div>
+            <div class="paper-title-center">
+              Federalism and Constitutional Power in Nevada
+            </div>
+            <p style="text-indent: 0.5in;">
+              The balance of power between municipal authorities and state legislatures remains a central debate in modern administrative law...
+            </p>
+          </div>
+
+          <div class="callout warning">
+            <strong>Important Rule:</strong> Never place your paper title in <strong>bold</strong>, <u>underlines</u>, or "quotation marks." Use standard title-case capitalization only.
+          </div>
+        </div>
+      </section>
+
+      <!-- ----------------------------------------------------------------------
+           MODULE 2: IN-TEXT CITATIONS
+           ---------------------------------------------------------------------- -->
+      <section id="in-text-citations" class="module-section">
+        <h1 class="page-title">In-Text Citations (Author-Page)</h1>
+        <p class="page-subtitle">How to correctly integrate and attribute source claims within your prose.</p>
+
+        <div class="card">
+          <h2 class="card-title"><i class="fa-solid fa-code"></i> Citation Formulas</h2>
+          
+          <h3>1. Standard Parenthetical Citation</h3>
+          <div class="formula-box">
+            "Direct quote or paraphrase" (Author Lastname PageNumber).
+          </div>
+          <p><strong>Example:</strong> "State preemption acts as an absolute bar to local legislation" (Cabrera 45).</p>
+
+          <h3 style="margin-top: 20px;">2. Signal Phrase Citation (Author Named in Text)</h3>
+          <div class="formula-box">
+            According to Author Lastname, "Direct quote or paraphrase" (PageNumber).
+          </div>
+          <p><strong>Example:</strong> Cabrera states that local municipal mandates often conflict with state policy (45).</p>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title"><i class="fa-solid fa-layer-group"></i> Handling Special Citation Cases</h2>
+          
+          <div class="accordion">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Websites & Sources Without Page Numbers</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="accordion-content">
+              <p>If an online article or website lacks page numbers, omit numbers entirely. <strong>Never make up page or paragraph numbers.</strong></p>
+              <div class="callout">
+                Example: As state policy reports confirm, local laws are constrained by preemption (Cabrera).
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <span>No Author Listed</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="accordion-content">
+              <p>Use a shortened version of the title in quotation marks (for articles) or italics (for books/websites).</p>
+              <div class="callout">
+                Example: Municipalities are increasingly limited by legislative limits ("Understanding Local Authority" 12).
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Time-based Media (Videos, Lectures, Podcasts)</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="accordion-content">
+              <p>Replace page numbers with a specific timestamp or time range formatted as <code>hh:mm:ss</code>.</p>
+              <div class="callout">
+                Example: Conflict between city councils and state policy is expanding (Alexander 00:14:22-25).
+              </div>
+            </div>
+          </div>
+        </div>
+
+          <div class="card">
+            <h2 class="card-title"><i class="fa-solid fa-indent"></i> Block Quotations (4+ Lines of Prose)</h2>
+            <p>When quoting prose longer than 4 typed lines, set it off as a block quote:</p>
+            <ul style="margin-left: 20px; margin-bottom: 16px;">
+              <li>Indent the entire block <strong>0.5 inches ($\frac{1}{2}"$)</strong> from the left margin.</li>
+              <li>Do <strong>not</strong> use quotation marks around the block text.</li>
+              <li>Place the parenthetical citation <strong>after</strong> the closing period (unlike standard quotes).</li>
+            </ul>
+
+            <div class="paper-preview" style="line-height: 1.8;">
+              <p>Municipal authority remains heavily constrained by state-level preemption laws across several domains:</p>
+              <div style="margin-left: 0.5in; margin-top: 8px; margin-bottom: 8px;">
+                State preemption acts as an absolute bar to local legislation, creating significant friction between city councils and state legislatures. When state statutory provisions explicitly overlap local mandates, local ordinances are consistently rendered unenforceable by judicial review. (Cabrera 112)
+              </div>
+              <p>This dynamic demonstrates how state power overrides local control.</p>
+            </div>
+          </div>
+
+          <div class="accordion">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+              <span>Citing Tables, Figures, and Images</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="accordion-content">
+              <p>Label visuals below the image/table as follows:</p>
+              <ul>
+                <li><strong>Label &amp; Number:</strong> <code>Fig. 1</code> or <code>Table 1</code> (flush left).</li>
+                <li><strong>Caption:</strong> Followed by a brief description or full citation details.</li>
+                <li>In your text, refer to the image using parentheses: <code>(see fig. 1)</code>.</li>
+              </ul>
+            </div>
+          </div>
+      </section>
+
+      <!-- ----------------------------------------------------------------------
+           MODULE 3: WORKS CITED - CORE ELEMENTS (CONTAINERS)
+           ---------------------------------------------------------------------- -->
+      <section id="works-cited-core" class="module-section">
+        <h1 class="page-title">Works Cited: Core Elements Architecture</h1>
+        <p class="page-subtitle">The 9 Container Elements used to construct any entry in MLA 9th Edition.</p>
+
+        <div class="card">
+          <h2 class="card-title"><i class="fa-solid fa-cubes"></i> The 9 Core Elements Template</h2>
+          <p>In MLA 9th Edition, every source entry is built using this precise sequence of elements and punctuation marks:</p>
+          
+          <ol style="margin-left: 24px; margin-top: 16px; line-height: 2;">
+            <li><strong>Author.</strong> (First author listed as `Lastname, Firstname.`)</li>
+            <li><strong>"Title of Source."</strong> (Articles/chapters in quotes; books/websites in italics)</li>
+            <li><strong><em>Title of Container,</em></strong> (Larger work hosting the source: journal, website, book)</li>
+            <li><strong>Other contributors,</strong> (Translated by, edited by...)</li>
+            <li><strong>Version,</strong> (vol. 2, 9th ed., revised ed.)</li>
+            <li><strong>Number,</strong> (no. 4, issue 2)</li>
+            <li><strong>Publisher,</strong> (Omit if identical to container website title)</li>
+            <li><strong>Publication date,</strong> (19 Sept. 2026 or 2026)</li>
+            <li><strong>Location.</strong> (Page range `pp. 45-50`, URL, or DOI)</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title"><i class="fa-solid fa-list-ol"></i> 9 Core Container Elements Breakdown</h2>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Element</th>
+                  <th>Formatting Style</th>
+                  <th>Followed By</th>
+                  <th>Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Author</td>
+                  <td>Lastname, Firstname.</td>
+                  <td>Period</td>
+                  <td>Cabrera, Justin.</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Title of Source</td>
+                  <td>"Quotes" (article) or <em>Italics</em> (book)</td>
+                  <td>Period</td>
+                  <td>"State Preemption Laws."</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Title of Container</td>
+                  <td><em>Italics</em></td>
+                  <td>Comma</td>
+                  <td><em>Journal of Legal Studies,</em></td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Contributor</td>
+                  <td>Edited by / Translated by</td>
+                  <td>Comma</td>
+                  <td>edited by Camille Alexander,</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Version</td>
+                  <td>vol. / 9th ed. / rev. ed.</td>
+                  <td>Comma</td>
+                  <td>9th ed.,</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>Number</td>
+                  <td>vol. X, no. Y</td>
+                  <td>Comma</td>
+                  <td>vol. 14, no. 2,</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>Publisher</td>
+                  <td>Publisher Name (Omit "Co.", "Inc.")</td>
+                  <td>Comma</td>
+                  <td>Academic Press,</td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td>Publication Date</td>
+                  <td>Day Month Year or Year</td>
+                  <td>Comma</td>
+                  <td>19 Sept. 2026,</td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td>Location</td>
+                  <td>pp. XX-YY / DOI / URL</td>
+                  <td>Period</td>
+                  <td>pp. 110-125.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title"><i class="fa-solid fa-database"></i> Container 2 (Library Databases &amp; Platforms)</h2>
+          <p>When a source is found inside an online database (JSTOR, EBSCOhost, Canvas, ProQuest), it has <strong>two containers</strong>:</p>
+          
+          <div class="formula-box">
+            Author. "Source Title." <em>Container 1 (Journal Title)</em>, vol. X, no. Y, Year, pp. XX-YY. <em>Container 2 (Database Name)</em>, DOI or URL.
+          </div>
+
+          <div class="callout success">
+            <strong>Real-World Example:</strong><br>
+            Alexander, Camille. "Evaluating Preemption Trends." <em>Journal of Legal Studies</em>, vol. 14, no. 2, 2024, pp. 110-125. <em>JSTOR</em>, https://doi.org/10.1038/s41586-020-2012-7.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title"><i class="fa-solid fa-clock"></i> Access Dates Rule (Modern MLA standard)</h2>
+          <div class="callout warning">
+            <strong>Instructor Insight:</strong> In modern MLA 9th Edition, including an <code>Accessed 19 Sept. 2026.</code> date at the end of a web citation is <strong>optional</strong>. It is only required if the source has no publication/revision date or lacks a stable URL/DOI.
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ----------------------------------------------------------------------
+           MODULE 4: WORKS CITED SOURCE EXAMPLES
+           ---------------------------------------------------------------------- -->
+      <section id="works-cited-examples" class="module-section">
+        <h1 class="page-title">Works Cited Entry Blueprints</h1>
+        <p class="page-subtitle">Copy/paste ready formulas and samples for common source formats.</p>
+
+        <!-- Book Example -->
+        <div class="card">
+          <h2 class="card-title"><i class="fa-solid fa-book"></i> Book (Single Author)</h2>
+          <div class="formula-box">
+            Lastname, Firstname. <em>Title of Book</em>. Publisher, Year of Publication.
+          </div>
+          <p><strong>Example:</strong></p>
+          <div class="paper-preview" style="padding: 16px; margin-top: 8px;">
+            Cabrera, Justin. <em>Federalism and Local Power in Nevada Governance</em>. Academic Press, 2025.
+          </div>
+        </div>
+
+        <!-- Scholarly Journal Example -->
+        <div class="card">
+          <h2 class="card-title"><i class="fa-solid fa-newspaper"></i> Scholarly Journal Article (With DOI)</h2>
+          <div class="formula-box">
+            Lastname, Firstname. "Title of Article." <em>Journal Title</em>, vol. X, no. Y, Year, pp. XX-YY. <em>Database/Location</em>, https://doi.org/XX.XXX...
+          </div>
+          <p><strong>Example:</strong></p>
+          <div class="paper-preview" style="padding: 16px; margin-top: 8px;">
+            Alexander, Camille. "Evaluating Preemption Trends in Modern States." <em>Journal of Legal Studies</em>, vol. 14, no. 2, 2024, pp. 110-125. https://doi.org/10.1038/s41586-020-2012-7.
+          </div>
+        </div>
+
+        <!-- Web Page Example -->
+        <div class="card">
+          <h2 class="card-title"><i class="fa-solid fa-globe"></i> Webpage / Online Article</h2>
+          <div class="formula-box">
+            Lastname, Firstname. "Title of Webpage." <em>Title of Website</em>, Publisher/Sponsor, Day Month Year, URL.
+          </div>
+          <p><strong>Example:</strong></p>
+          <div class="paper-preview" style="padding: 16px; margin-top: 8px;">
+            Smith, Jordan. "Understanding Nevada Municipal Laws." <em>Nevada Legal Review</em>, 12 Aug. 2026, www.nvlegalreview.org/articles/municipal-laws.
+          </div>
+        </div>
+      </section>
+
+      <!-- ----------------------------------------------------------------------
+           MODULE 5: EXTENSIBLE CUSTOM NOTES (FOR EASY FUTURE UPDATES)
+           ---------------------------------------------------------------------- -->
+      <section id="custom-notes" class="module-section">
+        <h1 class="page-title">Add Custom Detail & Notes</h1>
+        <p class="page-subtitle">Expand your study app live with custom insights, edge cases, or lecture notes.</p>
+
+        <div class="card">
+          <h2 class="card-title"><i class="fa-solid fa-pen-to-square"></i> Add Personal Note / Exception Rule</h2>
+          
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
+            <input type="text" id="customNoteTitle" placeholder="Topic Title (e.g., Citing Generative AI / ChatGPT)" style="padding: 10px; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+            <textarea id="customNoteBody" rows="4" placeholder="Enter rule details, code formulas, or professor instructions..." style="padding: 10px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-family: var(--font-main);"></textarea>
+            <button onclick="addCustomNote()" style="padding: 12px; background: var(--primary); color: #fff; border: none; border-radius: var(--radius-md); font-weight: 600; cursor: pointer;">
+              Save Note to App
+            </button>
+          </div>
+        </div>
+
+        <div id="dynamicNotesContainer">
+          <!-- Dynamic user notes render here -->
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==========================================================================
+       5. JAVASCRIPT LOGIC & INTERACTIVITY
+       ========================================================================== -->
+  <script>
+    /* ------------------------------------------------------------------------
+       A. Tab Switching Engine
+       ------------------------------------------------------------------------ */
+    function switchTab(tabId) {
+      // Hide all sections
+      const sections = document.querySelectorAll('.module-section');
+      sections.forEach(section => section.classList.remove('active'));
+
+      // Deactivate all nav links
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(link => link.classList.remove('active'));
+
+      // Show selected section
+      const selectedSection = document.getElementById(tabId);
+      if (selectedSection) {
+        selectedSection.classList.add('active');
+      }
+
+      // Highlight corresponding active nav link
+      event.currentTarget.classList.add('active');
+
+      // Close mobile drawer if open
+      if (window.innerWidth <= 900) {
+        document.getElementById('sidebar').classList.remove('open');
+      }
+    }
+
+    /* ------------------------------------------------------------------------
+       B. Mobile Sidebar Drawer Toggle
+       ------------------------------------------------------------------------ */
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('open');
+    }
+
+    /* ------------------------------------------------------------------------
+       C. Accordion Expand/Collapse Logic
+       ------------------------------------------------------------------------ */
+    function toggleAccordion(buttonElement) {
+      const accordion = buttonElement.parentElement;
+      accordion.classList.toggle('open');
+    }
+
+    /* ------------------------------------------------------------------------
+       D. Live Client-Side Search Filter
+       ------------------------------------------------------------------------ */
+    function filterContent() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const cards = document.querySelectorAll('.card, .accordion');
+
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (text.includes(query)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    /* ------------------------------------------------------------------------
+       E. Extensible Dynamic Note Insertion (LocalStorage Persisted)
+       ------------------------------------------------------------------------ */
+    function addCustomNote() {
+      const title = document.getElementById('customNoteTitle').value.trim();
+      const body = document.getElementById('customNoteBody').value.trim();
+
+      if (!title || !body) {
+        alert('Please provide both a topic title and details.');
+        return;
+      }
+
+      const noteObj = { title, body, date: new Date().toLocaleDateString() };
+      saveNoteToStorage(noteObj);
+      renderNoteCard(noteObj);
+
+      // Clear Inputs
+      document.getElementById('customNoteTitle').value = '';
+      document.getElementById('customNoteBody').value = '';
+    }
+
+    function renderNoteCard(note) {
+      const container = document.getElementById('dynamicNotesContainer');
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h2 class="card-title"><i class="fa-solid fa-bookmark"></i> ${note.title}</h2>
+        <p>${note.body}</p>
+        <small style="color: var(--text-muted); display: block; margin-top: 12px;">Added on ${note.date}</small>
+      `;
+      container.prepend(card);
+    }
+
+    function saveNoteToStorage(note) {
+      let notes = JSON.parse(localStorage.getItem('mla_custom_notes') || '[]');
+      notes.push(note);
+      localStorage.setItem('mla_custom_notes', JSON.stringify(notes));
+    }
+
+    function loadSavedNotes() {
+      let notes = JSON.parse(localStorage.getItem('mla_custom_notes') || '[]');
+      notes.forEach(note => renderNoteCard(note));
+    }
+
+    // Initialize saved notes on load
+    document.addEventListener('DOMContentLoaded', loadSavedNotes);
+  </script>
+</body>
+</html>
