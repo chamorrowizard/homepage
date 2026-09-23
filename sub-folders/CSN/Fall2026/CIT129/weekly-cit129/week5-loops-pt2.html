@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIT 129: Week 5 - Loops Pt. 2 Hub</title>
+    <!-- Google Fonts for Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           1. DESIGN SYSTEM & CSS VARIABLES
+           ========================================================================== */
+        :root {
+            /* Color Palette - Dark Premium Theme */
+            --bg-base: #0B0F17;
+            --bg-surface: #111827;
+            --bg-card: #1F2937;
+            --bg-card-hover: #374151;
+            
+            /* Primary Accent (Cyan/Teal) */
+            --accent-primary: #06B6D4;
+            --accent-glow: rgba(6, 182, 212, 0.25);
+            
+            /* Secondary Accent (Purple) */
+            --accent-secondary: #8B5CF6;
+            --accent-secondary-glow: rgba(139, 92, 246, 0.25);
+
+            /* Text Colors */
+            --text-primary: #F9FAFB;
+            --text-secondary: #9CA3AF;
+            --text-muted: #6B7280;
+
+            /* Code Theme */
+            --code-bg: #030712;
+            --code-keyword: #F43F5E;
+            --code-string: #10B981;
+            --code-variable: #38BDF8;
+            --code-comment: #6B7280;
+
+            /* Borders & Shadows */
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(6, 182, 212, 0.4);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+
+            /* Layout Layout Dimensions */
+            --sidebar-width: 280px;
+            --max-width-content: 1000px;
+        }
+
+        /* ==========================================================================
+           2. BASE STYLES & RESET
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-base);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1F2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+
+        /* ==========================================================================
+           3. LAYOUT STRUCTURE (SIDEBAR & MAIN CONTENT)
+           ========================================================================== */
+        /* Sidebar Navigation */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-surface);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-badge {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: #fff;
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        .brand-title {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-subtitle {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Navigation Links */
+        .nav-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            padding: 20px 20px 8px 20px;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0 12px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            margin-bottom: 4px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .nav-link.active {
+            color: var(--text-primary);
+            background-color: rgba(6, 182, 212, 0.1);
+            border-left: 3px solid var(--accent-primary);
+        }
+
+        .nav-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.7;
+        }
+
+        .nav-link.active .nav-icon {
+            opacity: 1;
+            color: var(--accent-primary);
+        }
+
+        /* Main Content Container */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Header Bar */
+        .top-header {
+            height: 64px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: var(--radius-sm);
+        }
+
+        .search-bar {
+            position: relative;
+            width: 320px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 8px 12px 8px 36px;
+            background-color: var(--bg-base);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--accent-primary);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            color: var(--text-muted);
+        }
+
+        /* Page Body Content */
+        .content-area {
+            max-width: var(--max-width-content);
+            width: 100%;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* ==========================================================================
+           4. COMPONENT STYLES (CARDS, BADGES, CODE BLOCKS)
+           ========================================================================== */
+        .hero-banner {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .topic-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background-color: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            color: var(--accent-primary);
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 20px;
+            margin-bottom: 12px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #9CA3AF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            max-width: 680px;
+        }
+
+        /* Cards Grid */
+        .section-card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-card);
+            transition: border-color 0.2s ease;
+            scroll-margin-top: 80px; /* Offset for sticky header */
+        }
+
+        .section-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            gap: 16px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Keywords Box */
+        .keyword-box {
+            background-color: rgba(139, 92, 246, 0.08);
+            border-left: 3px solid var(--accent-secondary);
+            padding: 12px 16px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin: 16px 0;
+            font-size: 13.5px;
+        }
+
+        .keyword-box strong {
+            color: #C084FC;
+        }
+
+        /* List Items */
+        .custom-list {
+            list-style: none;
+            margin: 16px 0;
+        }
+
+        .custom-list li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .custom-list li::before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: var(--accent-primary);
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* Code Container */
+        .code-block-wrapper {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            margin-top: 16px;
+        }
+
+        .code-header {
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'Fira Code', monospace;
+        }
+
+        .code-body {
+            padding: 16px;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #E5E7EB;
+        }
+
+        /* Interactive Simulator / Demo Box */
+        .interactive-demo {
+            background-color: var(--bg-base);
+            border: 1px solid var(--border-highlight);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .demo-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .demo-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .demo-input {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            flex-grow: 1;
+            outline: none;
+        }
+
+        .btn {
+            background: var(--accent-primary);
+            color: #000;
+            font-weight: 600;
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 13px;
+            transition: opacity 0.2s ease;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .demo-output {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: var(--radius-sm);
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            min-height: 40px;
+            color: var(--text-secondary);
+        }
+
+        /* Visual Tag / Badges */
+        .badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        .badge-cyan { background: rgba(6, 182, 212, 0.15); color: var(--accent-primary); }
+        .badge-purple { background: rgba(139, 92, 246, 0.15); color: var(--accent-secondary); }
+
+        /* Template/Placeholder Card for Adding Content */
+        .template-card {
+            border: 2px dashed var(--border-color);
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .template-card:hover {
+            border-color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        /* ==========================================================================
+           5. RESPONSIVE DESIGN (MOBILE & TABLET BREAKPOINTS)
+           ========================================================================== */
+        @media (max-width: 868px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-wrapper {
+                margin-left: 0;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .search-bar {
+                width: 200px;
+            }
+
+            .content-area {
+                padding: 24px 16px;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================================================
+       SIDEBAR NAVIGATION
+       Easily add new navigation links here when adding new content sections.
+       ========================================================================== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="brand">
+                <div class="brand-badge">CIT</div>
+                <div>
+                    <div class="brand-title">CIT 129 Course</div>
+                    <div class="brand-subtitle">Fall 2026 • CSN</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-section-title">Module Topics</div>
+        <ul class="nav-links">
+            <li class="nav-item">
+                <a href="#sentinel-loops" class="nav-link active">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    Sentinel Loops
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#solo-counters" class="nav-link">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path></svg>
+                    Counters Beyond Loops
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#example-counter-loop" class="nav-link">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 002 0p"></path></svg>
+                    Ex 1: Counter + Counter Loop
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#example-sentinel-loop" class="nav-link">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    Ex 2: Counter + Sentinel
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav-section-title">Future Expansion</div>
+        <ul class="nav-links">
+            <li class="nav-item">
+                <a href="#add-new" class="nav-link" style="opacity: 0.5;">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    + Add New Topic Section
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- ==========================================================================
+       MAIN CONTENT WRAPPER
+       ========================================================================== -->
+    <div class="main-wrapper">
+        <!-- Sticky Header Bar -->
+        <header class="top-header">
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle Sidebar">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+            <div class="search-bar">
+                <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <input type="text" id="searchInput" placeholder="Search notes, keywords, code..." onkeyup="filterContent()">
+            </div>
+        </header>
+
+        <!-- Main Body -->
+        <main class="content-area">
+            
+            <!-- Hero Title Banner -->
+            <div class="hero-banner">
+                <div class="topic-chip">
+                    <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V5h2v4z"></path></svg>
+                    Week 5 Study Guide
+                </div>
+                <h1 class="page-title">Loops Part 2: Sentinels & Counters</h1>
+                <p class="page-desc">Mastering flexible control structures, unknown iteration counts, and independent tracking state patterns in pseudocode.</p>
+            </div>
+
+            <!-- SECTION 1: SENTINEL LOOPS -->
+            <section class="section-card" id="sentinel-loops">
+                <div class="card-header">
+                    <div>
+                        <h2 class="card-title">
+                            Sentinel-controlled Loop
+                            <span class="badge badge-cyan">Pattern 1</span>
+                        </h2>
+                        <div class="card-subtitle">Used when execution count is unknown beforehand</div>
+                    </div>
+                </div>
+                
+                <p>Sentinel-controlled loops execute until a specific predetermined value (the <strong>sentinel</strong>) is explicitly provided by the user to trigger loop exit.</p>
+
+                <div class="keyword-box">
+                    <strong>Trigger Keywords:</strong> "Keep going until the user enters ___", "Stop when ___ is entered"
+                </div>
+
+                <p><strong>Core 3-Part Architecture:</strong></p>
+                <ul class="custom-list">
+                    <li><strong>Initial Prompt:</strong> Ask for the first piece of data outside the loop.</li>
+                    <li><strong>Condition Check:</strong> Loop continuously while data <code>!= sentinel</code>.</li>
+                    <li><strong>Subsequent Prompt:</strong> Request data update inside the loop using the <em>exact same variable</em>.</li>
+                </ul>
+
+                <!-- Code Example -->
+                <div class="code-block-wrapper">
+                    <div class="code-header">
+                        <span>PSEUDOCODE EXAMPLE</span>
+                        <span>Sentinel Pattern</span>
+                    </div>
+                    <div class="code-body">
+<span style="color: var(--code-keyword)">PRINT</span> <span style="color: var(--code-string)">"Please enter your exam score. Enter -1 to exit."</span>
+<span style="color: var(--code-keyword)">INPUT</span> score
+
+<span style="color: var(--code-keyword)">WHILE</span> score != -1:
+    <span style="color: var(--code-comment)"># Processing logic goes here</span>
+    <span style="color: var(--code-keyword)">PRINT</span> <span style="color: var(--code-string)">"Please enter another exam score. Enter -1 to exit."</span>
+    <span style="color: var(--code-keyword)">INPUT</span> score
+                    </div>
+                </div>
+
+                <!-- Interactive Simulator Component -->
+                <div class="interactive-demo">
+                    <div class="demo-title">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path></svg>
+                        Interactive Test: Enter scores (-1 to exit)
+                    </div>
+                    <div class="demo-controls">
+                        <input type="number" id="sentinelInput" class="demo-input" placeholder="Enter score (e.g. 85, 92, -1)">
+                        <button class="btn" onclick="runSentinelSim()">Submit Score</button>
+                    </div>
+                    <div class="demo-output" id="sentinelOutput">Loop Status: Waiting for initial input...</div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: SOLO COUNTERS -->
+            <section class="section-card" id="solo-counters">
+                <div class="card-header">
+                    <div>
+                        <h2 class="card-title">
+                            Counters Beyond Counter-Loops
+                            <span class="badge badge-purple">Concept</span>
+                        </h2>
+                        <div class="card-subtitle">Tracking state independently of loop execution logic</div>
+                    </div>
+                </div>
+
+                <p>A counter doesn't always have to control a loop. It can exist solely to tally specific occurrences or events inside a body of looping code.</p>
+
+                <div class="keyword-box">
+                    <strong>Trigger Keywords:</strong> "Count how many...", "Track how many..."
+                </div>
+
+                <div class="code-block-wrapper">
+                    <div class="code-header">
+                        <span>SOLO COUNTER PATTERN</span>
+                        <span>State Management</span>
+                    </div>
+                    <div class="code-body">
+<span style="color: var(--code-keyword)">SET</span> apple_count = 0  <span style="color: var(--code-comment)"># Initialize before loop starts</span>
+
+<span style="color: var(--code-comment)"># Inside any loop structure...</span>
+<span style="color: var(--code-keyword)">IF</span> fruit == <span style="color: var(--code-string)">"apple"</span>:
+    <span style="color: var(--code-keyword)">SET</span> apple_count = apple_count + 1
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: EXAMPLE 1 (COUNTER + COUNTER LOOP) -->
+            <section class="section-card" id="example-counter-loop">
+                <div class="card-header">
+                    <div>
+                        <h2 class="card-title">Example 1: Solo Counter + Counter Loop</h2>
+                        <div class="card-subtitle">Managing two distinct counter variables</div>
+                    </div>
+                </div>
+
+                <p><strong>Scenario:</strong> Prompt user for total exam count. For each exam, ask for the score and count how many scores are under 70.</p>
+
+                <div class="code-block-wrapper">
+                    <div class="code-header">
+                        <span>PSEUDOCODE IMPLEMENTATION</span>
+                    </div>
+                    <div class="code-body">
+<span style="color: var(--code-keyword)">PRINT</span> <span style="color: var(--code-string)">"How many exams do you have?"</span>
+<span style="color: var(--code-keyword)">INPUT</span> num_of_exams
+
+<span style="color: var(--code-keyword)">SET</span> bad_score_count = 0  <span style="color: var(--code-comment)"><-- Tally Counter</span>
+<span style="color: var(--code-keyword)">SET</span> count = 1            <span style="color: var(--code-comment)"><-- Loop Control Counter</span>
+
+<span style="color: var(--code-keyword)">WHILE</span> count <= num_of_exams:
+    <span style="color: var(--code-keyword)">PRINT</span> <span style="color: var(--code-string)">"What is the score for that exam?"</span>
+    <span style="color: var(--code-keyword)">INPUT</span> score
+    
+    <span style="color: var(--code-keyword)">IF</span> score < 70:
+        <span style="color: var(--code-keyword)">SET</span> bad_score_count = bad_score_count + 1
+        
+    <span style="color: var(--code-keyword)">SET</span> count = count + 1
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: EXAMPLE 2 (COUNTER + SENTINEL LOOP) -->
+            <section class="section-card" id="example-sentinel-loop">
+                <div class="card-header">
+                    <div>
+                        <h2 class="card-title">Example 2: Solo Counter + Sentinel Loop</h2>
+                        <div class="card-subtitle">Tallying items when execution count is unpredictable</div>
+                    </div>
+                </div>
+
+                <p><strong>Scenario:</strong> Ask for weight of items being purchased. Keep looping until a negative weight is given. Count total items processed.</p>
+
+                <div class="code-block-wrapper">
+                    <div class="code-header">
+                        <span>PSEUDOCODE IMPLEMENTATION</span>
+                    </div>
+                    <div class="code-body">
+<span style="color: var(--code-keyword)">PRINT</span> <span style="color: var(--code-string)">"Enter weight of item. Enter negative to stop."</span>
+<span style="color: var(--code-keyword)">INPUT</span> weight
+
+<span style="color: var(--code-keyword)">SET</span> item_count = 0
+
+<span style="color: var(--code-keyword)">WHILE</span> weight >= 0:
+    <span style="color: var(--code-keyword)">SET</span> item_count = item_count + 1
+    <span style="color: var(--code-keyword)">PRINT</span> <span style="color: var(--code-string)">"Enter weight of another item. Enter negative to stop."</span>
+    <span style="color: var(--code-keyword)">INPUT</span> weight
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==========================================================================
+               TEMPLATE CARD FOR EASY EXPANSION
+               Duplicate and modify this code block to add new sections easily later.
+               ========================================================================== -->
+            <!-- 
+            <section class="section-card" id="new-section-id">
+                <div class="card-header">
+                    <div>
+                        <h2 class="card-title">New Section Title</h2>
+                        <div class="card-subtitle">Subtitle or context description</div>
+                    </div>
+                </div>
+                <p>Add explanation text here...</p>
+            </section> 
+            -->
+
+            <div class="template-card" onclick="alert('To add details: Duplicate a section block in the source HTML!')">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--text-muted); margin-bottom: 8px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div style="font-size: 14px; font-weight: 600; color: var(--text-secondary);">Ready for Expansion</div>
+                <div style="font-size: 12px; color: var(--text-muted);">Duplicate clean <code>&lt;section class="section-card"&gt;</code> blocks to add future lecture notes.</div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ==========================================================================
+       6. INTERACTIVE JAVASCRIPT (UI LOGIC & SIMULATION)
+       ========================================================================== -->
+    <script>
+        // --- Sidebar Mobile Navigation Toggle ---
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // Close sidebar on outer click for mobile devices
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 868) {
+                if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                    sidebar.classList.remove('open');
+                }
+            }
+        });
+
+        // --- Live Search Filter Functionality ---
+        function filterContent() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.section-card');
+
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        // --- Interactive Sentinel Loop Simulation Logic ---
+        let simActive = false;
+        let simScores = [];
+
+        function runSentinelSim() {
+            const inputEl = document.getElementById('sentinelInput');
+            const outputEl = document.getElementById('sentinelOutput');
+            const val = parseFloat(inputEl.value);
+
+            if (isNaN(val)) {
+                outputEl.innerHTML = "<span style='color: #EF4444;'>Please enter a valid number!</span>";
+                return;
+            }
+
+            if (val === -1) {
+                // Sentinel Reached
+                outputEl.innerHTML = `<span style='color: #10B981;'><strong>EXIT SENTINEL DETECTED (-1)!</strong> Loop Terminated.<br>Scores Recorded (${simScores.length}): [${simScores.join(', ')}]</span>`;
+                simScores = []; // Reset simulation state
+                inputEl.value = '';
+            } else {
+                // Loop Execution Active
+                simScores.push(val);
+                outputEl.innerHTML = `<span style='color: var(--accent-primary);'>Inside Loop: Recorded score ${val}.<br>Current Array Tally: [${simScores.join(', ')}]<br>Enter next score or -1 to break.</span>`;
+                inputEl.value = '';
+            }
+        }
+    </script>
+</body>
+</html>
