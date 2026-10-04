@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIT 129 - Week 6: Arrays Study Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e17;
+            --bg-secondary: #111827;
+            --bg-card: #1f2937;
+            --bg-code: #0d1117;
+            --border-color: #374151;
+            --accent-green: #10b981;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .badge {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .sidebar-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .search-box {
+            padding: 16px 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 14px;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-main);
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .nav-list {
+            list-style: none;
+            overflow-y: auto;
+            flex-grow: 1;
+            padding: 0 10px 20px;
+        }
+
+        .nav-item {
+            margin-bottom: 4px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: var(--bg-card);
+            color: var(--accent-cyan);
+        }
+
+        .nav-link.active {
+            border-left: 3px solid var(--accent-cyan);
+        }
+
+        /* Main Content Styling */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 40px;
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .header-section {
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 24px;
+        }
+
+        .course-tag {
+            color: var(--accent-blue);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .main-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.025em;
+        }
+
+        /* Card Section */
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 28px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title::before {
+            content: '#';
+            color: var(--accent-green);
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Code Block Styling */
+        .code-container {
+            background-color: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin: 16px 0;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 8px 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+        }
+
+        pre {
+            padding: 16px;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.875rem;
+            color: #e5e7eb;
+            line-height: 1.5;
+        }
+
+        /* Syntax Highlighting Utilities */
+        .kw { color: #f472b6; font-weight: 600; } /* Keyword */
+        .str { color: #34d399; }                   /* String */
+        .num { color: #fbbf24; }                   /* Number */
+        .cmt { color: #6b7280; italic; }          /* Comment */
+        .fn { color: #60a5fa; }                    /* Function/Var */
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--bg-card);
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        td {
+            background-color: rgba(31, 41, 55, 0.3);
+        }
+
+        /* Rules & Callouts */
+        .callout {
+            border-left: 4px solid var(--accent-amber);
+            background-color: rgba(245, 158, 11, 0.08);
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+            font-size: 0.925rem;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            color: var(--accent-amber);
+            margin-bottom: 4px;
+        }
+
+        .callout.danger {
+            border-left-color: var(--accent-red);
+            background-color: rgba(239, 68, 68, 0.08);
+        }
+
+        .callout.danger .callout-title {
+            color: var(--accent-red);
+        }
+
+        /* Mobile Controls */
+        .mobile-header {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 20px;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 101;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-header {
+                display: flex;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+                top: 60px;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 80px 20px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+        <span class="sidebar-title">CIT 129 Study Suite</span>
+        <button class="menu-toggle" id="menuToggle">☰</button>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="badge">RAPTOR</span>
+            <span class="sidebar-title">Arrays Guide</span>
+        </div>
+        <div class="search-box">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search topics or code...">
+        </div>
+        <ul class="nav-list" id="navList">
+            <li class="nav-item"><a href="#prelude" class="nav-link active">Prelude & Motivation</a></li>
+            <li class="nav-item"><a href="#arrays-definition" class="nav-link">Array Fundamentals</a></li>
+            <li class="nav-item"><a href="#creating-arrays" class="nav-link">Declaration & Initialization</a></li>
+            <li class="nav-item"><a href="#indexes-access" class="nav-link">Indexes & Data Access</a></li>
+            <li class="nav-item"><a href="#setting-values" class="nav-link">Setting & Modifying Values</a></li>
+            <li class="nav-item"><a href="#peculiar-behavior" class="nav-link">Edge Cases & Behaviors</a></li>
+            <li class="nav-item"><a href="#counter-loops" class="nav-link">Counter-Loops Integration</a></li>
+            <li class="nav-item"><a href="#parallel-arrays" class="nav-link">Parallel Arrays</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="header-section">
+            <span class="course-tag">CIT 129 • FALL 2026</span>
+            <h1 class="main-title">Week 6: Arrays Notes</h1>
+        </div>
+
+        <!-- Section 1: Prelude -->
+        <section id="prelude" class="card">
+            <div class="card-header">
+                <h2 class="card-title">Prelude & Motivation</h2>
+            </div>
+            <p>Managing multiple data records using individual scalar variables quickly becomes unmaintainable as data scales.</p>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <span>Inefficient Scalar Variable Approach</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="cmt"># Scaling manually with single variables is painful and inefficient</span>
+<span class="fn">name1</span> = <span class="str">"Alice"</span>
+<span class="fn">name2</span> = <span class="str">"Bob"</span>
+<span class="fn">name3</span> = <span class="str">"Charlie"</span>
+<span class="fn">name4</span> = <span class="str">"Dave"</span>
+<span class="fn">name5</span> = <span class="str">"Eric"</span>
+<span class="cmt"># Imagine tracking 20+ records this way: name1... name20...</span></code></pre>
+            </div>
+            <p>Arrays solve this limitation by providing a cohesive continuous structure capable of housing large quantities of related data under a single identifier.</p>
+        </section>
+
+        <!-- Section 2: Array Fundamentals -->
+        <section id="arrays-definition" class="card">
+            <div class="card-header">
+                <h2 class="card-title">Array Fundamentals</h2>
+            </div>
+            <p>Arrays are organized data structures designed to store collections of homogeneous (similar) data types.</p>
+            <ul style="margin: 12px 0 12px 24px; color: var(--text-muted);">
+                <li>List of strings (e.g., student names)</li>
+                <li>List of numbers (e.g., age values, account balances)</li>
+                <li>List of calendar months</li>
+            </ul>
+        </section>
+
+        <!-- Section 3: Creation -->
+        <section id="creating-arrays" class="card">
+            <div class="card-header">
+                <h2 class="card-title">Declaration & Initialization</h2>
+            </div>
+            <p>Array creation requires defining the array identifier and explicitly allocating the target capacity size.</p>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <span>RAPTOR Pseudocode Syntax</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="kw">SET</span> <span class="fn">array_name</span>[<span class="num">size</span>] = <span class="str">""</span>   <span class="cmt"># Initialize array for storing strings</span>
+<span class="kw">SET</span> <span class="fn">array_name</span>[<span class="num">size</span>] = <span class="num">0</span>    <span class="cmt"># Initialize array for storing numeric values</span>
+
+<span class="cmt"># Practical Examples:</span>
+<span class="kw">SET</span> <span class="fn">names</span>[<span class="num">5</span>] = <span class="str">""</span>           <span class="cmt"># Allocates space for 5 name records</span>
+<span class="kw">SET</span> <span class="fn">ages</span>[<span class="num">20</span>] = <span class="num">0</span>            <span class="cmt"># Allocates space for 20 age values</span></code></pre>
+            </div>
+        </section>
+
+        <!-- Section 4: Indexes & Access -->
+        <section id="indexes-access" class="card">
+            <div class="card-header">
+                <h2 class="card-title">Indexes & Data Access</h2>
+            </div>
+            <p>An <strong>Index</strong> specifies an element's physical location within the structure.</p>
+
+            <div class="callout">
+                <div class="callout-title">Raptor Indexing Convention</div>
+                In RAPTOR, array indexing is <strong>1-based</strong> (starts at index 1 and steps up by 1).
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>names[]</th>
+                            <th>"Alice"</th>
+                            <th>"Bob"</th>
+                            <th>"Charlie"</th>
+                            <th>"Dave"</th>
+                            <th>"Eric"</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Index</strong></td>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>4</td>
+                            <td>5</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <span>Access Examples</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="kw">PRINT</span> <span class="fn">names</span>[<span class="num">4</span>]   <span class="cmt"># Outputs "Dave"</span>
+<span class="kw">PRINT</span> <span class="fn">names</span>[<span class="num">1</span>]   <span class="cmt"># Outputs "Alice"</span>
+
+<span class="cmt"># Variable-based indexing:</span>
+<span class="kw">SET</span> <span class="fn">i</span> = <span class="num">3</span>
+<span class="kw">PRINT</span> <span class="fn">names</span>[<span class="fn">i</span>]   <span class="cmt"># Outputs "Charlie"</span></code></pre>
+            </div>
+
+            <div class="callout danger">
+                <div class="callout-title">Invalid Access Operations</div>
+                <p>• <code>PRINT names[6]</code> — Runtime error: Access out of current initialized bounds.</p>
+                <p>• <code>PRINT names[0]</code> / <code>names[-1]</code> — Invalid index boundary.</p>
+                <p>• <code>PRINT names</code> — Syntax error: Array identifier requires an index reference.</p>
+                <p>• <code>PRINT total[4]</code> — Error: Indexing cannot be used on non-array variables.</p>
+            </div>
+        </section>
+
+        <!-- Section 5: Setting Values -->
+        <section id="setting-values" class="card">
+            <div class="card-header">
+                <h2 class="card-title">Setting & Modifying Values</h2>
+            </div>
+            <p>Assigning a new value to an indexed array element updates that specific slot independently.</p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <span>Value Overwrite Operations</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="cmt"># Overwriting index 5</span>
+<span class="kw">SET</span> <span class="fn">names</span>[<span class="num">5</span>] = <span class="str">"Emma"</span>
+<span class="kw">PRINT</span> <span class="fn">names</span>[<span class="num">5</span>]   <span class="cmt"># Outputs "Emma" (Replaces "Eric")</span>
+
+<span class="cmt"># Copying values between indexes</span>
+<span class="kw">SET</span> <span class="fn">names</span>[<span class="num">2</span>] = <span class="fn">names</span>[<span class="num">1</span>]  <span class="cmt"># Evaluates right side first: copies "Alice" to slot 2</span>
+
+<span class="cmt"># Re-assigning index 1</span>
+<span class="kw">SET</span> <span class="fn">names</span>[<span class="num">1</span>] = <span class="str">"Bob"</span>    <span class="cmt"># Slot 1 becomes "Bob". Slot 2 remains "Alice" (values are decoupled copies)</span></code></pre>
+            </div>
+        </section>
+
+        <!-- Section 6: Edge Cases -->
+        <section id="peculiar-behavior" class="card">
+            <div class="card-header">
+                <h2 class="card-title">Edge Cases & Behaviors</h2>
+            </div>
+            <p>RAPTOR exhibits distinct behavior rules regarding index access versus setting out-of-bound slots.</p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <span>Out-Of-Bounds Assignment Rules</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="kw">SET</span> <span class="fn">names</span>[<span class="num">6</span>] = <span class="str">"Fabio"</span>  <span class="cmt"># ALLOWED: Dynamically expands array allocation</span>
+<span class="kw">PRINT</span> <span class="fn">names</span>[<span class="num">6</span>]         <span class="cmt"># ALLOWED: Prints "Fabio"</span>
+<span class="kw">PRINT</span> <span class="fn">names</span>[<span class="num">7</span>]         <span class="cmt"># ERROR: Accessing uninitialized index 7</span>
+
+<span class="kw">SET</span> <span class="fn">names</span>[<span class="num">7</span>] = <span class="str">""</span>      <span class="cmt"># ALLOWED: Blank string counts as an initialized value</span>
+<span class="kw">PRINT</span> <span class="fn">names</span>[<span class="num">7</span>]         <span class="cmt"># ALLOWED: Outputs blank string</span>
+<span class="kw">PRINT</span> <span class="fn">names</span>[<span class="num">8</span>]         <span class="cmt"># ERROR: Unassigned nonexistence</span></code></pre>
+            </div>
+        </section>
+
+        <!-- Section 7: Counter Loops -->
+        <section id="counter-loops" class="card">
+            <div class="card-header">
+                <h2 class="card-title">Counter-Loops Integration</h2>
+            </div>
+            <p>Combining counter-loops with index counters (conventionally named <code>i</code>) allows rapid sequential iteration across entire arrays.</p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <span>Complete Pattern: Forward & Reverse Iteration</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="cmt"># Prompt user for entry capacity</span>
+<span class="kw">PRINT</span> <span class="str">"How many people are there?"</span>
+<span class="kw">INPUT</span> <span class="fn">num_of_people</span>
+
+<span class="cmt"># Instantiate dynamic array size based on input</span>
+<span class="kw">SET</span> <span class="fn">names</span>[<span class="fn">num_of_people</span>] = <span class="str">""</span>
+
+<span class="cmt"># 1. Forward Loop: Populate array</span>
+<span class="kw">SET</span> <span class="fn">i</span> = <span class="num">1</span>
+<span class="kw">WHILE</span> <span class="fn">i</span> &lt;= <span class="fn">num_of_people</span>:
+    <span class="kw">PRINT</span> <span class="str">"Enter name #"</span> + <span class="fn">i</span>
+    <span class="kw">INPUT</span> <span class="fn">names</span>[<span class="fn">i</span>]
+    <span class="kw">PRINT</span> <span class="fn">names</span>[<span class="fn">i</span>]
+    <span class="kw">SET</span> <span class="fn">i</span> = <span class="fn">i</span> + <span class="num">1</span>
+
+<span class="cmt"># 2. Reverse Loop: Print elements in reverse order</span>
+<span class="kw">SET</span> <span class="fn">i</span> = <span class="fn">num_of_people</span>
+<span class="kw">WHILE</span> <span class="fn">i</span> &gt;= <span class="num">1</span>:
+    <span class="kw">PRINT</span> <span class="fn">names</span>[<span class="fn">i</span>]
+    <span class="kw">SET</span> <span class="fn">i</span> = <span class="fn">i</span> - <span class="num">1</span></code></pre>
+            </div>
+        </section>
+
+        <!-- Section 8: Parallel Arrays -->
+        <section id="parallel-arrays" class="card">
+            <div class="card-header">
+                <h2 class="card-title">Parallel Arrays</h2>
+            </div>
+            <p>Parallel arrays consist of two or more synchronized arrays that share matching sizes and use identical index access keys to model multi-attribute entities.</p>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <span>Parallel Array Allocations</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="kw">SET</span> <span class="fn">names</span>[<span class="num">5</span>] = <span class="str">""</span>
+<span class="kw">SET</span> <span class="fn">ages</span>[<span class="num">5</span>] = <span class="num">0</span></code></pre>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>names[]</th>
+                            <th>"Alice"</th>
+                            <th>"Bob"</th>
+                            <th>"Charlie"</th>
+                            <th>"Dave"</th>
+                            <th>"Emma"</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>ages[]</strong></td>
+                            <td>27</td>
+                            <td>24</td>
+                            <td>25</td>
+                            <td>28</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Index Key</strong></td>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>3</td>
+                            <td>4</td>
+                            <td>5</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <span>Synchronized Access Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="kw">SET</span> <span class="fn">i</span> = <span class="num">2</span>
+<span class="kw">PRINT</span> <span class="fn">names</span>[<span class="fn">i</span>]
+<span class="kw">PRINT</span> <span class="fn">ages</span>[<span class="fn">i</span>]
+<span class="cmt"># Output: Bob 24</span></code></pre>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Copy Code Functionality
+        function copyCode(button) {
+            const codeBlock = button.parentElement.nextElementSibling.querySelector('code');
+            const text = codeBlock.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.innerText;
+                button.innerText = 'Copied!';
+                button.style.borderColor = 'var(--accent-green)';
+                button.style.color = 'var(--accent-green)';
+                
+                setTimeout(() => {
+                    button.innerText = originalText;
+                    button.style.borderColor = 'var(--border-color)';
+                    button.style.color = 'var(--text-muted)';
+                }, 2000);
+            });
+        }
+
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // Navigation Highlight on Scroll
+        const sections = document.querySelectorAll('.card');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Search Filter Functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keyup', (e) => {
+            const query = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.card');
+
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
