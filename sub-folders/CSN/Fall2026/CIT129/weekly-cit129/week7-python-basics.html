@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 7 Notes: Python Basics | Interactive Study Guide</title>
+    <!-- Google Fonts for modern typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           CSS RESET & DESIGN SYSTEM TOKENS
+           ================================---------- */
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #1e293b;
+            --bg-code: #090d16;
+            --accent-primary: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.2);
+            --accent-success: #10b981;
+            --accent-warning: #f59e0b;
+            --accent-error: #ef4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'Fira Code', monospace;
+            --radius-lg: 12px;
+            --radius-md: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ==========================================
+           HEADER / NAVIGATION BAR
+           ================================---------- */
+        header {
+            background-color: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-badge {
+            background: var(--accent-primary);
+            color: white;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-md);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        /* ==========================================
+           MAIN APP CONTAINER & GRID LAYOUT
+           ================================---------- */
+        .app-container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            flex: 1;
+        }
+
+        @media (max-width: 868px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ==========================================
+           SIDEBAR NAVIGATION (Easily Scalable)
+           ================================---------- */
+        sidebar {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            height: fit-content;
+            position: sticky;
+            top: 5rem;
+        }
+
+        .sidebar-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-item button {
+            width: 100%;
+            text-align: left;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            padding: 0.65rem 1rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-item button:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--text-main);
+        }
+
+        .nav-item button.active {
+            background: var(--accent-primary);
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        /* ==========================================
+           CONTENT AREA & LESSON MODULE CARDS
+           ================================---------- */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .lesson-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            display: none; /* Controlled dynamically via JS */
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .lesson-card.active-module {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lesson-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .lesson-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .lesson-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .section-block {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-block h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .section-block p {
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        /* ==========================================
+           CODE BLOCKS, TRACEBACKS & CALLOUT NOTES
+           ================================---------- */
+        .code-box {
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: #38bdf8;
+            overflow-x: auto;
+            margin: 1rem 0;
+            position: relative;
+        }
+
+        .code-box::before {
+            content: "PYTHON";
+            position: absolute;
+            top: 0.4rem;
+            right: 0.75rem;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .error-traceback {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: #f87171;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        .callout-note {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--accent-warning);
+            padding: 1rem;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+            color: #fde68a;
+        }
+
+        .callout-note strong {
+            color: var(--accent-warning);
+        }
+
+        /* ==========================================
+           VALUE TYPES TABLE STYLING
+           ================================---------- */
+        .data-table-wrapper {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .data-table th, .data-table td {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .data-table th {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .data-table td {
+            color: var(--text-muted);
+        }
+
+        .data-table td code {
+            font-family: var(--font-mono);
+            color: #38bdf8;
+            background: var(--bg-code);
+            padding: 0.15rem 0.35rem;
+            border-radius: 4px;
+        }
+
+        /* ==========================================
+           INTERACTIVE SIMULATOR PLAYGROUND WIDGET
+           ================================---------- */
+        .playground {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .playground-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .input-group {
+                flex-direction: column;
+            }
+        }
+
+        .playground input {
+            flex: 1;
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            padding: 0.65rem 1rem;
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+        }
+
+        .playground input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .playground button {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 0.65rem 1.25rem;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .playground button:hover {
+            opacity: 0.9;
+        }
+
+        .terminal-output {
+            background: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 0.75rem 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent-success);
+            min-height: 2.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        /* ==========================================
+           FOOTER STYLING
+           ================================---------- */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="logo-container">
+            <span class="logo-badge">CIT 129</span>
+            <h1>Week 7 Notes: Python Basics</h1>
+        </div>
+        <span style="font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-mono);">FALL 2026</span>
+    </header>
+
+    <!-- Main Layout Grid -->
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation Menu (Easily expandable via lessonsData array) -->
+        <sidebar>
+            <div class="sidebar-title">Lesson Modules</div>
+            <ul class="nav-list" id="nav-list">
+                <!-- Dynamically populated via JavaScript -->
+            </ul>
+        </sidebar>
+
+        <!-- Content Area where Modules are Displayed -->
+        <main class="content-area" id="content-area">
+            <!-- Dynamically populated via JavaScript -->
+        </main>
+
+    </div>
+
+    <footer>
+        Designed for Mobile & Desktop. Scalable single-file architecture.
+    </footer>
+
+    <!-- ==========================================
+       JAVASCRIPT DATA & APP CONTROLLER
+       ========================================== -->
+    <script>
+        /* 
+          SCALABILITY NOTE: 
+          To add more detailed modules or future weeks, simply append a new object 
+          to this `lessonsData` array. The application automatically generates 
+          the sidebar tabs and cards dynamically!
+        */
+        const lessonsData = [
+            {
+                id: "python-output",
+                title: "1. Python Basics & Output",
+                description: "Introduction to Python syntax, human-readable pseudocode style, case-sensitivity, and outputting values.",
+                content: `
+                    <div class="section-block">
+                        <h3>Python Basics</h3>
+                        <p>Python is a programming language designed to be beginner-friendly and human-readable. As you get familiar with Python, you might notice that it is similar to pseudocode.</p>
+                    </div>
+                    <div class="section-block">
+                        <h3>Output & Hello World</h3>
+                        <p>Let's start with the most basic type of program: The Hello World program. This performs a simple task: Showing the words "Hello World" on screen.</p>
+                        <div class="code-box">print("Hello World")</div>
+                        <p>If you run this Python code, you should see this on screen:</p>
+                        <div class="code-box" style="color: var(--accent-success);">Hello World</div>
+                        <p>The general syntax for outputs is:</p>
+                        <div class="code-box">print(value)</div>
+                        <div class="callout-note">
+                            <strong>Note:</strong> It is very important to keep the word <code>print</code> in lowercase. Python is strictly <strong>case-sensitive</strong>, meaning Python considers <code>PRINT</code> and <code>print</code> as two different things.
+                        </div>
+                    </div>
+                    <div class="section-block">
+                        <h3>Combining Strings and Numbers</h3>
+                        <p>Strings are values wrapped in quotation marks for showing text. You can also print numbers directly (e.g., <code>print(123)</code>).</p>
+                        <p>If we try combining strings and numbers like in Raptor/Pseudocode:</p>
+                        <div class="code-box">print("The price of your item is $" + 12.3)</div>
+                        <p>This results in a Type Error:</p>
+                        <div class="error-traceback">
+                            Traceback (most recent call last):<br>
+                            &nbsp;&nbsp;File "&lt;python-input-2&gt;", line 1, in &lt;module&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;print("The price of your item is $" + 12.3)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~<br>
+                            TypeError: can only concatenate str (not "float") to str
+                        </div>
+                        <p>The error means you can only combine strings with other strings using the <code>+</code> operator. Instead, separate values with a comma:</p>
+                        <div class="code-box">print("The price of your item is $", 12.3)</div>
+                        <p>Successfully outputs:</p>
+                        <div class="code-box" style="color: var(--accent-success);">The price of your item is $ 12.3</div>
+                        <div class="callout-note">
+                            <strong>Spacing Note:</strong> Python automatically adds a space between values separated by commas. While sometimes annoying next to currency symbols like <code>$</code>, we will work with it for now.
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: "assignment-ops",
+                title: "2. Variable Assignment",
+                description: "Storing data, case sensitivity rules, basic mathematical operations, and exponent syntax.",
+                content: `
+                    <div class="section-block">
+                        <h3>Variable Assignment</h3>
+                        <p>Just like in Pseudocode, there are two sides: the variable name, and the value to store. In Python, you simply start with the variable name without needing to type <code>SET</code>:</p>
+                        <div class="code-box">my_var = 12</div>
+                        <p>This stores 12 into <code>my_var</code>. Remember that Python is case-sensitive! If you name it <code>my_var</code> in lowercase, referring to <code>My_Var</code> later will throw an error as a different variable.</p>
+                    </div>
+                    <div class="section-block">
+                        <h3>Math Operations & Exponents</h3>
+                        <p>You can perform math calculations directly during assignment:</p>
+                        <div class="code-box">calculation = 12.45 + 56.78 * 9 / (1.2 - 23)</div>
+                        <p>Exponents use a double asterisk instead of the standard caret symbol (<code>^</code>):</p>
+                        <div class="code-box">example_exponent = 2 ** 3</div>
+                    </div>
+                `
+            },
+            {
+                id: "value-types",
+                title: "3. Value Types",
+                description: "Detailed breakdown of strings, integers, floats, and booleans in Python.",
+                content: `
+                    <div class="section-block">
+                        <h3>Understanding Types</h3>
+                        <p>Python is specific about value types. Here are the core types covered in the lesson:</p>
+                    </div>
+                    <div class="data-table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Example</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>string</code></td>
+                                    <td><code>"Hello"</code></td>
+                                    <td>A value wrapped in quotation marks used as-is for words and text.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>int</code></td>
+                                    <td><code>45</code></td>
+                                    <td>Short for Integer. A number WITHOUT decimals, used for discrete counts (e.g., marbles, people).</td>
+                                </tr>
+                                <tr>
+                                    <td><code>float</code></td>
+                                    <td><code>45.6666</code></td>
+                                    <td>A number WITH decimals, covering everything ints cannot (e.g., money, liters of water, weight).</td>
+                                </tr>
+                                <tr>
+                                    <td><code>bool</code></td>
+                                    <td><code>True</code></td>
+                                    <td>Short for Boolean. Evaluates to either <code>True</code> or <code>False</code> in comparisons.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `
+            },
+            {
+                id: "inputs-casting",
+                title: "4. Inputs & Type Conversion",
+                description: "Gathering user input, inline prompt strings, fixing string type errors, and using float() / int().",
+                content: `
+                    <div class="section-block">
+                        <h3>Prompting User Input</h3>
+                        <p>Input is treated as a value. To guide users, we can bundle a prompt string directly inside <code>input()</code>:</p>
+                        <div class="code-box">first_name = input("Please enter your first name: ")</div>
+                        <p>Always include a colon and space at the end of prompts so user text doesn't glue directly to the prompt words.</p>
+                    </div>
+                    <div class="section-block">
+                        <h3>Numeric Inputs & Type Casting</h3>
+                        <p>Python always assumes <code>input()</code> returns a <strong>string</strong> (e.g., <code>"20"</code>). Attempting math directly on an input string results in an error:</p>
+                        <div class="error-traceback">
+                            Traceback (most recent call last):<br>
+                            &nbsp;&nbsp;File "&lt;python-input-7&gt;", line 1, in &lt;module&gt;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;subtotal = price * 1.12<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~~~~~~^~~~~~<br>
+                            TypeError: can't multiply sequence by non-int of type 'float'
+                        </div>
+                        <p>To fix this, explicitly convert string inputs to numbers using <code>float()</code> or <code>int()</code> based on whether decimals are required:</p>
+                        <div class="code-box">price = float(input("Please enter the price of your item: "))</div>
+                    </div>
+                `
+            },
+            {
+                id: "rounding-outputs",
+                title: "5. Rounding Outputs",
+                description: "Using the round() function to format currency while preserving calculation precision.",
+                content: `
+                    <div class="section-block">
+                        <h3>Formatting Decimal Places</h3>
+                        <p>Multiplying unrounded floats can yield long decimals (e.g., <code>22.400000000000002</code>). To format currency neatly to 2 decimal places, use the built-in <code>round()</code> function:</p>
+                        <div class="code-box">round(number, decimal_places)</div>
+                    </div>
+                    <div class="callout-note">
+                        <strong>Best Practice Recommendation:</strong> Rounding causes a loss of precision for subsequent calculations. Therefore, <strong>only round during outputs</strong> rather than during intermediate variables!
+                    </div>
+                    <div class="section-block">
+                        <h3>Complete Code Implementation</h3>
+                        <div class="code-box">
+price = float(input("Please enter the price of your item: "))<br>
+subtotal = price * 1.12<br>
+print("Your subtotal is $", round(subtotal, 2))
+                        </div>
+                    </div>
+
+                    <!-- Interactive Practice Simulator -->
+                    <div class="playground">
+                        <div class="playground-title">
+                            <span>⚡ Interactive Lesson 7 Code Simulator</span>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">Test out the final Python script calculation with 12% tax & 2-decimal rounding:</p>
+                        <div class="input-group">
+                            <input type="number" id="priceInput" placeholder="Enter item price (e.g. 20)" value="20">
+                            <button onclick="runPythonSimulation()">Run Simulation</button>
+                        </div>
+                        <div class="terminal-output" id="terminalOutput">Output: Your subtotal is $ 22.4</div>
+                    </div>
+                `
+            }
+        ];
+
+        /* Render application structure upon DOM load */
+        document.addEventListener("DOMContentLoaded", () => {
+            renderApp();
+            switchModule(lessonsData[0].id);
+        });
+
+        function renderApp() {
+            const navList = document.getElementById("nav-list");
+            const contentArea = document.getElementById("content-area");
+
+            navList.innerHTML = "";
+            contentArea.innerHTML = "";
+
+            lessonsData.forEach((lesson) => {
+                // Build sidebar nav buttons
+                const li = document.createElement("li");
+                li.className = "nav-item";
+                li.innerHTML = `<button id="btn-${lesson.id}" onclick="switchModule('${lesson.id}')">${lesson.title}</button>`;
+                navList.appendChild(li);
+
+                // Build lesson content cards
+                const card = document.createElement("div");
+                card.className = "lesson-card";
+                card.id = `card-${lesson.id}`;
+                card.innerHTML = `
+                    <div class="lesson-header">
+                        <h2>${lesson.title}</h2>
+                        <p>${lesson.description}</p>
+                    </div>
+                    ${lesson.content}
+                `;
+                contentArea.appendChild(card);
+            });
+        }
+
+        function switchModule(targetId) {
+            lessonsData.forEach(lesson => {
+                const btn = document.getElementById(`btn-${lesson.id}`);
+                const card = document.getElementById(`card-${lesson.id}`);
+                
+                if (lesson.id === targetId) {
+                    btn.classList.add("active");
+                    card.classList.add("active-module");
+                } else {
+                    btn.classList.remove("active");
+                    card.classList.remove("active-module");
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* Interactive simulator logic */
+        function runPythonSimulation() {
+            const rawPrice = document.getElementById("priceInput").value;
+            const price = parseFloat(rawPrice);
+            const outputEl = document.getElementById("terminalOutput");
+
+            if (isNaN(price) || price < 0) {
+                outputEl.style.color = "var(--accent-error)";
+                outputEl.innerText = "Error: Please enter a valid positive number.";
+                return;
+            }
+
+            const subtotal = Math.round((price * 1.12 + Number.EPSILON) * 100) / 100;
+            outputEl.style.color = "var(--accent-success)";
+            outputEl.innerText = `Your subtotal is $ ${subtotal}`;
+        }
+    </script>
+</body>
+</html>
