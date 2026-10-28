@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Loops Masterclass | CIT 129</title>
+    <!-- Google Fonts: Inter for UI & Fira Code for Code Blocks -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS for modern utility-first styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slateBg: '#0f172a',
+                        cardBg: '#1e293b',
+                        accentBlue: '#38bdf8',
+                        accentGreen: '#34d399',
+                        accentPurple: '#a78bfa'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slateBg text-slate-100 font-sans min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
+
+    <!-- HEADER SECTION -->
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-sky-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg tracking-tight">Python Loops Masterclass</h1>
+                    <p class="text-xs text-slate-400">Interactive Reference & Sandbox</p>
+                </div>
+            </div>
+            <div class="hidden sm:flex items-center space-x-2 text-xs font-mono bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700/50 text-emerald-400">
+                <span>CIT 129 — Fall 2026</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+        <!-- LEFT COLUMN: THEORY & DOCUMENTATION MODULES -->
+        <section class="lg:col-span-7 space-y-8" id="notes-container">
+            
+            <!-- MODULE 1: COUNTER LOOPS & RANGE -->
+            <div class="bg-cardBg rounded-2xl border border-slate-800/80 p-6 shadow-xl shadow-black/20">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-mono uppercase tracking-wider px-2.5 py-1 rounded-md bg-sky-500/10 text-sky-400 border border-sky-500/20">Counter Loops</span>
+                    <span class="text-xs text-slate-400 font-mono">for i in range(...)</span>
+                </div>
+                <h2 class="text-xl font-bold mb-3 text-white">The Range Function</h2>
+                <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                    Counter loops handle repetitive tasks using 3 core elements: <strong>counter, upper bound, and increment</strong>. Python's <code class="text-sky-300 font-mono">range()</code> function handles this dynamically.
+                </p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-mono mb-4">
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                        <p class="text-sky-400 font-bold mb-1">1 Digit: stop</p>
+                        <p class="text-slate-400">Starts at 0, goes up to stop - 1.</p>
+                        <p class="text-emerald-400 mt-2">range(5) &rarr; [0..4]</p>
+                    </div>
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                        <p class="text-sky-400 font-bold mb-1">2 Digits: start, stop</p>
+                        <p class="text-slate-400">Custom start, stops before stop.</p>
+                        <p class="text-emerald-400 mt-2">range(2, 6) &rarr; [2..5]</p>
+                    </div>
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                        <p class="text-sky-400 font-bold mb-1">3 Digits: start, stop, step</p>
+                        <p class="text-slate-400">Custom increment steps.</p>
+                        <p class="text-emerald-400 mt-2">range(0, 5, 2) &rarr; [0, 2, 4]</p>
+                    </div>
+                </div>
+
+                <div class="rounded-xl bg-slate-950 p-4 font-mono text-xs overflow-x-auto border border-slate-800 text-slate-300 leading-relaxed shadow-inner">
+                    <span class="text-slate-500"># Modern Python Way</span><br>
+                    <span class="text-purple-400">for</span> i <span class="text-purple-400">in</span> <span class="text-yellow-300">range</span>(num_of_items):<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-300">print</span>(i)
+                </div>
+            </div>
+
+            <!-- MODULE 2: VALIDATION LOOPS -->
+            <div class="bg-cardBg rounded-2xl border border-slate-800/80 p-6 shadow-xl shadow-black/20">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-mono uppercase tracking-wider px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Data Integrity</span>
+                    <span class="text-xs text-slate-400 font-mono">Validation Loops</span>
+                </div>
+                <h2 class="text-xl font-bold mb-3 text-white">Input Validation</h2>
+                <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                    Validation loops force users to re-enter data until it meets strict criteria (e.g., ensuring a price falls between 1 and 100).
+                </p>
+
+                <div class="rounded-xl bg-slate-950 p-4 font-mono text-xs overflow-x-auto border border-slate-800 text-slate-300 leading-relaxed shadow-inner">
+                    <span class="text-slate-500"># Method 2 Prime-and-Read approach</span><br>
+                    price = -<span class="text-sky-300">1</span><br>
+                    <span class="text-purple-400">while</span> price &lt; <span class="text-sky-300">1</span> <span class="text-purple-400">or</span> price &gt; <span class="text-sky-300">100</span>:<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;price = <span class="text-yellow-300">float</span>(<span class="text-yellow-300">input</span>(<span class="text-emerald-300">"Please enter a price between 1 and 100: "</span>))
+                </div>
+            </div>
+
+            <!-- MODULE 3: SUMMATION & AVERAGING -->
+            <div class="bg-cardBg rounded-2xl border border-slate-800/80 p-6 shadow-xl shadow-black/20">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-mono uppercase tracking-wider px-2.5 py-1 rounded-md bg-purple-500/10 text-purple-400 border border-purple-500/20">Accumulation</span>
+                    <span class="text-xs text-slate-400 font-mono">Summation & F-Strings</span>
+                </div>
+                <h2 class="text-xl font-bold mb-3 text-white">Summation & Formatting</h2>
+                <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                    Summation requires an accumulator initialized outside the loop. Averaging divides the final total by the total quantity. Use f-strings with <code class="text-emerald-400 font-mono">:.2f</code> to format floating-point numbers to two decimal places.
+                </p>
+                <div class="rounded-xl bg-slate-950 p-4 font-mono text-xs overflow-x-auto border border-slate-800 text-slate-300 leading-relaxed shadow-inner">
+                    total_calories = <span class="text-sky-300">0</span> <span class="text-slate-500"># &lt;- Accumulator</span><br>
+                    <span class="text-purple-400">for</span> i <span class="text-purple-400">in</span> <span class="text-yellow-300">range</span>(num_of_candies):<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;total_calories += calories<br>
+                    average = total_calories / num_of_candies<br>
+                    <span class="text-yellow-300">print</span>(<span class="text-emerald-300">f"Average: {average:.2f}"</span>) <span class="text-slate-500"># 2 decimal places</span>
+                </div>
+            </div>
+
+            <!-- MODULE 4: SENTINEL LOOPS & WARNING -->
+            <div class="bg-cardBg rounded-2xl border border-slate-800/80 p-6 shadow-xl shadow-black/20">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-mono uppercase tracking-wider px-2.5 py-1 rounded-md bg-rose-500/10 text-rose-400 border border-rose-500/20">Flow Control Rule</span>
+                    <span class="text-xs text-slate-400 font-mono">Sentinels vs. Break</span>
+                </div>
+                <h2 class="text-xl font-bold mb-3 text-white">Sentinel Loops & The "No-Break" Rule</h2>
+                <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                    A sentinel value signals the loop to stop (e.g., entering <code class="text-sky-300 font-mono">0</code> to exit). 
+                </p>
+                <div class="p-4 rounded-xl bg-rose-950/30 border border-rose-500/30 text-xs text-rose-300 font-mono">
+                    <span class="font-bold text-rose-400">CRITICAL CLASS RULE:</span> Do NOT use <code class="text-white">break</code> or <code class="text-white">continue</code> statements in CIT 129 loops. They make execution flow less readable and violate core structured programming principles!
+                </div>
+            </div>
+
+            <!-- FUTURE NOTE EXPANSION SLOT -->
+            <!-- 
+                DEVELOPER NOTE: To add future notes, copy any card block above, 
+                paste it here, and update the content headers and text.
+            -->
+        </section>
+
+        <!-- RIGHT COLUMN: INTERACTIVE SANDBOX PLAYGROUND -->
+        <aside class="lg:col-span-5 space-y-6">
+            <div class="bg-cardBg rounded-2xl border border-slate-800/80 p-6 shadow-xl shadow-black/20 sticky top-24">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-white flex items-center space-x-2">
+                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5"/></svg>
+                        <span>Loop Sandbox Playground</span>
+                    </h3>
+                    <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded font-mono border border-emerald-500/20">Live Simulator</span>
+                </div>
+                <p class="text-xs text-slate-400 mb-6">Test loop ranges, validation thresholds, and summation logic interactively.</p>
+
+                <!-- Sandbox Controls Form -->
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-mono text-slate-300 mb-1.5">Range Stop Value (Counter Loop):</label>
+                        <input type="number" id="loopStop" value="5" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-mono text-slate-300 mb-1.5">Validation Price Test (1 - 100):</label>
+                        <input type="number" id="loopPrice" value="45" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-500 transition">
+                    </div>
+
+                    <button onclick="runLoopSimulation()" class="w-full py-3 px-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold rounded-xl text-sm transition shadow-lg shadow-emerald-500/20 active:scale-[0.99]">
+                        Execute Loop Simulations
+                    </button>
+                </div>
+
+                <!-- Live Output Terminal Display -->
+                <div class="mt-6">
+                    <span class="block text-xs font-mono text-slate-400 mb-2">Terminal Output:</span>
+                    <div id="loopOutput" class="rounded-xl bg-slate-950 p-4 font-mono text-xs text-slate-300 border border-slate-800 min-h-[140px] max-h-[220px] overflow-y-auto space-y-1">
+                        <span class="text-slate-500">// Click 'Execute Loop Simulations' to test</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800/80 bg-slate-900/30 mt-auto py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 font-mono">
+            CIT 129 Python Loops Reference App &bull; Built for Modular Scalability
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC & SIMULATOR -->
+    <script>
+        /**
+         * Function to simulate Python loop behaviors inside the web sandbox.
+         * Designed for clean extensibility when adding new loop notes.
+         */
+        function runLoopSimulation() {
+            const stopVal = Number(document.getElementById('loopStop').value);
+            const priceVal = Number(document.getElementById('loopPrice').value);
+            const outputContainer = document.getElementById('loopOutput');
+            
+            outputContainer.innerHTML = '';
+
+            function logToTerminal(text, type = 'normal') {
+                const div = document.createElement('div');
+                if (type === 'success') div.className = 'text-emerald-400';
+                else if (type === 'warning') div.className = 'text-amber-400';
+                else if (type === 'info') div.className = 'text-sky-400';
+                else div.className = 'text-slate-300';
+                div.textContent = `> ${text}`;
+                outputContainer.appendChild(div);
+            }
+
+            // 1. Simulate Counter Loop with range()
+            logToTerminal(`-- 1. Counter Loop: range(${stopVal}) --`, 'info');
+            let sequence = [];
+            for (let i = 0; i < stopVal; i++) {
+                sequence.push(i);
+            }
+            logToTerminal(`Generated sequence: [${sequence.join(', ')}]`, 'success');
+
+            // 2. Simulate Validation Loop Check
+            logToTerminal(`-- 2. Validation Check (price = ${priceVal}) --`, 'info');
+            if (priceVal >= 1 && priceVal <= 100) {
+                logToTerminal(`Price ${priceVal} is valid! Loop terminates successfully.`, 'success');
+            } else {
+                logToTerminal(`Price ${priceVal} is INVALID! Loop would re-prompt user.`, 'warning');
+            }
+
+            // 3. Simulate Accumulator & Averaging formatting
+            logToTerminal(`-- 3. Summation & F-String Formatting --`, 'info');
+            let dummyTotal = 345.678;
+            logToTerminal(`Total raw: ${dummyTotal} -> Formatted: f"{total:.2f}" = ${dummyTotal.toFixed(2)}`, 'success');
+
+            outputContainer.scrollTop = outputContainer.scrollHeight;
+        }
+
+        // Run simulation on initial page load
+        window.onload = runLoopSimulation;
+    </script>
+</body>
+</html>

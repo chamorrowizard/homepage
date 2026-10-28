@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Conditions Masterclass | CIT 129</title>
+    <!-- Google Fonts: Inter for UI & Fira Code for Code Blocks -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS for modern utility-first styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slateBg: '#0f172a',
+                        cardBg: '#1e293b',
+                        accentBlue: '#38bdf8',
+                        accentGreen: '#34d399',
+                        accentPurple: '#a78bfa'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slateBg text-slate-100 font-sans min-h-screen flex flex-col selection:bg-sky-500 selection:text-white">
+
+    <!-- HEADER SECTION -->
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-sky-500 to-indigo-500 flex items-center justify-center shadow-lg shadow-sky-500/20">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg tracking-tight">Python Conditionals</h1>
+                    <p class="text-xs text-slate-400">Interactive Reference & Sandbox</p>
+                </div>
+            </div>
+            <div class="hidden sm:flex items-center space-x-2 text-xs font-mono bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700/50 text-sky-400">
+                <span>CIT 129 — Fall 2026</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+        <!-- LEFT COLUMN: THEORY & DOCUMENTATION MODULES -->
+        <section class="lg:col-span-7 space-y-8" id="notes-container">
+            
+            <!-- MODULE 1: CONTROL FLOW -->
+            <div class="bg-cardBg rounded-2xl border border-slate-800/80 p-6 shadow-xl shadow-black/20">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-mono uppercase tracking-wider px-2.5 py-1 rounded-md bg-sky-500/10 text-sky-400 border border-sky-500/20">Control Flow</span>
+                    <span class="text-xs text-slate-400 font-mono">if / elif / else</span>
+                </div>
+                <h2 class="text-xl font-bold mb-3 text-white">The Conditional Chain</h2>
+                <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                    Conditional statements allow your program to make decisions. They evaluate boolean expressions to determine which block of code runs.
+                </p>
+                
+                <!-- Code Snippet Box -->
+                <div class="rounded-xl bg-slate-950 p-4 font-mono text-xs overflow-x-auto border border-slate-800 text-slate-300 leading-relaxed shadow-inner">
+                    <span class="text-purple-400">if</span> <span class="text-sky-300">True</span>: <span class="text-slate-500"># Evaluated first</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-300">print</span>(<span class="text-emerald-300">"Runs when condition is True"</span>)<br>
+                    <span class="text-purple-400">elif</span> <span class="text-sky-300">True</span>: <span class="text-slate-500"># Evaluated if previous was False</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-300">print</span>(<span class="text-emerald-300">"Runs if first is False and this is True"</span>)<br>
+                    <span class="text-purple-400">else</span>: <span class="text-slate-500"># Fallback block</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-yellow-300">print</span>(<span class="text-emerald-300">"Runs when none above are True"</span>)
+                </div>
+            </div>
+
+            <!-- MODULE 2: COMPARISON OPERATORS -->
+            <div class="bg-cardBg rounded-2xl border border-slate-800/80 p-6 shadow-xl shadow-black/20">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-mono uppercase tracking-wider px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Logic Operators</span>
+                    <span class="text-xs text-slate-400 font-mono">Comparisons & Case Sensitivity</span>
+                </div>
+                <h2 class="text-xl font-bold mb-3 text-white">Evaluating Expressions</h2>
+                <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                    Comparisons always resolve to either <code class="text-emerald-400 font-mono">True</code> or <code class="text-rose-400 font-mono">False</code>. Python is strictly case-sensitive when comparing strings.
+                </p>
+
+                <!-- Interactive Comparison Quick Reference Table -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono">
+                    <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
+                        <span class="text-sky-300">x == 12</span>
+                        <span class="text-emerald-400">Equal (True)</span>
+                    </div>
+                    <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
+                        <span class="text-sky-300">x != 20</span>
+                        <span class="text-emerald-400">Not Equal (True)</span>
+                    </div>
+                    <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
+                        <span class="text-sky-300">x >= 12</span>
+                        <span class="text-emerald-400">Greater/Equal (True)</span>
+                    </div>
+                    <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex justify-between items-center">
+                        <span class="text-sky-300">x &lt; 8</span>
+                        <span class="text-rose-400">Less Than (False)</span>
+                    </div>
+                </div>
+
+                <!-- Case Sensitivity Tip Box -->
+                <div class="mt-4 p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs text-slate-300 font-mono">
+                    <span class="text-amber-400 font-bold">Pro Tip:</span> Use <code class="text-sky-300">.lower()</code> to normalize input data:<br>
+                    <code class="text-purple-400">if</code> <code class="text-slate-100">name.lower() == "john".lower():</code> <span class="text-slate-500"># Matches regardless of case</span>
+                </div>
+            </div>
+
+            <!-- MODULE 3: COMPOUND CONDITIONS -->
+            <div class="bg-cardBg rounded-2xl border border-slate-800/80 p-6 shadow-xl shadow-black/20">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-mono uppercase tracking-wider px-2.5 py-1 rounded-md bg-purple-500/10 text-purple-400 border border-purple-500/20">Boolean Logic</span>
+                    <span class="text-xs text-slate-400 font-mono">and / or / not</span>
+                </div>
+                <h2 class="text-xl font-bold mb-3 text-white">Compound Conditions</h2>
+                <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                    Combine multiple evaluations using boolean operators to handle complex criteria.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                        <p class="text-purple-400 font-bold mb-1">AND</p>
+                        <p class="text-slate-400">Both sides must be True.</p>
+                        <p class="text-emerald-400 mt-2">True and True → True</p>
+                    </div>
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                        <p class="text-purple-400 font-bold mb-1">OR</p>
+                        <p class="text-slate-400">Either side can be True.</p>
+                        <p class="text-emerald-400 mt-2">False or True → True</p>
+                    </div>
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+                        <p class="text-purple-400 font-bold mb-1">NOT</p>
+                        <p class="text-slate-400">Inverts the boolean state.</p>
+                        <p class="text-rose-400 mt-2">not True → False</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FUTURE NOTE EXPANSION SLOT -->
+            <!-- 
+                DEVELOPER NOTE: To add future notes, copy any card block above, 
+                paste it here, and update the content headers and text.
+            -->
+        </section>
+
+        <!-- RIGHT COLUMN: INTERACTIVE SANDBOX PLAYGROUND -->
+        <aside class="lg:col-span-5 space-y-6">
+            <div class="bg-cardBg rounded-2xl border border-slate-800/80 p-6 shadow-xl shadow-black/20 sticky top-24">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-white flex items-center space-x-2">
+                        <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5"/></svg>
+                        <span>Interactive Sandbox</span>
+                    </h3>
+                    <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded font-mono border border-emerald-500/20">Live Evaluator</span>
+                </div>
+                <p class="text-xs text-slate-400 mb-6">Test condition behavior instantly by altering test variables below.</p>
+
+                <!-- Sandbox Controls Form -->
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-mono text-slate-300 mb-1.5">Variable x (Number):</label>
+                        <input type="number" id="sandboxX" value="12" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm font-mono text-white focus:outline-none focus:border-sky-500 transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-mono text-slate-300 mb-1.5">Variable Name (String):</label>
+                        <input type="text" id="sandboxName" value="JOHN" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm font-mono text-white focus:outline-none focus:border-sky-500 transition">
+                    </div>
+
+                    <button onclick="runSandboxSimulation()" class="w-full py-3 px-4 bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold rounded-xl text-sm transition shadow-lg shadow-sky-500/20 active:scale-[0.99]">
+                        Run Evaluation
+                    </button>
+                </div>
+
+                <!-- Live Output Terminal Display -->
+                <div class="mt-6">
+                    <span class="block text-xs font-mono text-slate-400 mb-2">Simulation Output:</span>
+                    <div id="sandboxOutput" class="rounded-xl bg-slate-950 p-4 font-mono text-xs text-slate-300 border border-slate-800 min-h-[120px] max-h-[200px] overflow-y-auto space-y-1">
+                        <span class="text-slate-500">// Click 'Run Evaluation' to test conditions</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800/80 bg-slate-900/30 mt-auto py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 font-mono">
+            CIT 129 Python Conditions Reference App &bull; Built for Modular Scalability
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC & SIMULATOR -->
+    <script>
+        /**
+         * Function to simulate Python conditional evaluation inside the web sandbox.
+         * Designed to be easily expanded as you add more notes in the future.
+         */
+        function runSandboxSimulation() {
+            // Retrieve user inputs from the sandbox form
+            const x = Number(document.getElementById('sandboxX').value);
+            const name = document.getElementById('sandboxName').value;
+            const outputContainer = document.getElementById('sandboxOutput');
+            
+            // Clear previous output logs
+            outputContainer.innerHTML = '';
+
+            // Helper function to log lines to the terminal UI
+            function logToTerminal(text, type = 'normal') {
+                const div = document.createElement('div');
+                if (type === 'success') div.className = 'text-emerald-400';
+                else if (type === 'warning') div.className = 'text-amber-400';
+                else if (type === 'info') div.className = 'text-sky-400';
+                else div.className = 'text-slate-300';
+                div.textContent = `> ${text}`;
+                outputContainer.appendChild(div);
+            }
+
+            // 1. Evaluate 'if/elif/else' chain using variable x
+            logToTerminal(`Evaluating x = ${x}...`, 'info');
+            if (x === 12) {
+                logToTerminal('This should show since x IS equal to 12', 'success');
+            } else if (x > 12) {
+                logToTerminal('x is greater than 12', 'success');
+            } else {
+                logToTerminal('x is less than 12', 'success');
+            }
+
+            // 2. Evaluate case-sensitivity demonstration
+            logToTerminal(`Evaluating name = "${name}"...`, 'info');
+            if (name === "John") {
+                logToTerminal('Exact match found for "John".', 'success');
+            } else {
+                logToTerminal(`Python is case-sensitive! "${name}" does not match "John".`, 'warning');
+            }
+
+            // 3. Evaluate case-insensitive comparison using .lower()
+            if (name.toLowerCase() === "john".toLowerCase()) {
+                logToTerminal('Case-insensitive check (.lower()): Match successful!', 'success');
+            } else {
+                logToTerminal('Case-insensitive check (.lower()): No match.', 'warning');
+            }
+
+            // Scroll terminal to bottom
+            outputContainer.scrollTop = outputContainer.scrollHeight;
+        }
+
+        // Run simulation on initial page load to populate default state
+        window.onload = runSandboxSimulation;
+    </script>
+</body>
+</html>
