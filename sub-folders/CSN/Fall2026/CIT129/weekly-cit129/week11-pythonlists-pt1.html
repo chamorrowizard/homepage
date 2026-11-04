@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Lists Pt. 1 | Interactive Study Portal</title>
+    <!-- Google Fonts for Premium Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           CSS DESIGN SYSTEM & THEMING
+           ================================---------- */
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-purple: #c084fc;
+            --accent-green: #34d399;
+            --accent-gold: #fbbf24;
+            --code-bg: #090d16;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Glow Background Effect */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 350px;
+            background: linear-gradient(180deg, rgba(56, 189, 248, 0.08) 0%, rgba(192, 132, 252, 0) 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* ==========================================
+           LAYOUT & CONTAINER STYLING
+           ================================---------- */
+        header {
+            text-align: center;
+            padding: 3rem 1.5rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(135deg, var(--text-main) 30%, var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        main {
+            max-width: 900px;
+            width: 92%;
+            margin: 0 auto 4rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* ==========================================
+           CARD COMPONENTS (Glassmorphism UI)
+           ================================---------- */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            transition: var(--transition-smooth);
+        }
+
+        .card:hover {
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 0 15px 35px -10px rgba(56, 189, 248, 0.1);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card h3 {
+            font-size: 1.15rem;
+            color: var(--text-main);
+            margin: 1.25rem 0 0.5rem;
+        }
+
+        p, ul {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* ==========================================
+           CODE BLOCK & TABLE FORMATTING
+           ================================---------- */
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.25rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            margin: 1rem 0;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent-blue);
+            background: rgba(56, 189, 248, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: inherit;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            color: var(--text-main);
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        td {
+            color: var(--text-muted);
+        }
+
+        /* ==========================================
+           WISDOM & SCRIPTURE CALLOUT BOXES
+           ================================---------- */
+        .callout {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.05), rgba(56, 189, 248, 0.05));
+            border-left: 4px solid var(--accent-gold);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin: 1.5rem 0;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            color: var(--accent-gold);
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .callout-text {
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        /* ==========================================
+           FOOTER STYLING
+           ================================---------- */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+        }
+
+        /* ==========================================
+           MOBILE RESPONSIVENESS
+           ================================---------- */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .card {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Python Lists Pt. 1 Study Hub</h1>
+        <p>CIT 129 Course Module • Master Structured Data & Indexes</p>
+    </header>
+
+    <main>
+        <!-- SECTION 1: CORE CONCEPTS & INITIALIZATION -->
+        <section class="card" id="section-initialization">
+            <h2>📦 1. Lists Initialization & Purpose</h2>
+            <p>Lists are versatile data containers used to hold collections of similar data elements in sequential order (such as names, numeric scores, or user balances).</p>
+            
+            <h3>Initializing an Empty List</h3>
+            <p>Before storing items, you must initialize the list variable:</p>
+            <pre><code># Creates an empty list ready for dynamic item insertion
+names = []</code></pre>
+
+            <!-- Scripture & Lesson Integration -->
+            <div class="callout">
+                <div class="callout-title">💡 Principle & Reflection: Order in Design</div>
+                <p class="callout-text">"Let all things be done decently and in order." — 1 Corinthians 14:40. Just as clean software architecture requires structured data containers before execution, disciplined organization in our professional and personal fields ensures readiness for whatever tasks come our way.</p>
+            </div>
+        </section>
+
+        <!-- SECTION 2: ITEM INSERTION -->
+        <section class="card" id="section-insertion">
+            <h2>➕ 2. Insertion Methods</h2>
+            <p>Python provides precise tools to control where data enters your list structure.</p>
+            
+            <h3>Appending to the End (.append)</h3>
+            <pre><code>names.append("Alice")
+names.append("Charlie")
+# Result: ["Alice", "Charlie"]</code></pre>
+
+            <h3>Inserting at a Specific Index (.insert)</h3>
+            <p>To place an element in the middle of a list without overwriting existing entries:</p>
+            <pre><code># Syntax: list_name.insert(index, item)
+names.insert(1, "Bob")
+# Result: ["Alice", "Bob", "Charlie"]</code></pre>
+        </section>
+
+        <!-- SECTION 3: INDEXING & ACCESSING -->
+        <section class="card" id="section-indexing">
+            <h2>🔍 3. Indexes & Accessing Data</h2>
+            <p>Python lists are <strong>zero-indexed</strong>. The first element always resides at index <code>0</code>, not <code>1</code>.</p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Index (Positive)</th>
+                            <th>Index (Negative)</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0</td>
+                            <td>-3</td>
+                            <td>Alice</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>-2</td>
+                            <td>Bob</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>-1</td>
+                            <td>Charlie</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Negative Indexing Shortcuts</h3>
+            <p>Python allows you to count backwards from the end of a list effortlessly using negative integers:</p>
+            <pre><code>print(names[-1])  # Outputs: "Charlie" (The last element)
+print(names[-3])  # Outputs: "Alice"</code></pre>
+        </section>
+
+        <!-- SECTION 4: CODE EXAMPLES & LOOPS -->
+        <section class="card" id="section-examples">
+            <h2>⚡ 4. Applied Logic: Lists & Counter Loops</h2>
+            <p>Computers process instructions sequentially. By pairing lists with counter loops, you can dynamically capture and analyze input sets.</p>
+
+            <pre><code># Dynamic Name Capture Example
+num_of_people = int(input("How many people are there?: "))
+names = []
+
+for i in range(num_of_people):
+    entered_name = input(f"Please enter name #{i + 1}: ")
+    names.append(entered_name)
+
+print(f"First entered: {names[0]}")
+print(f"Last entered: {names[-1]}")</code></pre>
+
+            <!-- Lesson Integration -->
+            <div class="callout">
+                <div class="callout-title">🛠️ Engineering Lesson: Iteration & Persistence</div>
+                <p class="callout-text">Iterating through a list one step at a time mirrors how complex professional and technical milestones are achieved: step-by-step, persistence through every loop cycle, and maintaining focus on the final objective.</p>
+            </div>
+        </section>
+
+        <!-- FUTURE EXPANSION SLOT -->
+        <!-- 
+            ====================================================
+            DEVELOPER NOTE FOR FUTURE EXPANSION:
+            To add more detail later, simply duplicate the structure 
+            below and paste it right here inside the <main> tag:
+            
+            <section class="card" id="section-new-topic">
+                <h2>🚀 5. [Your New Topic Title]</h2>
+                <p>Add description and notes here...</p>
+                <pre><code># Add code examples here</code></pre>
+            </section>
+            ====================================================
+        -->
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Python Lists Study Portal • Designed for Excellence & Continuous Growth</p>
+    </footer>
+
+</body>
+</html>
