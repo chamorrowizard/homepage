@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game: Conditionals & Scoring | Study Portal</title>
+    <!-- Google Fonts for Premium Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           CSS DESIGN SYSTEM & THEMING
+           ================================---------- */
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-purple: #c084fc;
+            --accent-green: #34d399;
+            --accent-gold: #fbbf24;
+            --code-bg: #090d16;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Glow Background Effect */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 350px;
+            background: linear-gradient(180deg, rgba(56, 189, 248, 0.08) 0%, rgba(192, 132, 252, 0) 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 1.5rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(135deg, var(--text-main) 30%, var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        main {
+            max-width: 900px;
+            width: 92%;
+            margin: 0 auto 4rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Card Component Styling */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            transition: var(--transition-smooth);
+        }
+
+        .card:hover {
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 0 15px 35px -10px rgba(56, 189, 248, 0.1);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card h3 {
+            font-size: 1.15rem;
+            color: var(--text-main);
+            margin: 1.25rem 0 0.5rem;
+        }
+
+        p, ul {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.25rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            margin: 1rem 0;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent-blue);
+            background: rgba(56, 189, 248, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: inherit;
+        }
+
+        /* Wisdom Callout Boxes */
+        .callout {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.05), rgba(56, 189, 248, 0.05));
+            border-left: 4px solid var(--accent-gold);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin: 1.5rem 0;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            color: var(--accent-gold);
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .callout-text {
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .card {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Quiz Game Logic Breakdown</h1>
+        <p>Scoring Systems, String Sanitization, and Multi-Branch Conditional Evaluation</p>
+    </header>
+
+    <main>
+        <!-- FULL SOURCE CODE REFERENCE CARD -->
+        <section class="card" id="section-source">
+            <h2>📜 Full Source Code Reference</h2>
+            <p>Here is the complete script analyzed across this study portal:</p>
+            <pre><code>score = 0
+
+q1_answer = int(input("How many states are in Canada?: "))
+if q1_answer == 13:
+	score += 1
+	print("Correct!")
+	
+q2_answer = input("What is the capital of El Salvador?: ").lower()
+if q2_answer == "san salvador":
+	score += 1
+	print("Correct!")
+
+q3_answer = input("What is the name of Korea’s writing system?: ").lower()
+if q3_answer == "hangul":
+	score += 1
+	print("Correct!")
+
+q4_answer = int(input("What is ONE of the years that Franklin D. Roosevelt was in office?: "))
+if 1933 <= q4_answer <= 1945:
+	score += 1
+	print("Correct")
+
+choice = input("Do you want to see your score? (yes/no): ").lower()
+if choice == 'yes':
+	print("Your score is", score)
+	if score == 0:
+		print("Better luck next time!")
+	elif 1 <= score <= 3:
+		print("Not bad!")
+	elif score == 4:
+		print("Perfect!")
+else:
+	print("Goodbye.")</code></pre>
+        </section>
+
+        <!-- SECTION 1: INITIALIZATION & NUMERIC EVALUATION -->
+        <section class="card" id="section-q1">
+            <h2>🔢 1. Scoring State & Numeric Casting (Q1)</h2>
+            <p>We begin by initializing our accumulator variable to track correct answers, then use type casting for numeric input.</p>
+            <pre><code>score = 0
+
+q1_answer = int(input("How many states are in Canada?: "))
+if q1_answer == 13:
+	score += 1
+	print("Correct!")</code></pre>
+            <ul>
+                <li><strong>Accumulator (`score = 0`):</strong> Acts as a secure container that increments whenever a condition is met.</li>
+                <li><strong>Type Casting (`int()`):</strong> Converts raw user string input into an integer so it can be compared mathematically using `==`.</li>
+            </ul>
+
+            <!-- Scripture & Lesson Integration -->
+            <div class="callout">
+                <div class="callout-title">💡 Principle & Reflection: Truth & Accuracy</div>
+                <p class="callout-text">"Buy the truth, and sell it not; also wisdom, and instruction, and understanding." — Proverbs 23:23. In programming just as in life, checking our premises accurately against reality ensures our conclusions are correct.</p>
+            </div>
+        </section>
+
+        <!-- SECTION 2: STRING SANITIZATION -->
+        <section class="card" id="section-q2-q3">
+            <h2>🔤 2. String Sanitization with <code>.lower()</code> (Q2 & Q3)</h2>
+            <p>User input can vary wildly in capitalization (e.g., "San Salvador", "san salvador", "SAN SALVADOR"). We standardize input to ensure fair evaluation.</p>
+            <pre><code>q2_answer = input("What is the capital of El Salvador?: ").lower()
+if q2_answer == "san salvador":
+	score += 1
+	print("Correct!")</code></pre>
+            <ul>
+                <li><strong>Method Chaining (`.lower()`):</strong> Instantly converts all alphabetic characters in the string to lowercase right as input is captured, preventing minor typing discrepancies from failing a correct answer.</li>
+            </ul>
+        </section>
+
+        <!-- SECTION 3: RANGE EVALUATION -->
+        <section class="card" id="section-q4">
+            <h2>🎯 3. Range Checking (Q4)</h2>
+            <p>When a question has multiple valid historical answers or a span of correct years, we evaluate ranges efficiently.</p>
+            <pre><code>q4_answer = int(input("What is ONE of the years that Franklin D. Roosevelt was in office?: "))
+if 1933 <= q4_answer <= 1945:
+	score += 1
+	print("Correct")</code></pre>
+            <ul>
+                <li><strong>Chained Inequality:</strong> Evaluates whether the user's entered year falls inclusively between Roosevelt's inauguration (1933) and conclusion of office (1945).</li>
+            </ul>
+
+            <!-- Lesson Integration -->
+            <div class="callout">
+                <div class="callout-title">🛠️ Engineering Lesson: Robust Design</div>
+                <p class="callout-text">Anticipating user behavior—such as typing variations or multiple correct answers—demonstrates mature software design. Robust programs account for flexibility while maintaining strict boundaries.</p>
+            </div>
+        </section>
+
+        <!-- SECTION 4: CONDITIONAL FEEDBACK BRANCHES -->
+        <section class="card" id="section-results">
+            <h2>📊 4. Nested Decisions & Score Reporting</h2>
+            <p>Finally, we prompt the user for their preference and use a nested multi-branch conditional structure (`if-elif-else`) to tailor the closing feedback message.</p>
+            <pre><code>choice = input("Do you want to see your score? (yes/no): ").lower()
+if choice == 'yes':
+	print("Your score is", score)
+	if score == 0:
+		print("Better luck next time!")
+	elif 1 <= score <= 3:
+		print("Not bad!")
+	elif score == 4:
+		print("Perfect!")
+else:
+	print("Goodbye.")</code></pre>
+        </section>
+
+        <!-- FUTURE EXPANSION SLOT -->
+        <!-- 
+            ====================================================
+            DEVELOPER NOTE FOR FUTURE EXPANSION:
+            To add more detail later, duplicate the structure below:
+            
+            <section class="card" id="section-new-topic">
+                <h2>🚀 5. [Your New Topic Title]</h2>
+                <p>Add description and notes here...</p>
+            </section>
+            ====================================================
+        -->
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Quiz Game Study Portal • Designed for Excellence & Continuous Growth</p>
+    </footer>
+
+</body>
+</html>

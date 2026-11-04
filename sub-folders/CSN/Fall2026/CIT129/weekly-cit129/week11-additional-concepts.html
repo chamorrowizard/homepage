@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Lists: Additional Concepts | Study Portal</title>
+    <!-- Google Fonts for Premium Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           CSS DESIGN SYSTEM & THEMING
+           ================================---------- */
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-purple: #c084fc;
+            --accent-green: #34d399;
+            --accent-gold: #fbbf24;
+            --code-bg: #090d16;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Glow Background Effect */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 350px;
+            background: linear-gradient(180deg, rgba(56, 189, 248, 0.08) 0%, rgba(192, 132, 252, 0) 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        header {
+            text-align: center;
+            padding: 3rem 1.5rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(135deg, var(--text-main) 30%, var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        main {
+            max-width: 900px;
+            width: 92%;
+            margin: 0 auto 4rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Card Component Styling */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            transition: var(--transition-smooth);
+        }
+
+        .card:hover {
+            border-color: rgba(56, 189, 248, 0.3);
+            box-shadow: 0 15px 35px -10px rgba(56, 189, 248, 0.1);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card h3 {
+            font-size: 1.15rem;
+            color: var(--text-main);
+            margin: 1.25rem 0 0.5rem;
+        }
+
+        p, ul {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.25rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            margin: 1rem 0;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent-blue);
+            background: rgba(56, 189, 248, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: inherit;
+        }
+
+        /* Wisdom Callout Boxes */
+        .callout {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.05), rgba(56, 189, 248, 0.05));
+            border-left: 4px solid var(--accent-gold);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin: 1.5rem 0;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            color: var(--accent-gold);
+            margin-bottom: 0.35rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .callout-text {
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            .card {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Python Lists: Additional Concepts</h1>
+        <p>CIT 129 Course Module • Flags, Loops, and Advanced Formatting</p>
+    </header>
+
+    <main>
+        <!-- SECTION 1: FLAG-CONTROLLED LOOPS -->
+        <section class="card" id="section-flags">
+            <h2>🚩 1. Flag-Controlled Loops</h2>
+            <p>A <strong>flag-controlled loop</strong> is utilized when multiple distinct exit conditions must be managed simultaneously (such as combining a counter limit with a correct sentinel trigger).</p>
+            
+            <h3>Basic Loop Structure</h3>
+            <pre><code># Define a flag first. It must start as True.
+my_flag = True
+
+# Start a loop using the flag.
+while my_flag:
+    # Perform operations...
+    # When ready to exit, toggle the flag to False.
+    my_flag = False</code></pre>
+
+            <h3>Applied Example: Number Guessing Game</h3>
+            <pre><code>secret = 9
+guesses_left = 5
+game_is_on = True
+
+while game_is_on:
+    guess = int(input("Guess a number between 1 and 10: "))
+    guesses_left -= 1
+
+    if guess == secret:
+        print("You guessed it! Yay!")
+        game_is_on = False  # Exit condition 1: Success
+    elif guesses_left == 0:
+        print("You ran out of guesses.")
+        game_is_on = False  # Exit condition 2: Limit reached</code></pre>
+            
+            <p><em>Trade-off Note:</em> While highly flexible, flag loops can be less readable at a glance because exit logic is evaluated inside the block rather than explicitly in the loop header.</p>
+
+            <!-- Scripture & Lesson Integration -->
+            <div class="callout">
+                <div class="callout-title">💡 Principle & Reflection: Vigilance</div>
+                <p class="callout-text">"Watch ye therefore, for ye know not when the master of the house cometh..." — Mark 13:35. Just as a flag monitors system states and halts execution upon key triggers, staying spiritually and professionally watchful safeguards our focus against unpredictable environments.</p>
+            </div>
+        </section>
+
+        <!-- SECTION 2: ADVANCED PRINT FUNCTIONS (END & SEP) -->
+        <section class="card" id="section-print-mods">
+            <h2>🖨️ 2. Advanced Print Function Modifiers</h2>
+            <p>By default, Python's <code>print()</code> function automatically inserts a newline character (<code>\n</code>) and separates multiple items with a space. We can customize this behavior using keyword arguments.</p>
+            
+            <h3>Controlling Line Endings with <code>end=""</code></h3>
+            <p>To print list items horizontally across a single line instead of stacking them vertically:</p>
+            <pre><code>names = ['Alex', 'Muhammad', 'Yasmin', 'Bianca', 'Naomi']
+
+# Using a space string to prevent items from merging together
+for i in range(len(names)):
+    print(names[i], end=" ")
+
+# Output: Alex Muhammad Yasmin Bianca Naomi</code></pre>
+
+            <h3>Controlling Separators with <code>sep=""</code></h3>
+            <p>To remove unwanted default spaces inserted between concatenated arguments:</p>
+            <pre><code># Default behavior places a space before the value
+print("Your total price is $", 10.99)  # Outputs: Your total price is $ 10.99
+
+# Using sep="" removes the separator space entirely
+print("Your total price is $", 10.99, sep="")  # Outputs: Your total price is $10.99</code></pre>
+
+            <!-- Lesson Integration -->
+            <div class="callout">
+                <div class="callout-title">🛠️ Engineering Lesson: Precision</div>
+                <p class="callout-text">Small details matter. Adjusting parameters like separators and line endings demonstrates the software engineering mindset: taking exact control over the presentation layer to ensure a polished user experience.</p>
+            </div>
+        </section>
+
+        <!-- FUTURE EXPANSION SLOT -->
+        <!-- 
+            ====================================================
+            DEVELOPER NOTE FOR FUTURE EXPANSION:
+            To add more detail later, duplicate the structure below:
+            
+            <section class="card" id="section-new-topic">
+                <h2>🚀 3. [Your New Topic Title]</h2>
+                <p>Add description and notes here...</p>
+                <pre><code># Code examples here</code></pre>
+            </section>
+            ====================================================
+        -->
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Python Lists: Additional Concepts Study Portal • Designed for Excellence</p>
+    </footer>
+
+</body>
+</html>
