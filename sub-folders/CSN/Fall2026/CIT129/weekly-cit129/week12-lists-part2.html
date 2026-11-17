@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lists Part 2: Interactive Masterclass & Sandbox</title>
+    <!-- Tailwind CSS CDN for modern, responsive utility-first styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter for crisp typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar and sleek aesthetic touches */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-indigo-500 selection:text-white min-h-screen flex flex-col">
+
+    <!-- ========================================== -->
+    <!-- HEADER / NAVIGATION BAR                    -->
+    <!-- ========================================== -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                </div>
+                <div>
+                    <span class="font-bold tracking-tight text-lg bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Lists Part 2</span>
+                    <span class="block text-xs text-indigo-400 font-medium">Interactive Learning Hub</span>
+                </div>
+            </div>
+            <!-- Quick Navigation / Module Jump -->
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-slate-400">
+                <a href="#parallel" class="hover:text-white transition-colors">Parallel Lists</a>
+                <a href="#functions" class="hover:text-white transition-colors">List Functions</a>
+                <a href="#searching" class="hover:text-white transition-colors">Searching</a>
+                <a href="#sorting" class="hover:text-white transition-colors">Bubble Sort</a>
+                <a href="#sandbox" class="px-3 py-1.5 rounded-lg bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 hover:bg-indigo-600/30 transition-all">Sandbox</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- MAIN CONTAINER                             -->
+    <!-- ========================================== -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16 w-full">
+
+        <!-- Hero Section -->
+        <section class="text-center space-y-4 py-8">
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-indigo-400 font-medium">
+                <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+                <span>CIT 129 Curriculum</span>
+            </div>
+            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white">
+                Mastering <span class="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">Advanced Lists</span>
+            </h1>
+            <p class="max-w-2xl mx-auto text-slate-400 text-base sm:text-lg">
+                Explore parallel structures, built-in aggregate functions, index searching, and the mechanics of Bubble Sort through an interactive visual app.
+            </p>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- MODULE 1: PARALLEL LISTS                   -->
+        <!-- ========================================== -->
+        <section id="parallel" class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-sm shadow-xl">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-800">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-indigo-400">Concept 01</span>
+                    <h2 class="text-2xl font-bold text-white mt-1">Parallel Lists & Tables</h2>
+                </div>
+                <p class="text-slate-400 text-sm max-w-md">
+                    Multiple lists sharing the same index to represent related traits of single entities.
+                </p>
+            </div>
+
+            <!-- Interactive Parallel List Visualizer -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Data Display Table -->
+                <div class="lg:col-span-2 overflow-x-auto rounded-xl border border-slate-800 bg-slate-950/50">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-900 text-slate-400 uppercase text-xs tracking-wider border-b border-slate-800">
+                            <tr>
+                                <th class="px-4 py-3">Index</th>
+                                <th class="px-4 py-3">names[]</th>
+                                <th class="px-4 py-3">ages[]</th>
+                                <th class="px-4 py-3">heights[]</th>
+                            </tr>
+                        </thead>
+                        <tbody id="parallel-table-body" class="divide-y divide-slate-800/60 font-mono">
+                            <!-- Populated dynamically via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Inspector Card -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">Live Entity Inspector</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="text-xs text-slate-500 block">Select Index (i):</label>
+                                <input type="range" id="index-slider" min="0" max="4" value="2" class="w-full accent-indigo-500 mt-1 cursor-pointer">
+                            </div>
+                            <div class="bg-slate-900 rounded-lg p-3 border border-slate-800 text-sm space-y-1">
+                                <p class="text-slate-400">Current Index: <span id="inspect-idx" class="text-indigo-400 font-bold">2</span></p>
+                                <p class="text-slate-200">Name: <span id="inspect-name" class="font-bold text-white">Charlie</span></p>
+                                <p class="text-slate-200">Age: <span id="inspect-age" class="font-bold text-white">25</span></p>
+                                <p class="text-slate-200">Height: <span id="inspect-height" class="font-bold text-white">170 cm</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-xs text-slate-500 italic bg-slate-900/40 p-2.5 rounded border border-slate-800">
+                        Notice how matching indices bind these distinct lists into a cohesive record.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- MODULE 2: LIST FUNCTIONS                   -->
+        <!-- ========================================== -->
+        <section id="functions" class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-sm shadow-xl">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-800">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-indigo-400">Concept 02</span>
+                    <h2 class="text-2xl font-bold text-white mt-1">Built-in List Functions</h2>
+                </div>
+                <p class="text-slate-400 text-sm max-w-md">
+                    Quick aggregate operations available exclusively for list objects.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- Function Card: max() -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 hover:border-indigo-500/50 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-mono text-indigo-400 font-bold text-lg">max(nums)</span>
+                            <span class="text-xs bg-indigo-500/10 text-indigo-300 px-2 py-0.5 rounded border border-indigo-500/20">Highest</span>
+                        </div>
+                        <p class="text-xs text-slate-400">Returns the maximum numerical value present in the list.</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-800/80 font-mono text-xs flex justify-between text-slate-300">
+                        <span>Result:</span>
+                        <span id="fn-max" class="text-emerald-400 font-bold">28</span>
+                    </div>
+                </div>
+
+                <!-- Function Card: min() -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 hover:border-indigo-500/50 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-mono text-indigo-400 font-bold text-lg">min(nums)</span>
+                            <span class="text-xs bg-indigo-500/10 text-indigo-300 px-2 py-0.5 rounded border border-indigo-500/20">Lowest</span>
+                        </div>
+                        <p class="text-xs text-slate-400">Returns the minimum numerical value present in the list.</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-800/80 font-mono text-xs flex justify-between text-slate-300">
+                        <span>Result:</span>
+                        <span id="fn-min" class="text-emerald-400 font-bold">19</span>
+                    </div>
+                </div>
+
+                <!-- Function Card: len() -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 hover:border-indigo-500/50 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-mono text-indigo-400 font-bold text-lg">len(nums)</span>
+                            <span class="text-xs bg-indigo-500/10 text-indigo-300 px-2 py-0.5 rounded border border-indigo-500/20">Count</span>
+                        </div>
+                        <p class="text-xs text-slate-400">Counts and returns the total number of items in the list.</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-800/80 font-mono text-xs flex justify-between text-slate-300">
+                        <span>Result:</span>
+                        <span id="fn-len" class="text-emerald-400 font-bold">5</span>
+                    </div>
+                </div>
+
+                <!-- Function Card: sum() -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 hover:border-indigo-500/50 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-mono text-indigo-400 font-bold text-lg">sum(nums)</span>
+                            <span class="text-xs bg-indigo-500/10 text-indigo-300 px-2 py-0.5 rounded border border-indigo-500/20">Total</span>
+                        </div>
+                        <p class="text-xs text-slate-400">Adds up all numbers and returns the cumulative total.</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-800/80 font-mono text-xs flex justify-between text-slate-300">
+                        <span>Result:</span>
+                        <span id="fn-sum" class="text-emerald-400 font-bold">111</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- MODULE 3: SEARCHING & CONDITIONAL SAFETY   -->
+        <!-- ========================================== -->
+        <section id="searching" class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-sm shadow-xl">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-800">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-indigo-400">Concept 03</span>
+                    <h2 class="text-2xl font-bold text-white mt-1">Searching & Safe Indexing</h2>
+                </div>
+                <p class="text-slate-400 text-sm max-w-md">
+                    Using <code class="text-indigo-300 font-mono">.index()</code> paired with the <code class="text-indigo-300 font-mono">in</code> keyword to prevent runtime errors.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+                <!-- Search Simulator Box -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-6 space-y-4">
+                    <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Interactive Query Simulation</h3>
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Search Name in List:</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="search-input" value="Charlie" class="flex-grow bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 font-mono">
+                            <button onclick="performSearch()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-sm font-medium transition-colors shadow-lg shadow-indigo-600/20">Search</button>
+                        </div>
+                    </div>
+                    <div id="search-output" class="p-4 rounded-lg bg-slate-900 border border-slate-800 text-sm font-mono space-y-2">
+                        <p class="text-slate-400">Query status: <span class="text-emerald-400 font-bold">Found</span></p>
+                        <p class="text-slate-400">Index location: <span class="text-indigo-400 font-bold">1</span></p>
+                        <p class="text-slate-300">Associated Age: <span class="text-white font-bold">24</span></p>
+                    </div>
+                </div>
+
+                <!-- Code Explainer Card -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-6 font-mono text-xs space-y-3 text-slate-300">
+                    <div class="text-slate-500 font-semibold uppercase tracking-wider text-[10px]">Safe Search Pattern</div>
+                    <pre class="overflow-x-auto text-indigo-300 bg-slate-900 p-4 rounded-lg border border-slate-800/80 leading-relaxed">
+<span class="text-violet-400">if</span> target <span class="text-violet-400">in</span> names:
+    idx = names.index(target)
+    <span class="text-slate-500"># Safe to access parallel data</span>
+    print(ages[idx])
+<span class="text-violet-400">else</span>:
+    print(<span class="text-emerald-300">"Value not found!"</span>)</pre>
+                    <p class="text-slate-400 font-sans text-xs pt-1">
+                        Checking <code class="font-mono text-indigo-300">in</code> first prevents Python from throwing a <code class="font-mono text-rose-400">ValueError</code> when searching for non-existent items like "Howard".
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- MODULE 4: BUBBLE SORT & PARALLEL SWAPPING  -->
+        <!-- ========================================== -->
+        <section id="sorting" class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-sm shadow-xl">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-800">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-indigo-400">Concept 04</span>
+                    <h2 class="text-2xl font-bold text-white mt-1">Bubble Sort & Parallel Swapping</h2>
+                </div>
+                <p class="text-slate-400 text-sm max-w-md">
+                    Sorting a primary list while keeping secondary lists perfectly synchronized.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+                <!-- Sorting Controller -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-6 space-y-5">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Visual Sorting Engine</h3>
+                        <div class="space-x-2">
+                            <button onclick="resetSortData()" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 rounded-lg text-xs font-medium transition-colors">Reset</button>
+                            <button onclick="triggerBubbleSort()" id="sort-btn" class="px-4 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-medium transition-colors shadow-lg shadow-indigo-600/20">Run Bubble Sort</button>
+                        </div>
+                    </div>
+
+                    <!-- Live Sort Array Preview -->
+                    <div class="space-y-2">
+                        <label class="text-xs text-slate-500">Current List State (Ages descending):</label>
+                        <div id="sort-array-view" class="flex gap-2 font-mono overflow-x-auto py-2">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+
+                    <div id="sort-status" class="text-xs text-slate-400 bg-slate-900 p-3 rounded-lg border border-slate-800">
+                        Ready to sort by Age (Descending).
+                    </div>
+                </div>
+
+                <!-- Algorithm Snippet -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-6 font-mono text-xs space-y-3 text-slate-300">
+                    <div class="text-slate-500 font-semibold uppercase tracking-wider text-[10px]">Parallel Swap Algorithm</div>
+                    <pre class="overflow-x-auto text-indigo-300 bg-slate-900 p-4 rounded-lg border border-slate-800/80 leading-relaxed">
+<span class="text-violet-400">for</span> i <span class="text-violet-400">in</span> range(len(ages)):
+    <span class="text-violet-400">for</span> j <span class="text-violet-400">in</span> range(len(ages) - 1):
+        <span class="text-violet-400">if</span> ages[j] &lt; ages[j + 1]:
+            <span class="text-slate-500"># Swap Main List</span>
+            ages[j], ages[j+1] = ages[j+1], ages[j]
+            <span class="text-slate-500"># Swap Secondary Lists</span>
+            names[j], names[j+1] = names[j+1], names[j]
+            heights[j], heights[j+1] = heights[j+1], heights[j]</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- MODULE 5: INTERACTIVE SANDBOX              -->
+        <!-- ========================================== -->
+        <section id="sandbox" class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-sm shadow-xl">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-800">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-indigo-400">Lab Sandbox</span>
+                    <h2 class="text-2xl font-bold text-white mt-1">Custom List Experimenter</h2>
+                </div>
+                <p class="text-slate-400 text-sm max-w-md">
+                    Add custom numbers, test aggregate functions, and see instant results.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Input Controls -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-5 space-y-4">
+                    <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Manage Sandbox List</h3>
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Add Number:</label>
+                        <div class="flex gap-2">
+                            <input type="number" id="sandbox-input" placeholder="e.g. 42" class="flex-grow bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 font-mono">
+                            <button onclick="addSandboxItem()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-sm font-medium transition-colors shadow-lg shadow-indigo-600/20">Add</button>
+                        </div>
+                    </div>
+                    <div>
+                        <button onclick="resetSandbox()" class="w-full py-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 rounded-lg text-xs font-medium transition-colors">Reset to Default Array</button>
+                    </div>
+                </div>
+
+                <!-- Current Sandbox Array View -->
+                <div class="lg:col-span-2 bg-slate-950 border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4">
+                    <div>
+                        <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">Live Array & Aggregates</h3>
+                        <div class="bg-slate-900 p-4 rounded-lg border border-slate-800 font-mono text-sm text-indigo-300 min-h-[50px] flex items-center flex-wrap gap-2" id="sandbox-array-display">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
+                        <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 text-center">
+                            <span class="text-slate-500 block text-[10px]">MAX</span>
+                            <span id="sb-max" class="text-emerald-400 font-bold text-sm">-</span>
+                        </div>
+                        <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 text-center">
+                            <span class="text-slate-500 block text-[10px]">MIN</span>
+                            <span id="sb-min" class="text-emerald-400 font-bold text-sm">-</span>
+                        </div>
+                        <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 text-center">
+                            <span class="text-slate-500 block text-[10px]">LEN</span>
+                            <span id="sb-len" class="text-emerald-400 font-bold text-sm">-</span>
+                        </div>
+                        <div class="bg-slate-900 p-3 rounded-lg border border-slate-800 text-center">
+                            <span class="text-slate-500 block text-[10px]">SUM</span>
+                            <span id="sb-sum" class="text-emerald-400 font-bold text-sm">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========================================== -->
+    <!-- FOOTER                                     -->
+    <!-- ========================================== -->
+    <footer class="border-t border-slate-800/80 bg-slate-950 mt-16 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 space-y-4 sm:space-y-0">
+            <p>Lists Part 2 Masterclass &bull; Designed for Desktop & Mobile UX Excellence.</p>
+            <p class="font-mono text-slate-400">Ready for future curriculum expansions.</p>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- JAVASCRIPT LOGIC & STATE MANAGEMENT         -->
+    <!-- ========================================== -->
+    <script>
+        /* 
+          ==========================================
+          APPLICATION STATE & DATA SOURCE
+          Designed for easy expansion with more detail later.
+          ==========================================
+        */
+        let parallelData = {
+            names: ["Alice", "Bob", "Charlie", "Dave", "Emma"],
+            ages: [27, 24, 25, 28, 22],
+            heights: [163, 170, 165, 152, 181]
+        };
+
+        let sandboxArray = [12, 45, 7, 23, 89, 34];
+
+        /* ========================================== */
+        /* MODULE 1: PARALLEL LISTS RENDERER          */
+        /* ========================================== */
+        function renderParallelTable(highlightIdx = 2) {
+            const tbody = document.getElementById('parallel-table-body');
+            tbody.innerHTML = '';
+            
+            for (let i = 0; i < parallelData.names.length; i++) {
+                const isSelected = i === parseInt(highlightIdx);
+                const tr = document.createElement('tr');
+                tr.className = `transition-colors ${isSelected ? 'bg-indigo-600/10 border-indigo-500/30' : 'hover:bg-slate-900/40'}`;
+                tr.innerHTML = `
+                    <td class="px-4 py-3 text-indigo-400 font-bold">${i}</td>
+                    <td class="px-4 py-3 ${isSelected ? 'text-white font-bold' : 'text-slate-300'}">${parallelData.names[i]}</td>
+                    <td class="px-4 py-3 ${isSelected ? 'text-white font-bold' : 'text-slate-300'}">${parallelData.ages[i]}</td>
+                    <td class="px-4 py-3 ${isSelected ? 'text-white font-bold' : 'text-slate-300'}">${parallelData.heights[i]} cm</td>
+                `;
+                tbody.appendChild(tr);
+            }
+
+            // Update inspector card text
+            document.getElementById('inspect-idx').textContent = highlightIdx;
+            document.getElementById('inspect-name').textContent = parallelData.names[highlightIdx];
+            document.getElementById('inspect-age').textContent = parallelData.ages[highlightIdx];
+            document.getElementById('inspect-height').textContent = parallelData.heights[highlightIdx] + ' cm';
+        }
+
+        // Event listener for the parallel list slider
+        document.getElementById('index-slider').addEventListener('input', (e) => {
+            renderParallelTable(parseInt(e.target.value));
+        });
+
+        /* ========================================== */
+        /* MODULE 2: LIST FUNCTIONS CALCULATOR        */
+        /* ========================================== */
+        function updateListFunctions() {
+            const nums = parallelData.ages;
+            document.getElementById('fn-max').textContent = Math.max(...nums);
+            document.getElementById('fn-min').textContent = Math.min(...nums);
+            document.getElementById('fn-len').textContent = nums.length;
+            document.getElementById('fn-sum').textContent = nums.reduce((a, b) => a + b, 0);
+        }
+
+        /* ========================================== */
+        /* MODULE 3: SEARCHING SIMULATOR              */
+        /* ========================================== */
+        function performSearch() {
+            const query = document.getElementById('search-input').value.trim();
+            const outputDiv = document.getElementById('search-output');
+            const idx = parallelData.names.indexOf(query);
+
+            if (idx !== -1) {
+                outputDiv.innerHTML = `
+                    <p class="text-slate-400">Query status: <span class="text-emerald-400 font-bold">Found (in list)</span></p>
+                    <p class="text-slate-400">Index location: <span class="text-indigo-400 font-bold">${idx}</span></p>
+                    <p class="text-slate-300">Associated Age: <span class="text-white font-bold">${parallelData.ages[idx]}</span></p>
+                    <p class="text-slate-300">Associated Height: <span class="text-white font-bold">${parallelData.heights[idx]} cm</span></p>
+                `;
+            } else {
+                outputDiv.innerHTML = `
+                    <p class="text-slate-400">Query status: <span class="text-rose-400 font-bold">Not Found</span></p>
+                    <p class="text-xs text-slate-500 italic">Safely caught! .index() was avoided to prevent ValueError.</p>
+                `;
+            }
+        }
+
+        /* ========================================== */
+        /* MODULE 4: BUBBLE SORT VISUALIZER           */
+        /* ========================================== */
+        function renderSortView() {
+            const container = document.getElementById('sort-array-view');
+            container.innerHTML = '';
+            for (let i = 0; i < parallelData.ages.length; i++) {
+                const badge = document.createElement('div');
+                badge.className = "px-3 py-2 rounded-lg bg-slate-900 border border-slate-800 text-xs text-center flex flex-col";
+                badge.innerHTML = `
+                    <span class="text-slate-500 text-[10px]">${parallelData.names[i]}</span>
+                    <span class="text-indigo-400 font-bold text-sm">${parallelData.ages[i]}</span>
+                `;
+                container.appendChild(badge);
+            }
+        }
+
+        function resetSortData() {
+            parallelData = {
+                names: ["Alice", "Bob", "Charlie", "Dave", "Emma"],
+                ages: [27, 24, 25, 28, 22],
+                heights: [163, 170, 165, 152, 181]
+            };
+            renderSortView();
+            document.getElementById('sort-status').textContent = "Data reset to initial jumbled state.";
+        }
+
+        function triggerBubbleSort() {
+            // Simulated 1 pass bubble sort descending by age
+            let swapped = false;
+            let n = parallelData.ages.length;
+            for (let i = 0; i < n - 1; i++) {
+                if (parallelData.ages[i] < parallelData.ages[i + 1]) {
+                    // Swap ages
+                    let tempAge = parallelData.ages[i];
+                    parallelData.ages[i] = parallelData.ages[i + 1];
+                    parallelData.ages[i + 1] = tempAge;
+
+                    // Swap names
+                    let tempName = parallelData.names[i];
+                    parallelData.names[i] = parallelData.names[i + 1];
+                    parallelData.names[i + 1] = tempName;
+
+                    // Swap heights
+                    let tempHeight = parallelData.heights[i];
+                    parallelData.heights[i] = parallelData.heights[i + 1];
+                    parallelData.heights[i + 1] = tempHeight;
+
+                    swapped = true;
+                }
+            }
+            renderSortView();
+            renderParallelTable(parseInt(document.getElementById('index-slider').value));
+            document.getElementById('sort-status').textContent = swapped ? "Executed sorting pass: Parallel lists synchronized successfully." : "List is fully sorted in descending order!";
+        }
+
+        /* ========================================== */
+        /* MODULE 5: SANDBOX CONTROLLER               */
+        /* ========================================== */
+        function renderSandbox() {
+            const display = document.getElementById('sandbox-array-display');
+            display.innerHTML = '';
+            
+            if (sandboxArray.length === 0) {
+                display.innerHTML = `<span class="text-slate-500 italic text-xs">List is empty. Add a number above!</span>`;
+            } else {
+                sandboxArray.forEach((num, index) => {
+                    const pill = document.createElement('span');
+                    pill.className = "px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-xs text-white flex items-center gap-1.5";
+                    pill.innerHTML = `${num} <button onclick="removeSandboxItem(${index})" class="text-slate-500 hover:text-rose-400">&times;</button>`;
+                    display.appendChild(pill);
+                });
+            }
+
+            // Calculate aggregates
+            if (sandboxArray.length > 0) {
+                document.getElementById('sb-max').textContent = Math.max(...sandboxArray);
+                document.getElementById('sb-min').textContent = Math.min(...sandboxArray);
+                document.getElementById('sb-len').textContent = sandboxArray.length;
+                document.getElementById('sb-sum').textContent = sandboxArray.reduce((a, b) => a + b, 0);
+            } else {
+                document.getElementById('sb-max').textContent = '-';
+                document.getElementById('sb-min').textContent = '-';
+                document.getElementById('sb-len').textContent = '0';
+                document.getElementById('sb-sum').textContent = '0';
+            }
+        }
+
+        function addSandboxItem() {
+            const input = document.getElementById('sandbox-input');
+            const val = parseFloat(input.value);
+            if (!isNaN(val)) {
+                sandboxArray.push(val);
+                input.value = '';
+                renderSandbox();
+            }
+        }
+
+        function removeSandboxItem(index) {
+            sandboxArray.splice(index, 1);
+            renderSandbox();
+        }
+
+        function resetSandbox() {
+            sandboxArray = [12, 45, 7, 23, 89, 34];
+            renderSandbox();
+        }
+
+        /* ========================================== */
+        /* INITIALIZATION ON LOAD                     */
+        /* ========================================== */
+        window.addEventListener('DOMContentLoaded', () => {
+            renderParallelTable(2);
+            updateListFunctions();
+            renderSortView();
+            renderSandbox();
+        });
+    </script>
+</body>
+</html>
