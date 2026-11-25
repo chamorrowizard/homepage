@@ -1,0 +1,1736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Functions Studio — Interactive Guide</title>
+  <!-- Google Fonts: Inter for UI and JetBrains Mono for code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* =========================================================================
+       1. DESIGN TOKENS & THEME VARIABLES
+       Easily customize colors, spacing, radii, and shadows here.
+       ========================================================================= */
+    :root {
+      --bg-canvas: #0b0f17;
+      --bg-surface: #111827;
+      --bg-elevated: #172033;
+      --bg-subtle: rgba(255, 255, 255, 0.03);
+      --bg-code: #090d16;
+
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.16);
+
+      --accent-primary: #38bdf8;      /* Sky cyan */
+      --accent-secondary: #a78bfa;    /* Soft violet */
+      --accent-success: #34d399;      /* Emerald */
+      --accent-warning: #fbbf24;      /* Amber */
+      --accent-danger: #f87171;       /* Coral */
+      --accent-glow: rgba(56, 189, 248, 0.16);
+
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+      --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.45);
+
+      --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-base: 240ms cubic-bezier(0.4, 0, 0.2, 1);
+
+      --header-height: 68px;
+      --max-width: 1280px;
+    }
+
+    /* Optional Light Theme override toggled via header button */
+    body.light-theme {
+      --bg-canvas: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-elevated: #f1f5f9;
+      --bg-subtle: rgba(15, 23, 42, 0.03);
+      --bg-code: #0f172a;
+
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+
+      --border-subtle: rgba(15, 23, 42, 0.08);
+      --border-strong: rgba(15, 23, 42, 0.16);
+
+      --accent-primary: #0284c7;
+      --accent-secondary: #7c3aed;
+      --accent-success: #059669;
+      --accent-warning: #d97706;
+      --accent-danger: #dc2626;
+      --accent-glow: rgba(2, 132, 199, 0.12);
+    }
+
+    /* =========================================================================
+       2. RESET & BASE STYLES
+       ========================================================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    button, input, select {
+      font-family: inherit;
+    }
+
+    code, pre {
+      font-family: var(--font-mono);
+    }
+
+    /* =========================================================================
+       3. TOP NAVIGATION BAR
+       ========================================================================= */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      height: var(--header-height);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background: color-mix(in srgb, var(--bg-surface) 84%, transparent);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .topbar-inner {
+      max-width: var(--max-width);
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      display: grid;
+      place-items: center;
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.95rem;
+      box-shadow: 0 6px 18px var(--accent-glow);
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -0.015em;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      display: none;
+    }
+
+    @media (min-width: 640px) {
+      .brand-subtitle {
+        display: block;
+      }
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-pills {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      background: var(--bg-elevated);
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    @media (min-width: 860px) {
+      .nav-pills {
+        display: flex;
+      }
+    }
+
+    .nav-pill {
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .nav-pill:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-pill.active {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .icon-btn {
+      height: 36px;
+      padding: 0 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      font-size: 0.82rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .icon-btn:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+
+    /* =========================================================================
+       4. MAIN LAYOUT CONTAINER & HERO SECTION
+       ========================================================================= */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 28px 20px 72px;
+    }
+
+    .hero {
+      position: relative;
+      background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--accent-primary) 11%, var(--bg-surface)),
+        color-mix(in srgb, var(--accent-secondary) 9%, var(--bg-surface))
+      );
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 28px 24px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 28px;
+      overflow: hidden;
+    }
+
+    @media (min-width: 768px) {
+      .hero {
+        padding: 36px 36px;
+      }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent-primary);
+      background: var(--accent-glow);
+      border: 1px solid color-mix(in srgb, var(--accent-primary) 30%, transparent);
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.65rem, 3.6vw, 2.5rem);
+      line-height: 1.18;
+      letter-spacing: -0.025em;
+    }
+
+    .hero p {
+      margin: 0 0 22px;
+      max-width: 72ch;
+      color: var(--text-secondary);
+      font-size: 0.98rem;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    @media (min-width: 640px) {
+      .hero-stats {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+    }
+
+    .stat-label {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* =========================================================================
+       5. SECTION HEADERS & CONCEPT STRIP
+       ========================================================================= */
+    .section {
+      margin-top: 40px;
+    }
+
+    .section-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section-desc {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .concepts-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    @media (min-width: 640px) {
+      .concepts-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .concepts-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .concept-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      transition: var(--transition-base);
+    }
+
+    .concept-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+    }
+
+    .concept-tag {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--accent-secondary);
+      margin-bottom: 6px;
+    }
+
+    .concept-card h3 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+    }
+
+    .concept-card p {
+      margin: 0;
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+    }
+
+    /* =========================================================================
+       6. FUNCTION EXPLORER & INTERACTIVE PLAYGROUND
+       ========================================================================= */
+    .func-selector-bar {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 18px;
+      scrollbar-width: thin;
+    }
+
+    .func-tab {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      text-align: left;
+    }
+
+    .func-tab:hover {
+      border-color: var(--border-strong);
+      color: var(--text-primary);
+    }
+
+    .func-tab.active {
+      background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--accent-primary) 16%, var(--bg-surface)),
+        var(--bg-surface)
+      );
+      border-color: var(--accent-primary);
+      color: var(--text-primary);
+      box-shadow: 0 0 0 1px var(--accent-primary);
+    }
+
+    .func-tab-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: var(--bg-elevated);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: grid;
+      place-items: center;
+      color: var(--accent-primary);
+    }
+
+    .func-tab-name {
+      font-family: var(--font-mono);
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (min-width: 1024px) {
+      .workspace-grid {
+        grid-template-columns: 1.15fr 0.85fr;
+      }
+    }
+
+    .panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .panel-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--bg-subtle);
+    }
+
+    .panel-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-body {
+      padding: 20px;
+    }
+
+    .func-summary {
+      margin: 0 0 16px;
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+    }
+
+    /* Code Block Styling */
+    .code-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #111827;
+      color: #9ca3af;
+      padding: 8px 14px;
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: none;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+    }
+
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #f3f4f6;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.74rem;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    pre.code-block {
+      margin: 0;
+      padding: 16px;
+      background: var(--bg-code);
+      color: #e5e7eb;
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      overflow-x: auto;
+      font-size: 0.83rem;
+      line-height: 1.65;
+    }
+
+    /* Syntax highlight helper classes */
+    .tok-kw { color: #c084fc; font-weight: 500; }
+    .tok-fn { color: #38bdf8; }
+    .tok-str { color: #34d399; }
+    .tok-num { color: #fbbf24; }
+    .tok-cmt { color: #6b7280; font-style: italic; }
+    .tok-bi { color: #f472b6; }
+
+    /* Step-by-step logic breakdown */
+    .steps-list {
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .step-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      font-size: 0.87rem;
+    }
+
+    .step-badge {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: var(--accent-glow);
+      color: var(--accent-primary);
+      border: 1px solid color-mix(in srgb, var(--accent-primary) 35%, transparent);
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 600;
+      display: grid;
+      place-items: center;
+      margin-top: 1px;
+    }
+
+    /* Interactive Runner Form */
+    .form-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    @media (min-width: 520px) {
+      .form-row-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-primary);
+    }
+
+    .field .field-hint {
+      display: block;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-strong);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      transition: var(--transition-fast);
+    }
+
+    .field input:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-primary), #0ea5e9);
+      color: #06121e;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 10px 18px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.06);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 0.84rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent-primary);
+    }
+
+    /* Terminal Console Output */
+    .console-box {
+      margin-top: 18px;
+      background: var(--bg-code);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: #e5e7eb;
+      min-height: 112px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .console-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: #9ca3af;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .console-tag-warn {
+      color: #fbbf24;
+    }
+
+    .console-tag-ok {
+      color: #34d399;
+    }
+
+    /* =========================================================================
+       7. CALL FLOW & NOTES SECTION
+       ========================================================================= */
+    .flow-diagram {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding: 18px;
+      border-radius: var(--radius-md);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+    }
+
+    .flow-node {
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      color: var(--accent-primary);
+      font-weight: 600;
+    }
+
+    .flow-arrow {
+      color: var(--text-muted);
+    }
+
+    .notes-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    @media (min-width: 768px) {
+      .notes-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .note-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-left: 4px solid var(--accent-warning);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+    }
+
+    .note-card.tip {
+      border-left-color: var(--accent-success);
+    }
+
+    .note-card h3 {
+      margin: 0 0 6px;
+      font-size: 0.96rem;
+    }
+
+    .note-card p {
+      margin: 0;
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+    }
+
+    /* Full Source Drawer / Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 820px;
+      max-height: 86vh;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .modal-head {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-body {
+      padding: 18px;
+      overflow: auto;
+    }
+
+    .footer {
+      margin-top: 56px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- =======================================================================
+       TOP NAVIGATION BAR
+       ======================================================================= -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#top">
+        <div class="brand-mark">py</div>
+        <div>
+          <div class="brand-title">Python Functions Studio</div>
+          <div class="brand-subtitle">Modular Design • Interactive Sandbox • Expandable Notes</div>
+        </div>
+      </a>
+
+      <nav class="nav-pills" aria-label="Sections">
+        <button class="nav-pill active" data-scroll="#concepts">Core Concepts</button>
+        <button class="nav-pill" data-scroll="#playground">Function Lab</button>
+        <button class="nav-pill" data-scroll="#execution-flow">Execution Flow</button>
+        <button class="nav-pill" data-scroll="#design-notes">Notes &amp; Edge Cases</button>
+      </nav>
+
+      <div class="topbar-actions">
+        <button id="openFullScriptBtn" class="icon-btn" type="button" title="View complete Python script">
+          <span>Full .py</span>
+        </button>
+        <button id="themeToggleBtn" class="icon-btn" type="button" title="Toggle light/dark mode">
+          <span id="themeLabel">Light</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =======================================================================
+       MAIN CONTENT
+       ======================================================================= -->
+  <main id="top" class="container">
+    <!-- HERO BANNER -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="hero-badge">Python Functions • Interactive Study App</div>
+      <h1 id="hero-heading">Understand, Trace &amp; Test Your Python Functions</h1>
+      <p>
+        Explore how user-defined functions organize code into reusable blocks, pass inputs, filter data,
+        and coordinate execution through <code>main()</code>. Test each function live with sample presets
+        or custom values on mobile or desktop.
+      </p>
+
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-label">Functions Defined</div>
+          <div class="stat-value">5 (4 + main)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Key Concepts</div>
+          <div class="stat-value">Loops, Logic, Lists</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Entry Point</div>
+          <div class="stat-value">main()</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Architecture</div>
+          <div class="stat-value">Data-Driven JSON</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CORE CONCEPTS STRIP -->
+    <section id="concepts" class="section" aria-labelledby="concepts-heading">
+      <div class="section-header">
+        <div>
+          <h2 id="concepts-heading" class="section-title">Why Functions Matter in Python</h2>
+          <p class="section-desc">Foundational building blocks illustrated across your program.</p>
+        </div>
+      </div>
+
+      <div class="concepts-grid">
+        <article class="concept-card">
+          <div class="concept-tag">def name():</div>
+          <h3>Definition vs. Call</h3>
+          <p>
+            Writing <code>def</code> stores the recipe in memory; calling <code>name()</code> actually
+            executes the indented body.
+          </p>
+        </article>
+
+        <article class="concept-card">
+          <div class="concept-tag">reusability</div>
+          <h3>Clean Separation</h3>
+          <p>
+            Splitting math, payroll, test averages, and parity checks into separate functions keeps each
+            task focused and easier to debug.
+          </p>
+        </article>
+
+        <article class="concept-card">
+          <div class="concept-tag">control flow</div>
+          <h3>Loops &amp; Conditions</h3>
+          <p>
+            <code>for</code> and <code>while</code> loops repeat work, while <code>if / else</code>
+            branches handle thresholds, overtime, and valid score ranges.
+          </p>
+        </article>
+
+        <article class="concept-card">
+          <div class="concept-tag">main()</div>
+          <h3>Program Orchestration</h3>
+          <p>
+            A central <code>main()</code> function acts as a clear table of contents showing the order
+            in which tasks run.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- INTERACTIVE FUNCTION EXPLORER & PLAYGROUND -->
+    <section id="playground" class="section" aria-labelledby="playground-heading">
+      <div class="section-header">
+        <div>
+          <h2 id="playground-heading" class="section-title">Interactive Function Lab</h2>
+          <p class="section-desc">Select a function to inspect its commented code, logic steps, and simulated output.</p>
+        </div>
+      </div>
+
+      <!-- Function Tabs (populated dynamically from FUNCTIONS_DATA) -->
+      <div id="funcTabs" class="func-selector-bar" role="tablist" aria-label="Python Functions"></div>
+
+      <div class="workspace-grid">
+        <!-- LEFT COLUMN: Code + Walkthrough -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3 id="activeFuncTitle" class="panel-title">Function Code &amp; Walkthrough</h3>
+            <span id="activeFuncBadge" style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent-primary);"></span>
+          </div>
+
+          <div class="panel-body">
+            <p id="activeFuncSummary" class="func-summary"></p>
+
+            <div class="code-toolbar">
+              <span id="codeFilename">function.py</span>
+              <button id="copySnippetBtn" class="copy-btn" type="button">Copy Code</button>
+            </div>
+            <pre id="activeFuncCode" class="code-block"></pre>
+
+            <ul id="activeFuncSteps" class="steps-list" aria-label="Step-by-step explanation"></ul>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Interactive Simulator + Console Output -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title">Live Input Simulator</h3>
+            <button id="loadPresetBtn" class="btn-secondary" type="button" style="padding: 5px 10px; font-size: 0.76rem;">
+              Load Sample Input
+            </button>
+          </div>
+
+          <div class="panel-body">
+            <form id="simForm" class="form-grid"></form>
+
+            <div class="btn-row">
+              <button id="runSimBtn" class="btn-primary" type="submit">Run Function</button>
+              <button id="clearConsoleBtn" class="btn-secondary" type="button">Clear Output</button>
+            </div>
+
+            <div class="console-box" aria-live="polite">
+              <div class="console-header">
+                <span>Simulated Terminal Output</span>
+                <span id="consoleStatus" class="console-tag-ok">Ready</span>
+              </div>
+              <div id="consoleOutput">Click "Run Function" to see how this function behaves with your inputs.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXECUTION FLOW & EXPANDABLE NOTES -->
+    <section id="execution-flow" class="section" aria-labelledby="flow-heading">
+      <div class="section-header">
+        <div>
+          <h2 id="flow-heading" class="section-title">How <code>main()</code> Drives Execution</h2>
+          <p class="section-desc">Functions are defined first, then invoked sequentially from <code>main()</code>.</p>
+        </div>
+      </div>
+
+      <div class="flow-diagram" role="region" aria-label="Execution order diagram">
+        <span class="flow-node">1. def blocks loaded</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-node">2. main() called</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-node">3. find_factoral()</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-node">4. pay_calculator()</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-node">5. score_calculator()</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-node">6. is_even()</span>
+      </div>
+    </section>
+
+    <section id="design-notes" class="section" aria-labelledby="notes-heading">
+      <div class="section-header">
+        <div>
+          <h2 id="notes-heading" class="section-title">Study Notes, Edge Cases &amp; Expansion Tips</h2>
+          <p class="section-desc">Helpful observations for refining your script and expanding this app later.</p>
+        </div>
+      </div>
+
+      <div id="notesContainer" class="notes-grid"></div>
+    </section>
+
+    <footer class="footer">
+      <div>Python Functions Studio — Single-File Learning App</div>
+      <div>Tip: Add new items to <code>FUNCTIONS_DATA</code> or <code>STUDY_NOTES</code> in the script to expand.</div>
+    </footer>
+  </main>
+
+  <!-- =======================================================================
+       FULL SCRIPT MODAL
+       ======================================================================= -->
+  <div id="fullScriptModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="modalTitle" style="margin: 0; font-size: 1rem;">Complete Python Source Code</h3>
+        <div style="display: flex; gap: 8px;">
+          <button id="copyFullScriptBtn" class="copy-btn" type="button" style="color: var(--text-primary); border-color: var(--border-strong);">
+            Copy All
+          </button>
+          <button id="closeModalBtn" class="copy-btn" type="button" style="color: var(--text-primary); border-color: var(--border-strong);">
+            Close
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <pre id="fullScriptPre" class="code-block" style="border-radius: var(--radius-md);"></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================================================================
+       DATA & APPLICATION SCRIPT
+       To add more detail or a new function later:
+       1. Add an entry to FUNCTIONS_DATA (with code, steps, inputs, preset, and run()).
+       2. Add study/edge-case cards to STUDY_NOTES.
+       ======================================================================= -->
+  <script>
+    // Complete original Python program for reference modal
+    const FULL_PYTHON_SOURCE = `def find_factoral():
+    maxnum = int(input("Enter a whole number: "))
+    total = 1
+    for i in range(1, maxnum + 1):
+        total *= i
+    if total > 1000:
+        print("Large Value")
+    print(f"The product of the numbers is {total}")
+    print()
+
+
+def pay_calculator():
+    id = int(input("Enter ID: "))
+    first_name = input("Enter first name: ")
+    last_name = input("Enter last name: ")
+    hours_worked = int(input("Enter hours worked: "))
+    pay_rate = int(input("Enter pay rate: "))
+
+    # Display employee details
+    print(f"ID number is {id}")
+    print(f"First name is {first_name}")
+    print(f"Last name is {last_name}")
+
+    # Calculate gross pay (up to 40 regular hours; 1.5x overtime above 40)
+    gross_pay = hours_worked * pay_rate
+    if hours_worked > 40:
+        overtime_hours = hours_worked - 40
+        overtime_pay = overtime_hours * (pay_rate * 1.5)
+        gross_pay = overtime_pay + (40 * pay_rate)
+
+    print(f"Gross pay is \${gross_pay:.2f}")
+    print()
+
+
+def score_calculator():
+    list_of_scores = []
+    num_of_test = int(input("Enter number of test scores to process: "))
+    while num_of_test < 1:
+        num_of_test = int(input("Invalid Enter number of test scores to process: "))
+
+    for i in range(num_of_test):
+        score = int(input(f"Enter score {i + 1}: "))
+        if score >= 40 and score <= 100:
+            list_of_scores.append(score)
+
+    if len(list_of_scores) > 0:
+        # Display the average of ONLY the test scores between 40 and 100
+        average_score = sum(list_of_scores) / len(list_of_scores)
+        print(f"Average score is: {average_score:.2f}")
+    else:
+        print("The average cannot be calculated.")
+
+
+def is_even():
+    print()
+    num = int(input("Enter a number and I tell you if it's even or odd!: "))
+    if num % 2 == 0:
+        print("We are even")
+    else:
+        print("how odd")
+
+
+def main():
+    print()
+    find_factoral()
+    pay_calculator()
+    score_calculator()
+    is_even()
+
+
+main()`;
+
+    /**
+     * Central configuration for each function in the playground.
+     * Add new objects to this array to expand the app with zero layout changes.
+     */
+    const FUNCTIONS_DATA = [
+      {
+        id: 'factorial',
+        badge: 'Loop & Threshold',
+        name: 'find_factoral()',
+        summary:
+          'Computes the factorial (product of integers from 1 to maxnum) using a for-loop and flags results over 1,000.',
+        code: `def find_factoral():
+    maxnum = int(input("Enter a whole number: "))
+    total = 1                     # Start accumulator at 1 (multiplicative identity)
+    for i in range(1, maxnum + 1): # Include maxnum by adding +1 to range stop
+        total *= i                # Multiply total by each integer i
+    if total > 1000:
+        print("Large Value")      # Threshold alert when product exceeds 1000
+    print(f"The product of the numbers is {total}")
+    print()`,
+        steps: [
+          'Read an integer <code>maxnum</code> and initialize <code>total = 1</code>.',
+          'Loop <code>i</code> from <code>1</code> through <code>maxnum</code> inclusive, multiplying <code>total</code> each pass.',
+          'Check if <code>total &gt; 1000</code> to print <code>"Large Value"</code>.',
+          'Print the final product formatted with an f-string.'
+        ],
+        inputs: [
+          {
+            key: 'maxnum',
+            label: 'Whole Number (maxnum)',
+            type: 'number',
+            hint: 'Try 5 (120) or 7 (5,040 -> triggers "Large Value").'
+          }
+        ],
+        preset: { maxnum: 7 },
+        run: (vals) => {
+          const maxnum = Number(vals.maxnum);
+          if (!Number.isInteger(maxnum) || maxnum < 0) {
+            return {
+              status: 'Input Warning',
+              isError: true,
+              lines: ['ValueError: Please enter a whole number (0 or greater).']
+            };
+          }
+          let total = 1;
+          for (let i = 1; i <= maxnum; i++) {
+            total *= i;
+          }
+          const lines = [];
+          if (total > 1000) {
+            lines.push('Large Value');
+          }
+          lines.push(`The product of the numbers is ${total}`);
+          return { status: 'Executed', isError: false, lines };
+        }
+      },
+      {
+        id: 'pay',
+        badge: 'Conditionals & Math',
+        name: 'pay_calculator()',
+        summary:
+          'Collects employee details, calculates base pay, applies 1.5x overtime pay for hours above 40, and formats currency.',
+        code: `def pay_calculator():
+    id = int(input("Enter ID: "))
+    first_name = input("Enter first name: ")
+    last_name = input("Enter last name: ")
+    hours_worked = int(input("Enter hours worked: "))
+    pay_rate = int(input("Enter pay rate: "))
+
+    print(f"ID number is {id}")
+    print(f"First name is {first_name}")
+    print(f"Last name is {last_name}")
+
+    gross_pay = hours_worked * pay_rate
+    if hours_worked > 40:
+        overtime_hours = hours_worked - 40
+        overtime_pay = overtime_hours * (pay_rate * 1.5)
+        gross_pay = overtime_pay + (40 * pay_rate)
+
+    print(f"Gross pay is \${gross_pay:.2f}")
+    print()`,
+        steps: [
+          'Gather employee ID, name fields, hours worked, and hourly pay rate.',
+          'Print the employee summary lines back to the console.',
+          'Compute standard pay; if <code>hours_worked &gt; 40</code>, calculate 1.5x pay on extra hours plus 40 regular hours.',
+          'Print <code>gross_pay</code> rounded to two decimal places (<code>:.2f</code>).'
+        ],
+        inputs: [
+          { key: 'id', label: 'Employee ID', type: 'number', hint: 'Whole number ID' },
+          { key: 'payRate', label: 'Pay Rate ($/hr)', type: 'number', hint: 'Hourly rate' },
+          { key: 'firstName', label: 'First Name', type: 'text', hint: 'e.g., Alex' },
+          { key: 'lastName', label: 'Last Name', type: 'text', hint: 'e.g., Rivera' },
+          { key: 'hoursWorked', label: 'Hours Worked', type: 'number', hint: 'Values > 40 add 1.5x overtime' }
+        ],
+        preset: {
+          id: 1042,
+          firstName: 'Jordan',
+          lastName: 'Lee',
+          hoursWorked: 46,
+          payRate: 25
+        },
+        run: (vals) => {
+          const id = Number(vals.id);
+          const firstName = (vals.firstName || '').trim() || 'Employee';
+          const lastName = (vals.lastName || '').trim() || 'User';
+          const hours = Number(vals.hoursWorked);
+          const rate = Number(vals.payRate);
+
+          if (Number.isNaN(id) || Number.isNaN(hours) || Number.isNaN(rate) || hours < 0 || rate < 0) {
+            return {
+              status: 'Input Warning',
+              isError: true,
+              lines: ['Please provide valid non-negative numeric values for ID, hours, and pay rate.']
+            };
+          }
+
+          let grossPay = hours * rate;
+          if (hours > 40) {
+            const overtimeHours = hours - 40;
+            const overtimePay = overtimeHours * (rate * 1.5);
+            grossPay = overtimePay + (40 * rate);
+          }
+
+          return {
+            status: 'Executed',
+            isError: false,
+            lines: [
+              `ID number is ${id}`,
+              `First name is ${firstName}`,
+              `Last name is ${lastName}`,
+              `Gross pay is $${grossPay.toFixed(2)}`
+            ]
+          };
+        }
+      },
+      {
+        id: 'scores',
+        badge: 'Validation, List & Filter',
+        name: 'score_calculator()',
+        summary:
+          'Enforces a positive test count with a while-loop, filters scores to the 40–100 range, and computes their average.',
+        code: `def score_calculator():
+    list_of_scores = []
+    num_of_test = int(input("Enter number of test scores to process: "))
+    while num_of_test < 1:               # Re-prompt until at least 1 test is specified
+        num_of_test = int(input("Invalid Enter number of test scores to process: "))
+
+    for i in range(num_of_test):
+        score = int(input(f"Enter score {i + 1}: "))
+        if score >= 40 and score <= 100: # Keep only scores within [40, 100]
+            list_of_scores.append(score)
+
+    if len(list_of_scores) > 0:         # Avoid division by zero if list is empty
+        average_score = sum(list_of_scores) / len(list_of_scores)
+        print(f"Average score is: {average_score:.2f}")
+    else:
+        print("The average cannot be calculated.")`,
+        steps: [
+          'Use a <code>while</code> loop to ensure <code>num_of_test</code> is at least <code>1</code>.',
+          'Loop through each score and append it to <code>list_of_scores</code> only if <code>40 &lt;= score &lt;= 100</code>.',
+          'Guard against empty lists before dividing, then print the average to 2 decimal places.'
+        ],
+        inputs: [
+          {
+            key: 'numTests',
+            label: 'Number of Tests (num_of_test)',
+            type: 'number',
+            hint: 'Values < 1 trigger the invalid-count prompt in Python.'
+          },
+          {
+            key: 'scoresCsv',
+            label: 'Scores (comma-separated)',
+            type: 'text',
+            hint: 'e.g., 88, 32, 95, 100, 25 (only 40–100 are averaged).'
+          }
+        ],
+        preset: {
+          numTests: 4,
+          scoresCsv: '88, 35, 92, 78'
+        },
+        run: (vals) => {
+          const numTests = Number(vals.numTests);
+          if (!Number.isInteger(numTests) || numTests < 1) {
+            return {
+              status: 'Invalid Count',
+              isError: true,
+              lines: ['Invalid Enter number of test scores to process: (must be 1 or more)']
+            };
+          }
+
+          const rawItems = (vals.scoresCsv || '')
+            .split(',')
+            .map((s) => s.trim())
+            .filter((s) => s.length > 0);
+
+          const parsedScores = rawItems.slice(0, numTests).map(Number);
+          if (parsedScores.some((n) => Number.isNaN(n))) {
+            return {
+              status: 'Input Warning',
+              isError: true,
+              lines: ['ValueError: All scores must be valid numbers.']
+            };
+          }
+
+          const validScores = parsedScores.filter((s) => s >= 40 && s <= 100);
+          const lines = [
+            `Processed up to ${numTests} score(s); valid [40–100] included: [${validScores.join(', ')}]`
+          ];
+
+          if (validScores.length > 0) {
+            const avg = validScores.reduce((acc, n) => acc + n, 0) / validScores.length;
+            lines.push(`Average score is: ${avg.toFixed(2)}`);
+          } else {
+            lines.push('The average cannot be calculated.');
+          }
+
+          return { status: 'Executed', isError: false, lines };
+        }
+      },
+      {
+        id: 'even',
+        badge: 'Modulo Operator (%)',
+        name: 'is_even()',
+        summary:
+          'Uses the remainder (modulo) operator % 2 to determine whether an integer is even or odd.',
+        code: `def is_even():
+    print()
+    num = int(input("Enter a number and I tell you if it's even or odd!: "))
+    if num % 2 == 0:     # Zero remainder when divided by 2 means even
+        print("We are even")
+    else:
+        print("how odd")`,
+        steps: [
+          'Prompt the user for an integer <code>num</code>.',
+          'Evaluate <code>num % 2 == 0</code> to check if dividing by 2 leaves no remainder.',
+          'Print <code>"We are even"</code> for true or <code>"how odd"</code> for false.'
+        ],
+        inputs: [
+          {
+            key: 'num',
+            label: 'Integer (num)',
+            type: 'number',
+            hint: 'Try 14 (even) or 17 (odd).'
+          }
+        ],
+        preset: { num: 14 },
+        run: (vals) => {
+          const num = Number(vals.num);
+          if (!Number.isInteger(num)) {
+            return {
+              status: 'Input Warning',
+              isError: true,
+              lines: ['ValueError: Please enter a whole integer.']
+            };
+          }
+          return {
+            status: 'Executed',
+            isError: false,
+            lines: [num % 2 === 0 ? 'We are even' : 'how odd']
+          };
+        }
+      }
+    ];
+
+    /**
+     * Expandable study notes & edge cases.
+     * Add objects here to document additional observations or future exercises.
+     */
+    const STUDY_NOTES = [
+      {
+        type: 'warn',
+        title: 'Function Name Spelling: find_factoral',
+        text: 'Your function is named find_factoral (missing the "i" in factorial). Python allows any valid identifier name, so it works—just keep the spelling consistent whenever you call it.'
+      },
+      {
+        type: 'tip',
+        title: 'Empty List Guard in score_calculator()',
+        text: 'Checking if len(list_of_scores) > 0 before dividing prevents a ZeroDivisionError when all entered scores fall outside 40–100.'
+      },
+      {
+        type: 'tip',
+        title: 'Passing Parameters vs. Using input()',
+        text: 'Reading input() inside functions is great for interactive scripts. As you advance, passing arguments into functions (like is_even(num)) makes them even easier to unit-test.'
+      },
+      {
+        type: 'warn',
+        title: 'Strict Integer Casting with int()',
+        text: 'Calling int(input(...)) expects whole numbers. Entering decimals like 22.5 for pay_rate or letters for ID raises a ValueError unless handled with try/except.'
+      }
+    ];
+
+    /* =======================================================================
+       STATE & DOM REFERENCES
+       ======================================================================= */
+    let activeFuncId = FUNCTIONS_DATA[0].id;
+    let currentFormValues = { ...FUNCTIONS_DATA[0].preset };
+
+    const funcTabsEl = document.getElementById('funcTabs');
+    const activeFuncTitleEl = document.getElementById('activeFuncTitle');
+    const activeFuncBadgeEl = document.getElementById('activeFuncBadge');
+    const activeFuncSummaryEl = document.getElementById('activeFuncSummary');
+    const codeFilenameEl = document.getElementById('codeFilename');
+    const activeFuncCodeEl = document.getElementById('activeFuncCode');
+    const activeFuncStepsEl = document.getElementById('activeFuncSteps');
+    const simFormEl = document.getElementById('simForm');
+    const consoleOutputEl = document.getElementById('consoleOutput');
+    const consoleStatusEl = document.getElementById('consoleStatus');
+    const notesContainerEl = document.getElementById('notesContainer');
+
+    /* =======================================================================
+       SYNTAX HIGHLIGHTER (Lightweight, dependency-free)
+       ======================================================================= */
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function highlightPython(code) {
+      const keywords = new Set(['def', 'for', 'in', 'range', 'if', 'else', 'while', 'and', 'or', 'not', 'return']);
+      const builtins = new Set(['int', 'input', 'print', 'len', 'sum']);
+
+      return code
+        .split('\n')
+        .map((line) => {
+          const commentIdx = line.indexOf('#');
+          let codePart = commentIdx >= 0 ? line.slice(0, commentIdx) : line;
+          const commentPart = commentIdx >= 0 ? line.slice(commentIdx) : '';
+
+          // Highlight strings first using placeholders so inner words aren't re-tokenized
+          const strings = [];
+          codePart = codePart.replace(/f?(["'])(?:\\.|(?!\1).)*\1/g, (match) => {
+            strings.push(`<span class="tok-str">${escapeHtml(match)}</span>`);
+            return `@@STR_${strings.length - 1}@@`;
+          });
+
+          codePart = escapeHtml(codePart);
+
+          // Highlight function names right after 'def '
+          codePart = codePart.replace(/\b(def)\s+([a-zA-Z_][a-zA-Z0-9_]*)/g, (_, kw, fnName) => {
+            return `<span class="tok-kw">${kw}</span> <span class="tok-fn">${fnName}</span>`;
+          });
+
+          // Highlight keywords, builtins, and numbers
+          codePart = codePart.replace(/\b[a-zA-Z_][a-zA-Z0-9_]*\b/g, (token) => {
+            if (keywords.has(token)) return `<span class="tok-kw">${token}</span>`;
+            if (builtins.has(token)) return `<span class="tok-bi">${token}</span>`;
+            return token;
+          });
+
+          codePart = codePart.replace(/\b\d+(?:\.\d+)?\b/g, (num) => `<span class="tok-num">${num}</span>`);
+
+          // Restore string spans
+          codePart = codePart.replace(/@@STR_(\d+)@@/g, (_, idx) => strings[Number(idx)]);
+
+          const commentHtml = commentPart ? `<span class="tok-cmt">${escapeHtml(commentPart)}</span>` : '';
+          return codePart + commentHtml;
+        })
+        .join('\n');
+    }
+
+    /* =======================================================================
+       RENDER FUNCTIONS
+       ======================================================================= */
+    function getActiveFunction() {
+      return FUNCTIONS_DATA.find((f) => f.id === activeFuncId) || FUNCTIONS_DATA[0];
+    }
+
+    function renderTabs() {
+      funcTabsEl.innerHTML = FUNCTIONS_DATA.map((fn, idx) => {
+        const isActive = fn.id === activeFuncId;
+        return `
+          <button
+            type="button"
+            role="tab"
+            aria-selected="${isActive}"
+            class="func-tab ${isActive ? 'active' : ''}"
+            data-func-id="${fn.id}"
+          >
+            <span class="func-tab-num">0${idx + 1}</span>
+            <span class="func-tab-name">${escapeHtml(fn.name)}</span>
+          </button>
+        `;
+      }).join('');
+
+      funcTabsEl.querySelectorAll('.func-tab').forEach((tab) => {
+        tab.addEventListener('click', () => {
+          selectFunction(tab.dataset.funcId);
+        });
+      });
+    }
+
+    function renderFunctionDetails() {
+      const fn = getActiveFunction();
+      activeFuncTitleEl.textContent = fn.name;
+      activeFuncBadgeEl.textContent = fn.badge;
+      activeFuncSummaryEl.textContent = fn.summary;
+      codeFilenameEl.textContent = `${fn.id}.py`;
+      activeFuncCodeEl.innerHTML = highlightPython(fn.code);
+
+      activeFuncStepsEl.innerHTML = fn.steps
+        .map(
+          (step, index) => `
+            <li class="step-item">
+              <span class="step-badge">${index + 1}</span>
+              <div>${step}</div>
+            </li>
+          `
+        )
+        .join('');
+    }
+
+    function renderForm() {
+      const fn = getActiveFunction();
+      simFormEl.innerHTML = fn.inputs
+        .map((inp) => {
+          const val = currentFormValues[inp.key] ?? '';
+          return `
+            <div class="field">
+              <label for="input_${inp.key}">${escapeHtml(inp.label)}</label>
+              <input
+                id="input_${inp.key}"
+                name="${inp.key}"
+                type="${inp.type}"
+                value="${escapeHtml(val)}"
+              />
+              ${inp.hint ? `<span class="field-hint">${escapeHtml(inp.hint)}</span>` : ''}
+            </div>
+          `;
+        })
+        .join('');
+
+      simFormEl.querySelectorAll('input').forEach((inputEl) => {
+        inputEl.addEventListener('input', (e) => {
+          currentFormValues[e.target.name] = e.target.value;
+        });
+      });
+    }
+
+    function executeCurrentFunction() {
+      const fn = getActiveFunction();
+      const result = fn.run(currentFormValues);
+      consoleStatusEl.textContent = result.status;
+      consoleStatusEl.className = result.isError ? 'console-tag-warn' : 'console-tag-ok';
+      consoleOutputEl.textContent = result.lines.join('\n');
+    }
+
+    function selectFunction(id) {
+      activeFuncId = id;
+      const fn = getActiveFunction();
+      currentFormValues = { ...fn.preset };
+      renderTabs();
+      renderFunctionDetails();
+      renderForm();
+      executeCurrentFunction();
+    }
+
+    function renderNotes() {
+      notesContainerEl.innerHTML = STUDY_NOTES.map(
+        (note) => `
+          <article class="note-card ${note.type === 'tip' ? 'tip' : ''}">
+            <h3>${escapeHtml(note.title)}</h3>
+            <p>${escapeHtml(note.text)}</p>
+          </article>
+        `
+      ).join('');
+    }
+
+    /* =======================================================================
+       CONTROLS, THEME, COPY & MODAL
+       ======================================================================= */
+    document.getElementById('simForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      executeCurrentFunction();
+    });
+
+    document.getElementById('loadPresetBtn').addEventListener('click', () => {
+      const fn = getActiveFunction();
+      currentFormValues = { ...fn.preset };
+      renderForm();
+      executeCurrentFunction();
+    });
+
+    document.getElementById('clearConsoleBtn').addEventListener('click', () => {
+      consoleOutputEl.textContent = '';
+      consoleStatusEl.textContent = 'Cleared';
+      consoleStatusEl.className = 'console-tag-ok';
+    });
+
+    document.getElementById('copySnippetBtn').addEventListener('click', async (e) => {
+      const fn = getActiveFunction();
+      try {
+        await navigator.clipboard.writeText(fn.code);
+        e.target.textContent = 'Copied!';
+        setTimeout(() => (e.target.textContent = 'Copy Code'), 1400);
+      } catch {
+        e.target.textContent = 'Copy failed';
+      }
+    });
+
+    // Theme toggle
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeLabel = document.getElementById('themeLabel');
+    themeToggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('light-theme');
+      const isLight = document.body.classList.contains('light-theme');
+      themeLabel.textContent = isLight ? 'Dark' : 'Light';
+    });
+
+    // Smooth nav pills
+    document.querySelectorAll('.nav-pill').forEach((pill) => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.nav-pill').forEach((p) => p.classList.remove('active'));
+        pill.classList.add('active');
+        const target = document.querySelector(pill.dataset.scroll);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Full Python Script Modal
+    const modalBackdrop = document.getElementById('fullScriptModal');
+    const fullScriptPre = document.getElementById('fullScriptPre');
+    fullScriptPre.innerHTML = highlightPython(FULL_PYTHON_SOURCE);
+
+    document.getElementById('openFullScriptBtn').addEventListener('click', () => {
+      modalBackdrop.classList.add('open');
+    });
+
+    document.getElementById('closeModalBtn').addEventListener('click', () => {
+      modalBackdrop.classList.remove('open');
+    });
+
+    modalBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalBackdrop) {
+        modalBackdrop.classList.remove('open');
+      }
+    });
+
+    document.getElementById('copyFullScriptBtn').addEventListener('click', async (e) => {
+      try {
+        await navigator.clipboard.writeText(FULL_PYTHON_SOURCE);
+        e.target.textContent = 'Copied!';
+        setTimeout(() => (e.target.textContent = 'Copy All'), 1400);
+      } catch {
+        e.target.textContent = 'Copy failed';
+      }
+    });
+
+    // Initial render
+    renderTabs();
+    renderFunctionDetails();
+    renderForm();
+    renderNotes();
+    executeCurrentFunction();
+  </script>
+</body>
+</html>
